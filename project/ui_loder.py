@@ -37,21 +37,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.initAllpicture()
         self.signalsSlat()
         self.dmodel()
-        #self.defult()
 
-        #
-        # self.Xslider.setInvertedControls(173)
-        # self.Xslider.setInvertedAppearance(173)
-        #
-        #self.Yslider.setInvertedControls(211)
-        #self.Yslider.setInvertedAppearance(211)
-        #
-        # self.Zslider.setInvertedControls(141)
-        # self.Zslider.setInvertedAppearance(141)
-
-
-
-        #self.EVspinbox.setValue(142)
 
         self.XXX = 0
         self.YYY = 0
@@ -200,8 +186,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # picNumX = int ((valueX * valueBt) / 174) + 87
         picNumX = int(valueX) + 87
         print("picNumX:", picNumX)
-        self.Xslidertest(picNumX)
+
         self.Xslider.setValue(picNumX)
+        self.on_xslider_change(picNumX)
 
         #getvalueY
         valueAp = self.APspinbox.value()
@@ -212,8 +199,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("valueY:", valueY)
         # picNumY = int((valueY * valueAp) / 212) + 122
         picNumY = int(valueY) + 122
-        self.Yslidertest(picNumY)
+        # self.Yslidertest(picNumY)
         self.Yslider.setValue(picNumY)
+        self.on_yslider_change(picNumY)
 
         # getvaluez
         valueEv = self.EVspinbox.value()
@@ -224,8 +212,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("valueZ:", valueZ)
         # picNumZ = int((valueZ * valueEv) / 142) + 43
         picNumZ = int(valueZ) + 43
-        self.Zslidertest(picNumZ)
         self.Zslider.setValue(picNumZ)
+        self.on_zslider_change(picNumZ)
+
 
         mm_x = int(valueX * _scaleX)
         mm_y = int(valueY * _scaleY)
@@ -314,7 +303,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     #for X slide,y
     def move_lineX_plainY(self, yloc_Xplain):
-        yloc_Xplain = abs(173 - yloc_Xplain)
+        # yloc_Xplain = abs(173 - yloc_Xplain)
         self.pixmapY_moveX = QPixmap(my_Yside_pics_add + self.picListY[self.YYY])
         # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
         self.pixmap_YY1 = QPixmap(self.Ypiclabel.size())
@@ -338,7 +327,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     # for X slide,z
     def move_lineX_plainZ(self, zloc_Xplain):
-        zloc_Xplain = abs(173 - zloc_Xplain)
+        # zloc_Xplain = abs(173 - zloc_Xplain)
         self.pixmapZ_moveX = QPixmap(my_Zside_pics_add + self.picListZ[self.ZZZ])
         # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
         self.pixmap_ZZ1 = QPixmap(self.Zpiclabel.size())

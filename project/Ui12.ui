@@ -1088,8 +1088,8 @@ background-color: rgb(122, 122, 122);
                               <rect>
                                <x>0</x>
                                <y>0</y>
-                               <width>397</width>
-                               <height>329</height>
+                               <width>98</width>
+                               <height>28</height>
                               </rect>
                              </property>
                             </widget>
@@ -2858,7 +2858,7 @@ p, li { white-space: pre-wrap; }
                   <item>
                    <widget class="QLabel" name="label_x_up">
                     <property name="text">
-                     <string>Left</string>
+                     <string>Right</string>
                     </property>
                    </widget>
                   </item>
@@ -2895,7 +2895,7 @@ p, li { white-space: pre-wrap; }
                   <item>
                    <widget class="QLabel" name="label_x_down">
                     <property name="text">
-                     <string>Right</string>
+                     <string>left</string>
                     </property>
                    </widget>
                   </item>
