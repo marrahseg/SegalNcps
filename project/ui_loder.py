@@ -52,6 +52,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.myOrbitBrain)
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
+        self.actionDark.triggered.connect(self.on_dark_menu)
+        self.actionLight.triggered.connect(self.on_light_menu)
 
         # show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -76,6 +78,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
     ########## slots:
+
+
+    def on_dark_menu(self):
+        print('dark manu')
+
+    def on_light_menu(self):
+        print('light menu')
     def on_xslider_change(self, val):
         self.Xslidertest(val)
         self.move_lineX_plainZ(val)
