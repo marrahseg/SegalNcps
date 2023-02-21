@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1389</width>
-    <height>848</height>
+    <height>869</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1088,8 +1088,8 @@ background-color: rgb(122, 122, 122);
                               <rect>
                                <x>0</x>
                                <y>0</y>
-                               <width>98</width>
-                               <height>28</height>
+                               <width>397</width>
+                               <height>329</height>
                               </rect>
                              </property>
                             </widget>
@@ -3228,6 +3228,58 @@ Axis</string>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1389</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuForm">
+    <property name="title">
+     <string>Form</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSetting">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView_2">
+    <property name="title">
+     <string>Window</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuForm"/>
+   <addaction name="menuView"/>
+   <addaction name="menuSetting"/>
+   <addaction name="menuView_2"/>
+   <addaction name="menuHelp"/>
+  </widget>
   <action name="actionnew">
    <property name="text">
     <string>new</string>
@@ -3256,6 +3308,11 @@ Axis</string>
   <action name="actionToolbars">
    <property name="text">
     <string>Toolbars</string>
+   </property>
+  </action>
+  <action name="actionForm">
+   <property name="text">
+    <string>Form</string>
    </property>
   </action>
  </widget>
