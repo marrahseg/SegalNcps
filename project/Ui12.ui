@@ -1126,7 +1126,7 @@ background-color: rgb(122, 122, 122);
                        <string>Patient Head Indices:</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_4">
-                       <item alignment="Qt::AlignTop">
+                       <item>
                         <widget class="QFrame" name="frame_2">
                          <property name="font">
                           <font>
@@ -3251,6 +3251,7 @@ Axis</string>
     <property name="title">
      <string>Form</string>
     </property>
+    <addaction name="actiondialog"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -3325,6 +3326,11 @@ Axis</string>
   <action name="actionLight">
    <property name="text">
     <string>Light</string>
+   </property>
+  </action>
+  <action name="actiondialog">
+   <property name="text">
+    <string>dialog</string>
    </property>
   </action>
  </widget>
