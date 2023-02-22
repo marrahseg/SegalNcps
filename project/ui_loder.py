@@ -15,6 +15,7 @@ from qt_material import apply_stylesheet
 
 from Ui12_ui import Ui_MainWindow
 
+
 my_Xside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/X_174/'
 my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
@@ -53,9 +54,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.myOrbitBrain)
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        self.actionDark.triggered.connect(self.on_dark_menu)
-        self.actionLight.triggered.connect(self.on_light_menu)
-        self.actiondialog.triggered.connect(self.on_dialog)
+        self.actionDark.triggered.connect(self.on_dark_theme)
+        self.actionLight.triggered.connect(self.on_light_theme)
+        self.actiondialog.triggered.connect(self.on_show_dialog)
 
         # show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -81,23 +82,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     ########## slots:
 
-    def on_dialog(self, s):
+    def on_show_dialog(self, s):
         dlg = QMessageBox(self)
         dlg.setWindowTitle("I have a question!")
         dlg.setText("This is a question dialog")
         dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        dlg.setIcon(QMessageBox.Question)
+        dlg.setIcon(QMessageBox.Information)
+
+        returnValue = dlg.exec()
+        if returnValue == QMessageBox.Ok:
+            print('OK clicked')
         dlg.exec()
 
+    def on_dark_theme(self):
+        print('dark theme')
+        apply_stylesheet(self, theme='dark_purp_segal.xml')
 
-
-
-    def on_dark_menu(self):
-        print('dark manu')
-
-    def on_light_menu(self):
-        print('light menu')
-
+    def on_light_theme(self):
+        print('light them')
+        apply_stylesheet(self, theme='color.xml')
 
     def on_xslider_change(self, val):
         self.Xslidertest(val)

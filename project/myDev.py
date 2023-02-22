@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QFileDialog
 from random import randint
 
 
+
 from ui_loder import Window_ui
 
 import myThreads
@@ -44,6 +45,7 @@ class Window_withDev(Window_ui):
             self.DevSer = serial.Serial('COM9', 38400, timeout=1)  # open serial port
         except:
             print("no device found")
+
 
 
     def keyPressEvent(self, event):
