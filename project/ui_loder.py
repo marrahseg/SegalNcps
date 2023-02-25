@@ -25,7 +25,7 @@ lineX_xoffset_Yplane = +157
 lineX_zoffset_Yplane = +45
 
 lineX_xoffset_Zplane = +156
-lineX_zoffset_Zplane = +45
+lineX_yoffset_Zplane = +45
 
 #liny _x,z plain
 lineY_yoffset_Xplane = +145
