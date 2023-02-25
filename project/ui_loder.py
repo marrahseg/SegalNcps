@@ -5,6 +5,8 @@ import time
 
 import pyvista
 import pyvista as pv
+from PIL.ImageQt import rgb
+from pyvista import examples
 
 import numpy as np
 import stl
@@ -66,7 +68,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.initAllpicture()
         self.signalsSlat()
         #self.dmodel()
-        #self.show3step()
+        self.show3step()
 
         self.XXX = 0
         self.YYY = 0
@@ -110,15 +112,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     ########## slots:
 
-    # def show3step(self):
-    #     #mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
-    #     mesh = pyvista.read("Brain for Half_Skull.STEP")
-    #     colors = mesh.cell_arrays.get('RGB')
-    #     mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
-    #     plotter = pv.Plotter()
-    #     plotter.add_mesh(mesh, scalars='colors')
-    #     plotter.show()
-    #     #self.gridLayout_3.addWidget(mesh, 0, 0, 1, 1)
+    def show3step(self):
+        mesh = pv.read('Brain for Half_Skull.stl')
+
+        p = pv.Plotter()
+        p.add_mesh(mesh, color=(243, 229, 245))
+        p.add_bounding_box()
+        p.show()
+        #self.gridLayout_3.addWidget(p, 0, 0, 1, 1)
+
+
+
+        # #mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
+        # mesh = pv.read('Brain for Half_Skull.STEP')
+        # colors = mesh.cell_arrays.get('RGB')
+        # mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
+        # plotter = pv.Plotter()
+        # plotter.add_mesh(mesh, scalars='colors')
+        # plotter.show()
+        # self.gridLayout_3.addWidget(mesh, 0, 0, 1, 1)
 
     def saveFigData(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
