@@ -113,13 +113,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     ########## slots:
 
     def show3step(self):
+        self.mview = GLViewWidget()
         mesh = pv.read('Brain for Half_Skull.stl')
 
         p = pv.Plotter()
         p.add_mesh(mesh, color=(243, 229, 245))
         p.add_bounding_box()
         p.show()
-        #self.gridLayout_3.addWidget(p, 0, 0, 1, 1)
+
+        self.mview.addItem(mesh)
+
+
+        #mesh2222 = GLMeshItem(meshdata=mesh, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
+        #mview.addItem(mesh2222)
+
+        self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
 
 
 
