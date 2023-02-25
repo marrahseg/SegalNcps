@@ -2,6 +2,8 @@
 import os
 import pickle
 import time
+
+import pyvista
 import pyvista as pv
 
 import numpy as np
@@ -13,6 +15,7 @@ from pyqtgraph import Vector
 from PyQt5 import QtCore, QtGui
 
 from pyqtgraph.opengl import GLViewWidget, MeshData, GLMeshItem, GLLinePlotItem
+from pyvista.examples import examples
 from qt_material import apply_stylesheet
 
 from Ui12_ui import Ui_MainWindow
@@ -55,15 +58,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CloseButton.hide()
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
-        self.timer = QtCore.QTimer()
+        #self.timer = QtCore.QTimer()
+        #self.timer.start(100)
 
-        self.timer.start(100)
         self.frame_23.setMaximumWidth(560)
 
         self.initAllpicture()
         self.signalsSlat()
-        self.dmodel()
-
+        #self.dmodel()
+        #self.show3step()
 
         self.XXX = 0
         self.YYY = 0
@@ -75,7 +78,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yslider.sliderMoved.connect(self.on_yslider_change)
         self.Zslider.sliderMoved.connect(self.on_zslider_change)
         self.HideShowButton.clicked.connect(self.myHideShow)
-        self.timer.timeout.connect(self.myOrbitBrain)
+        #self.timer.timeout.connect(self.myOrbitBrain)
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
         self.actionDark.triggered.connect(self.on_dark_theme)
@@ -107,6 +110,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     ########## slots:
 
+    # def show3step(self):
+    #     #mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
+    #     mesh = pyvista.read("Brain for Half_Skull.STEP")
+    #     colors = mesh.cell_arrays.get('RGB')
+    #     mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
+    #     plotter = pv.Plotter()
+    #     plotter.add_mesh(mesh, scalars='colors')
+    #     plotter.show()
+    #     #self.gridLayout_3.addWidget(mesh, 0, 0, 1, 1)
+
     def saveFigData(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
         if (fileName[0] == ''):
@@ -115,6 +128,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         file_pi = open(fileName, 'wb')
         pickle.dump(self.figure, file_pi, -1)
         file_pi.close()
+
         return
 
 
@@ -215,27 +229,27 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def myOrbitBrain(self):
         self.mview.orbit(5, 0)
 
-    def dmodel(self):
-        self.mview = GLViewWidget(rotationMethod='quaternion')
-        stl_mesh = stl.mesh.Mesh.from_file('Brain2.stl')
-
-        points = stl_mesh.points.reshape(-1, 3)
-        faces = np.arange(points.shape[0]).reshape(-1, 3)
-
-        mesh_data = MeshData(vertexes=points, faces=faces)
-        mesh = GLMeshItem(meshdata=mesh_data, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
-
-        self.mview.opts['distance'] = 55.0
-        self.mview.opts['center'] = Vector(15, 15, 0)
-        self.mview.opts['fov'] = 60
-        self.mview.opts['elevation'] = 15
-        self.mview.opts['azimuth'] = 199
-
-        print("camera=", self.mview.cameraPosition())
-
-        self.mview.addItem(mesh)
-        self.mview.setBackgroundColor(0, 0, 0)
-        self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
+    # def dmodel(self):
+    #     self.mview = GLViewWidget(rotationMethod='quaternion')
+    #     stl_mesh = stl.mesh.Mesh.from_file('Brain2.stl')
+    #
+    #     points = stl_mesh.points.reshape(-1, 3)
+    #     faces = np.arange(points.shape[0]).reshape(-1, 3)
+    #
+    #     mesh_data = MeshData(vertexes=points, faces=faces)
+    #     mesh = GLMeshItem(meshdata=mesh_data, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
+    #
+    #     self.mview.opts['distance'] = 55.0
+    #     self.mview.opts['center'] = Vector(15, 15, 0)
+    #     self.mview.opts['fov'] = 60
+    #     self.mview.opts['elevation'] = 15
+    #     self.mview.opts['azimuth'] = 199
+    #
+    #     print("camera=", self.mview.cameraPosition())
+    #
+    #     self.mview.addItem(mesh)
+    #     self.mview.setBackgroundColor(0, 0, 0)
+    #     self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
 
     def onStartBottonClicked(self):
 
@@ -332,7 +346,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
         dummy = abs(211 - self.YYY)
-        dummy += 45
+        dummy += lineZ_yoffset_Xplane
         qp.drawLine(dummy, -600, dummy, 600)
         qp.end()
 
@@ -351,12 +365,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveZ)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, yloc_Zplain+45, 600, yloc_Zplain+45)
+        qp.drawLine(10, yloc_Zplain+lineZ_zoffset_Yplane, 600, yloc_Zplain+lineZ_zoffset_Yplane)
         # vertic  line
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
         dummy = abs(173 - self.XXX)
-        dummy += 156
+        dummy += lineZ_xoffset_Yplane
         qp.drawLine(dummy, -600, dummy, 600)
 
 
@@ -376,11 +390,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveX)
         linevert = QPen(Qt.green, 3)
         qp.setPen(linevert)
-        qp.drawLine(yloc_Xplain+157, 500, yloc_Xplain+157, -500)
+        qp.drawLine(yloc_Xplain+lineX_xoffset_Yplane, 500, yloc_Xplain+lineX_xoffset_Yplane, -500)
 
         # horiz
         dummy = abs(141 - self.ZZZ)
-        dummy += 45
+        dummy += lineX_zoffset_Yplane
         linehoriz = QPen(Qt.red, 3)
         qp.setPen(linehoriz)
         qp.drawLine(-600, dummy, 600, dummy)
@@ -400,12 +414,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapZ_moveX)
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
-        qp.drawLine(zloc_Xplain+156, 500, zloc_Xplain+156, -500)
+        qp.drawLine(zloc_Xplain+lineX_xoffset_Zplane, 500, zloc_Xplain+lineX_xoffset_Zplane, -500)
 
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
         dummy = abs(211 - self.YYY)
-        dummy += 45
+        dummy += lineX_yoffset_Zplane
         qp.drawLine(5, dummy, 600, dummy)
 
         qp.end()
@@ -422,13 +436,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Xpiclabel.rect(), pixmapX_moveY)
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
-        qp.drawLine(xloc_Yplain+145, 10, xloc_Yplain+145, 600)
+        qp.drawLine(xloc_Yplain+lineY_yoffset_Xplane, 10, xloc_Yplain+lineY_yoffset_Xplane, 600)
 
         # horiz
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
         dummy = abs(141 - self.ZZZ)
-        dummy += 45
+        dummy += lineY_zoffset_Xplane
         qp.drawLine(-600, dummy, 600, dummy)
         qp.end()
 
@@ -448,12 +462,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Zpiclabel.rect(), self.pixmapZ_moveY)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, zloc_Yplain+52, 600, zloc_Yplain+52)
+        qp.drawLine(10, zloc_Yplain+lineY_yoffset_Zplane, 600, zloc_Yplain+lineY_yoffset_Zplane)
 
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
         dummy = abs(173 - self.XXX)
-        dummy += 156
+        dummy += lineY_xoffset_Zplane
         qp.drawLine(dummy, -600, dummy, 600)
         qp.end()
 
