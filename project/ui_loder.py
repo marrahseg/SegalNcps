@@ -1,12 +1,14 @@
 
 import os
+import pickle
 import time
+import pyvista as pv
 
 import numpy as np
 import stl
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
-from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog, QMessageBox, QFileDialog
 from pyqtgraph import Vector
 from PyQt5 import QtCore, QtGui
 
@@ -79,6 +81,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
         self.actiondialog.triggered.connect(self.on_show_dialog)
+        self.actionSave_as.triggered.connect(self.saveFigData)
 
         # show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -103,6 +106,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
     ########## slots:
+
+    def saveFigData(self):
+        fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
+        if (fileName[0] == ''):
+            return
+        fileName = str(fileName[0])
+        file_pi = open(fileName, 'wb')
+        pickle.dump(self.figure, file_pi, -1)
+        file_pi.close()
+        return
+
 
     def on_show_dialog(self, s):
         dlg = QMessageBox(self)
@@ -313,7 +327,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Xpiclabel.rect(), self.pixmapX_moveZ)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, xloc_Zplain+50, 600, xloc_Zplain+50)
+        qp.drawLine(10, xloc_Zplain+lineZ_zoffset_Xplane, 600, xloc_Zplain+lineZ_zoffset_Xplane)
 
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
