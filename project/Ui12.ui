@@ -1088,7 +1088,7 @@ background-color: rgb(122, 122, 122);
                               <rect>
                                <x>0</x>
                                <y>0</y>
-                               <width>397</width>
+                               <width>530</width>
                                <height>329</height>
                               </rect>
                              </property>
@@ -1279,6 +1279,32 @@ background-color: rgb(122, 122, 122);
                               </widget>
                              </item>
                             </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frame_4">
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout">
+                          <item>
+                           <widget class="QPushButton" name="pushButton_3">
+                            <property name="text">
+                             <string>PushButton</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="pushButton_4">
+                            <property name="text">
+                             <string>PushButton</string>
+                            </property>
                            </widget>
                           </item>
                          </layout>
@@ -2466,7 +2492,14 @@ p, li { white-space: pre-wrap; }
                             </font>
                            </property>
                            <property name="text">
-                            <string>12 mm</string>
+                            <string>12 </string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_7">
+                           <property name="text">
+                            <string>mm</string>
                            </property>
                           </widget>
                          </item>
@@ -2513,7 +2546,14 @@ p, li { white-space: pre-wrap; }
                             </font>
                            </property>
                            <property name="text">
-                            <string>94 mm</string>
+                            <string>94 </string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_8">
+                           <property name="text">
+                            <string>mm</string>
                            </property>
                           </widget>
                          </item>
@@ -2560,7 +2600,14 @@ p, li { white-space: pre-wrap; }
                             </font>
                            </property>
                            <property name="text">
-                            <string>2 mm</string>
+                            <string>2 </string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_9">
+                           <property name="text">
+                            <string>mm</string>
                            </property>
                           </widget>
                          </item>

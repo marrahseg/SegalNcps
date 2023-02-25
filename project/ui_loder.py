@@ -20,6 +20,28 @@ my_Xside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/X_174/'
 my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
+#linx _y,z plain
+lineX_xoffset_Yplane = +157
+lineX_zoffset_Yplane = +45
+
+lineX_xoffset_Zplane = +156
+lineX_zoffset_Zplane = +45
+
+#liny _x,z plain
+lineY_yoffset_Xplane = +145
+lineY_zoffset_Xplane = +45
+
+lineY_xoffset_Zplane = +156
+lineY_yoffset_Zplane = +52
+
+#linz _y,x plain
+lineZ_yoffset_Xplane = +45
+lineZ_zoffset_Xplane = +50
+
+lineZ_xoffset_Yplane = +156
+lineZ_zoffset_Yplane = +45
+
+
 
 
 class Window_ui(QMainWindow, Ui_MainWindow):
@@ -84,13 +106,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def on_show_dialog(self, s):
         dlg = QMessageBox(self)
-        dlg.setWindowTitle("I have a question!")
-        dlg.setText("This is a question dialog")
+        dlg.setWindowTitle(" Information ")
+        dlg.setText("Save Information")
         dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dlg.setIcon(QMessageBox.Information)
+        #dlg.setDetailedText("salam")
 
         returnValue = dlg.exec()
-        if returnValue == QMessageBox.Ok:
+        if returnValue == QMessageBox.Yes:
             print('OK clicked')
         dlg.exec()
 
@@ -199,11 +222,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.mview.addItem(mesh)
         self.mview.setBackgroundColor(0, 0, 0)
         self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
-
-
-
-
-
 
     def onStartBottonClicked(self):
 
@@ -516,6 +534,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.qpz = QPainter(self.pixmap_ZZ2)
         self.qpz.drawPixmap(self.Zpiclabel.rect(), self.pixmapZ_moveY)
+
         # horiz
         pen = QPen(Qt.red, 3)
         dummy = abs(211 - self.YYY)
