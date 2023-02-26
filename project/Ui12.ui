@@ -2730,7 +2730,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <layout class="QGridLayout" name="gridLayout_7">
                 <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_3"/>
+                 <layout class="QVBoxLayout" name="verticalLayout_38"/>
                 </item>
                </layout>
               </widget>

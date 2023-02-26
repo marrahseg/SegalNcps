@@ -6,7 +6,11 @@ import time
 import pyvista
 import pyvista as pv
 from PIL.ImageQt import rgb
+from PyQt5.uic.properties import QtWidgets
 from pyvista import examples
+from pyvistaqt import QtInteractor
+import numpy as np
+
 
 import numpy as np
 import stl
@@ -113,22 +117,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     ########## slots:
 
     def show3step(self):
-        self.mview = GLViewWidget()
+
+        self.plotter = QtInteractor(self.frame_8)
+        self.verticalLayout_38.addWidget(self.plotter.interactor)
+
+
+        self.frame_8.setLayout(self.verticalLayout_38)
+
         mesh = pv.read('Brain for Half_Skull.stl')
 
-        p = pv.Plotter()
-        p.add_mesh(mesh, color=(243, 229, 245))
-        p.add_bounding_box()
-        p.show()
+        #p = pv.Plotter()
+        #p.add_mesh(mesh, color=(243, 229, 245))
+        #p.add_bounding_box()
 
-        self.mview.addItem(mesh)
+        self.plotter.add_mesh(mesh, color=(243, 229, 245))
 
+        #p.show()
 
         #mesh2222 = GLMeshItem(meshdata=mesh, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
         #mview.addItem(mesh2222)
-
-        self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
-
 
 
         # #mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
