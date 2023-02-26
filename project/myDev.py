@@ -7,7 +7,7 @@ from random import randint
 
 
 
-from ui_loder import Window_ui
+from ui_loder import Window_ui, motor_real
 
 import myThreads
 
@@ -247,7 +247,7 @@ class Window_withDev(Window_ui):
             myb = - myb
 
 
-        print("mmmmmmmmmmmmmmmmmmmmmmmm", myy)
+
         myz = myz - 98
 
         x_dir = 1
@@ -290,5 +290,6 @@ class Window_withDev(Window_ui):
         print("amove =========", (intlist[13] * 256) + intlist[14])
 
         bytelist = bytes(intlist)
-        self.DevSer.write(bytelist)
+        if motor_real:
+            self.DevSer.write(bytelist)
         # (48).to_bytes(4, byteorder='big')

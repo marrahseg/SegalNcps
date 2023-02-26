@@ -3,16 +3,12 @@ import os
 import pickle
 import time
 
+import numpy as np
 import pyvista
 import pyvista as pv
-from PIL.ImageQt import rgb
 from PyQt5.uic.properties import QtWidgets
-from pyvista import examples
 from pyvistaqt import QtInteractor
-import numpy as np
 
-
-import numpy as np
 import stl
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
@@ -26,10 +22,13 @@ from qt_material import apply_stylesheet
 
 from Ui12_ui import Ui_MainWindow
 
+motor_real = False
 
 my_Xside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/X_174/'
 my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
+
+
 
 #linx _y,z plain
 lineX_xoffset_Yplane = +157
@@ -72,11 +71,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.initAllpicture()
         self.signalsSlat()
         #self.dmodel()
+        pv.set_plot_theme("dark")
         self.show3step()
+
 
         self.XXX = 0
         self.YYY = 0
         self.ZZZ = 0
+
+
+
+
+
+
 
     def signalsSlat(self):
 
@@ -118,19 +125,32 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def show3step(self):
 
-        self.plotter = QtInteractor(self.frame_8)
-        self.verticalLayout_38.addWidget(self.plotter.interactor)
+        self.Brain_interactor = QtInteractor(self.frame_8)
+        self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
 
-
-        self.frame_8.setLayout(self.verticalLayout_38)
+        #self.frame_8.setLayout(self.verticalLayout_38)
 
         mesh = pv.read('Brain for Half_Skull.stl')
+
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
+
+        radius = 4
+        Sphere = pv.Sphere(radius)
+
+        trans = Sphere.translate((0, 100, 0), inplace=False)
+
+
+        # s = pyvista.PolyData([0, -20, 30])
+        # s.n_verts
+        # circle.plot(show_edges=True, line_width=5)
+
+        self.Brain_interactor.add_mesh(trans, color=(183, 28, 28) )
+
+
 
         #p = pv.Plotter()
         #p.add_mesh(mesh, color=(243, 229, 245))
         #p.add_bounding_box()
-
-        self.plotter.add_mesh(mesh, color=(243, 229, 245))
 
         #p.show()
 
@@ -155,7 +175,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         file_pi = open(fileName, 'wb')
         pickle.dump(self.figure, file_pi, -1)
         file_pi.close()
-
         return
 
 
@@ -181,6 +200,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         apply_stylesheet(self, theme='color.xml')
 
     def on_xslider_change(self, val):
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", val)
         self.Xslidertest(val)
         self.move_lineX_plainZ(val)
         self.move_lineX_plainY(val)
@@ -291,8 +311,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         picNumX = int(valueX) + 87
         print("picNumX:", picNumX)
 
-        self.Xslider.setValue(picNumX)
-        self.on_xslider_change(picNumX)
+
 
         #getvalueY
         valueAp = self.APspinbox.value()
@@ -304,8 +323,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # picNumY = int((valueY * valueAp) / 212) + 122
         picNumY = int(valueY) + 122
         # self.Yslidertest(picNumY)
-        self.Yslider.setValue(picNumY)
-        self.on_yslider_change(picNumY)
+
 
         # getvaluez
         valueEv = self.EVspinbox.value()
@@ -316,6 +334,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("valueZ:", valueZ)
         # picNumZ = int((valueZ * valueEv) / 142) + 43
         picNumZ = int(valueZ) + 43
+
+
+        # executing on pictures
+        self.XXX = picNumX
+        self.YYY = picNumY
+        self.ZZZ = picNumZ
+
+        self.Xslider.setValue(picNumX)
+        self.on_xslider_change(picNumX)
+
+        self.Yslider.setValue(picNumY)
+        self.on_yslider_change(picNumY)
+
         self.Zslider.setValue(picNumZ)
         self.on_zslider_change(picNumZ)
 
@@ -334,12 +365,29 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
         self.NoteBrowser.setText("Go to c point")
-
-        self.motor_set(0, -15, 98, 0, 0)
-        time.sleep(0.5)
-        self.motor_set(mm_x, mm_y, mm_z, mm_a, mm_b)
+        if motor_real:
+            self.motor_set(0, -15, 98, 0, 0)
+            time.sleep(0.5)
+            self.motor_set(mm_x, mm_y, mm_z, mm_a, mm_b)
 
     def onResetBotton(self):
+        self.CAspin.setValue(0)
+        self.Xspin.setValue(0)
+        self.Yspin.setValue(0)
+        self.Zspin.setValue(0)
+        self.OAspin.setValue(0)
+
+        self.Xslider.setValue(87)
+        self.Xslidertest(87)
+        self.Yslider.setValue(122 - 14.41)
+        self.Yslidertest(122 - 14.41)
+        self.Zslider.setValue(99 + 43)
+        self.Zslidertest(99 + 42)
+
+
+        self.NoteBrowser.setText("Please insert your indexing")
+
+    def onResetBotton_1(self):
         self.CAspin.setValue(0)
         self.Xspin.setValue(0)
         self.Yspin.setValue(0)
@@ -399,35 +447,37 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         dummy = abs(173 - self.XXX)
         dummy += lineZ_xoffset_Yplane
         qp.drawLine(dummy, -600, dummy, 600)
-
-
         qp.end()
 
         self.Ypiclabel.setPixmap(self.pixmap_YY3)
 
     #for X slide,y
     def move_lineX_plainY(self, yloc_Xplain):
-        # yloc_Xplain = abs(173 - yloc_Xplain)
-        self.pixmapY_moveX = QPixmap(my_Yside_pics_add + self.picListY[self.YYY])
-        # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
-        self.pixmap_YY1 = QPixmap(self.Ypiclabel.size())
+        try:
+            # yloc_Xplain = abs(173 - yloc_Xplain)
+            self.pixmapY_moveX = QPixmap(my_Yside_pics_add + self.picListY[self.YYY])
+            # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
+            self.pixmap_YY1 = QPixmap(self.Ypiclabel.size())
 
-        # verig
-        qp = QPainter(self.pixmap_YY1)
-        qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveX)
-        linevert = QPen(Qt.green, 3)
-        qp.setPen(linevert)
-        qp.drawLine(yloc_Xplain+lineX_xoffset_Yplane, 500, yloc_Xplain+lineX_xoffset_Yplane, -500)
+            # verig
+            qp = QPainter(self.pixmap_YY1)
+            qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveX)
+            linevert = QPen(Qt.green, 3)
+            qp.setPen(linevert)
+            qp.drawLine(yloc_Xplain+lineX_xoffset_Yplane, 500, yloc_Xplain+lineX_xoffset_Yplane, -500)
 
-        # horiz
-        dummy = abs(141 - self.ZZZ)
-        dummy += lineX_zoffset_Yplane
-        linehoriz = QPen(Qt.red, 3)
-        qp.setPen(linehoriz)
-        qp.drawLine(-600, dummy, 600, dummy)
-        qp.end()
+            # horiz
+            dummy = abs(141 - self.ZZZ)
+            dummy += lineX_zoffset_Yplane
+            linehoriz = QPen(Qt.red, 3)
+            qp.setPen(linehoriz)
+            qp.drawLine(-600, dummy, 600, dummy)
+            qp.end()
 
-        self.Ypiclabel.setPixmap(self.pixmap_YY1)
+            self.Ypiclabel.setPixmap(self.pixmap_YY1)
+
+        except:
+            print("ffffffffffffffffffffffffffff")
 
     # for X slide,z
     def move_lineX_plainZ(self, zloc_Xplain):
@@ -455,6 +505,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     #for Y slide,x
     def move_lineY_plainX(self, xloc_Yplain):
+        print("cccccccccccccccccc", xloc_Yplain)
         xloc_Yplain = abs(211 - xloc_Yplain)
         pixmapX_moveY = QPixmap(my_Xside_pics_add + self.picListX[self.XXX])
         pixmap_XX2 = QPixmap(self.Xpiclabel.size())
@@ -463,7 +514,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Xpiclabel.rect(), pixmapX_moveY)
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
-        qp.drawLine(xloc_Yplain+lineY_yoffset_Xplane, 10, xloc_Yplain+lineY_yoffset_Xplane, 600)
+        qp.drawLine(xloc_Yplain+lineY_yoffset_Xplane, -600, xloc_Yplain+lineY_yoffset_Xplane, 600)
 
         # horiz
         pen = QPen(Qt.red, 3)
