@@ -9,9 +9,6 @@ import pyvista as pv
 from PyQt5.uic.properties import QtWidgets
 from pyvistaqt import QtInteractor
 
-
-
-
 import stl
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
@@ -30,8 +27,6 @@ motor_real = False
 my_Xside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/X_174/'
 my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
-
-
 
 
 #linx _y,z plain
@@ -54,7 +49,6 @@ lineZ_zoffset_Xplane = +50
 
 lineZ_xoffset_Yplane = +156
 lineZ_zoffset_Yplane = +45
-
 
 
 
@@ -83,13 +77,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.XXX = 0
         self.YYY = 0
         self.ZZZ = 0
-
-
-
-
-
-
-
 
     def signalsSlat(self):
 
@@ -126,13 +113,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         h3 = self.Zpiclabel.height()
         pixmap3 = pixmap3.scaled(w3, h3, Qt.KeepAspectRatio)
         self.Zpiclabel.setPixmap(pixmap3)
-
     ########## slots:
-
-    # def dot_tarnsfer(self):
-    #
-    #     sphere = self.Brain_interactor.add_sphere_widget(None,color=(183, 28, 28), center=(0, 0, 0),  radius=3)
-    #
 
     def show3step(self):
 
@@ -143,20 +124,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
 
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(-6, -15, 98),  radius=3, test_callback=False)
-        self.brain_point.SetCenter(0,0,0)
-
-
-        # self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, indices='point')
-
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
+        self.brain_point.SetCenter(0, 0, 0)
 
         self.Brain_interactor.add_slider_widget(None,  rng=[0.1, 1.5], value=0.5, title="Radius", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
+        self.Brain_interactor.add_slider_widget(None,  rng=[0.1, 1.5], value=0.5, title="rightLeft", pointa=(0.025, 0.1),pointb=(0.31, 0.1), style= 'modern')
+        self.Brain_interactor.add_slider_widget(None,   rng=[3, 60], value=30,title="TopDown", pointa=(0.35,0.1),pointb=(0.64, 0.1),style='modern',)
+
+
 
     def print_point(*args, **kwargs):
         print(args[1])
-
-
-
 
     def saveFigData(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
@@ -167,7 +145,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pickle.dump(self.figure, file_pi, -1)
         file_pi.close()
         return
-
 
     def on_show_dialog(self, s):
         dlg = QMessageBox(self)
@@ -195,7 +172,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Xslidertest(val)
         self.move_lineX_plainZ(val)
         self.move_lineX_plainY(val)
-
 
     def on_yslider_change(self, val):
         self.Yslidertest(val)
@@ -355,7 +331,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CAlabelShow.setText(str(("%.2f" % self.CAspin.value())))
 
 
-        self.brain_point.SetCenter(20, 0, 20)
+
+        self.brain_point.SetCenter(20, 0, 100)
 
 
         self.NoteBrowser.setText("Go to c point")
@@ -379,8 +356,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zslider.setValue(99 + 43)
         self.Zslidertest(99 + 42)
 
-
         self.NoteBrowser.setText("Please insert your indexing")
+
+        self.brain_point.SetCenter(-46, -13, 100)
 
     def onResetBotton_1(self):
         self.CAspin.setValue(0)
