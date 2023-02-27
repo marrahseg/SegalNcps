@@ -9,6 +9,9 @@ import pyvista as pv
 from PyQt5.uic.properties import QtWidgets
 from pyvistaqt import QtInteractor
 
+
+
+
 import stl
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
@@ -123,49 +126,50 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     ########## slots:
 
+    # def dot_tarnsfer(self):
+    #
+    #     sphere = self.Brain_interactor.add_sphere_widget(None,color=(183, 28, 28), center=(0, 0, 0),  radius=3)
+    #
+
     def show3step(self):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
 
-        #self.frame_8.setLayout(self.verticalLayout_38)
-
         mesh = pv.read('Brain for Half_Skull.stl')
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
 
-        radius = 4
-        Sphere = pv.Sphere(radius)
-
-        trans = Sphere.translate((0, 100, 0), inplace=False)
+        self.Brain_interactor.add_sphere_widget(None, color=(183, 28, 28), center=(0, 0, 0),  radius=3)
 
 
+
+
+
+        # dot = Sphere.translate((0, 100, 0), inplace=False)
         # s = pyvista.PolyData([0, -20, 30])
         # s.n_verts
         # circle.plot(show_edges=True, line_width=5)
-
-        self.Brain_interactor.add_mesh(trans, color=(183, 28, 28) )
-
+        # self.Brain_interactor.add_mesh(trans, color=(183, 28, 28) )
 
 
         #p = pv.Plotter()
         #p.add_mesh(mesh, color=(243, 229, 245))
         #p.add_bounding_box()
-
         #p.show()
-
         #mesh2222 = GLMeshItem(meshdata=mesh, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
         #mview.addItem(mesh2222)
-
-
-        # #mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
+        # mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
         # mesh = pv.read('Brain for Half_Skull.STEP')
-        # colors = mesh.cell_arrays.get('RGB')
-        # mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
+        # # # colors = mesh.cell_arrays.get('RGB')
+        # # mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
+        # mesh = pv.read('Brain for Half_Skull.stl')
         # plotter = pv.Plotter()
-        # plotter.add_mesh(mesh, scalars='colors')
-        # plotter.show()
-        # self.gridLayout_3.addWidget(mesh, 0, 0, 1, 1)
+        # plotter.add_mesh(mesh)
+        # # plotter.show()
+        #self.verticalLayout_38.addWidget(plotter, 0, 0, 1, 1)
+
+
 
     def saveFigData(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
