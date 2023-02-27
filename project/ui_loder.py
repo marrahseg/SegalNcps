@@ -33,6 +33,7 @@ my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
 
 
+
 #linx _y,z plain
 lineX_xoffset_Yplane = +157
 lineX_zoffset_Yplane = +45
@@ -69,6 +70,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         #self.timer = QtCore.QTimer()
         #self.timer.start(100)
 
+        self.mesh = pv.read('Brain for Half_Skull.stl')
         self.frame_23.setMaximumWidth(560)
 
         self.initAllpicture()
@@ -81,6 +83,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.XXX = 0
         self.YYY = 0
         self.ZZZ = 0
+
 
 
 
@@ -140,34 +143,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
 
-        self.Brain_interactor.add_sphere_widget(None, color=(183, 28, 28), center=(0, 0, 0),  radius=3)
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(-6, -15, 98),  radius=3, test_callback=False)
+        self.brain_point.SetCenter(0,0,0)
 
 
+        # self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, indices='point')
 
 
+        self.Brain_interactor.add_slider_widget(None,  rng=[0.1, 1.5], value=0.5, title="Radius", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
 
-        # dot = Sphere.translate((0, 100, 0), inplace=False)
-        # s = pyvista.PolyData([0, -20, 30])
-        # s.n_verts
-        # circle.plot(show_edges=True, line_width=5)
-        # self.Brain_interactor.add_mesh(trans, color=(183, 28, 28) )
+    def print_point(*args, **kwargs):
+        print(args[1])
 
-
-        #p = pv.Plotter()
-        #p.add_mesh(mesh, color=(243, 229, 245))
-        #p.add_bounding_box()
-        #p.show()
-        #mesh2222 = GLMeshItem(meshdata=mesh, smooth=True, drawFaces=True, drawEdges=True, edgeColor=(0, 0, 0, 76))
-        #mview.addItem(mesh2222)
-        # mesh = pv.set_plot_theme("Brain for Half_Skull.STEP")
-        # mesh = pv.read('Brain for Half_Skull.STEP')
-        # # # colors = mesh.cell_arrays.get('RGB')
-        # # mesh.cell_arrays['colors'] = colors[:, 0] * 65536 + colors[:, 1] * 256 + colors[:, 2]
-        # mesh = pv.read('Brain for Half_Skull.stl')
-        # plotter = pv.Plotter()
-        # plotter.add_mesh(mesh)
-        # # plotter.show()
-        #self.verticalLayout_38.addWidget(plotter, 0, 0, 1, 1)
 
 
 
@@ -368,11 +355,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CAlabelShow.setText(str(("%.2f" % self.CAspin.value())))
 
 
+        self.brain_point.SetCenter(20, 0, 20)
+
+
         self.NoteBrowser.setText("Go to c point")
         if motor_real:
             self.motor_set(0, -15, 98, 0, 0)
             time.sleep(0.5)
             self.motor_set(mm_x, mm_y, mm_z, mm_a, mm_b)
+
 
     def onResetBotton(self):
         self.CAspin.setValue(0)
