@@ -1632,6 +1632,12 @@ class Ui_MainWindow(object):
         self.actionNcps_Help.setObjectName("actionNcps_Help")
         self.actionAbout_Help = QtWidgets.QAction(MainWindow)
         self.actionAbout_Help.setObjectName("actionAbout_Help")
+        self.actionShow_Botten = QtWidgets.QAction(MainWindow)
+        self.actionShow_Botten.setObjectName("actionShow_Botten")
+        self.actionShow_Botton = QtWidgets.QAction(MainWindow)
+        self.actionShow_Botton.setObjectName("actionShow_Botton")
+        self.actionHide_Botton = QtWidgets.QAction(MainWindow)
+        self.actionHide_Botton.setObjectName("actionHide_Botton")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave_2)
@@ -1646,6 +1652,8 @@ class Ui_MainWindow(object):
         self.menuForm.addAction(self.actiondialog)
         self.menuView.addAction(self.actionDark)
         self.menuView.addAction(self.actionLight)
+        self.menuView.addAction(self.actionShow_Botten)
+        self.menuView.addAction(self.actionHide_Botton)
         self.menuSetting.addAction(self.actionPrerefrencese)
         self.menuView_2.addAction(self.actionMinimize)
         self.menuHelp.addAction(self.actionNcps_Help)
@@ -1737,15 +1745,15 @@ class Ui_MainWindow(object):
         self.CAlabelShow.setText(_translate("MainWindow", "12°"))
         self.label_x_up.setText(_translate("MainWindow", "Right"))
         self.label_x_down.setText(_translate("MainWindow", "left"))
-        self.label_4.setText(_translate("MainWindow", "   X\n"
+        self.label_4.setText(_translate("MainWindow", "  X\n"
 "Axis"))
         self.label_y_up.setText(_translate("MainWindow", "Front"))
         self.label_y_down.setText(_translate("MainWindow", "Back"))
-        self.label_28.setText(_translate("MainWindow", "   Y\n"
+        self.label_28.setText(_translate("MainWindow", "  Y\n"
 "Axis"))
         self.label_z_up.setText(_translate("MainWindow", "Up"))
         self.label_z_down.setText(_translate("MainWindow", "Down"))
-        self.label_46.setText(_translate("MainWindow", "   Z\n"
+        self.label_46.setText(_translate("MainWindow", "  Z\n"
 "Axis"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
@@ -1779,3 +1787,6 @@ class Ui_MainWindow(object):
         self.actionMinimize.setText(_translate("MainWindow", "Minimize"))
         self.actionNcps_Help.setText(_translate("MainWindow", "Ncps Help"))
         self.actionAbout_Help.setText(_translate("MainWindow", "About Ncps"))
+        self.actionShow_Botten.setText(_translate("MainWindow", "Show Botten"))
+        self.actionShow_Botton.setText(_translate("MainWindow", "Show Botton"))
+        self.actionHide_Botton.setText(_translate("MainWindow", "Hide Botton"))

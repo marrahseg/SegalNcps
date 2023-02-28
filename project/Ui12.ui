@@ -1088,8 +1088,8 @@ background-color: rgb(122, 122, 122);
                               <rect>
                                <x>0</x>
                                <y>0</y>
-                               <width>98</width>
-                               <height>28</height>
+                               <width>397</width>
+                               <height>329</height>
                               </rect>
                              </property>
                             </widget>
@@ -3257,6 +3257,8 @@ Axis</string>
     </property>
     <addaction name="actionDark"/>
     <addaction name="actionLight"/>
+    <addaction name="actionShow_Botten"/>
+    <addaction name="actionHide_Botton"/>
    </widget>
    <widget class="QMenu" name="menuSetting">
     <property name="title">
@@ -3408,6 +3410,21 @@ Axis</string>
   <action name="actionAbout_Help">
    <property name="text">
     <string>About Ncps</string>
+   </property>
+  </action>
+  <action name="actionShow_Botten">
+   <property name="text">
+    <string>Show Botten</string>
+   </property>
+  </action>
+  <action name="actionShow_Botton">
+   <property name="text">
+    <string>Show Botton</string>
+   </property>
+  </action>
+  <action name="actionHide_Botton">
+   <property name="text">
+    <string>Hide Botton</string>
    </property>
   </action>
  </widget>

@@ -53,7 +53,7 @@ lineZ_zoffset_Yplane = +45
 
 
 class Window_ui(QMainWindow, Ui_MainWindow):
-    def __init__(self, parent=None):
+    def __init__(self,  parent=None):
         super().__init__(parent)
 
         self.setupUi(self)
@@ -64,14 +64,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         #self.timer = QtCore.QTimer()
         #self.timer.start(100)
 
-        self.mesh = pv.read('Brain for Half_Skull.stl')
+        # self.mesh = pv.read('Brain for Half_Skull.stl')
         self.frame_23.setMaximumWidth(560)
 
         self.initAllpicture()
         self.signalsSlat()
         #self.dmodel()
         pv.set_plot_theme("dark")
-        self.show3step()
+        self.show_3Brain()
 
 
         self.XXX = 0
@@ -91,6 +91,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionLight.triggered.connect(self.on_light_theme)
         self.actiondialog.triggered.connect(self.on_show_dialog)
         self.actionSave_as.triggered.connect(self.saveFigData)
+        self.actionShow_Botten.triggered.connect(self.show_slider_onBrain)
+        self.actionHide_Botton.triggered.connect(self.hide_slider_onBrain)
 
         # show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -115,7 +117,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
     ########## slots:
 
-    def show3step(self):
+
+
+    def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
@@ -124,13 +128,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
 
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
-        self.brain_point.SetCenter(0, 0, 0)
-
-        self.Brain_interactor.add_slider_widget(None,  rng=[0.1, 1.5], value=0.5, title="Radius", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
-        self.Brain_interactor.add_slider_widget(None,  rng=[0.1, 1.5], value=0.5, title="rightLeft", pointa=(0.025, 0.1),pointb=(0.31, 0.1), style= 'modern')
-        self.Brain_interactor.add_slider_widget(None,   rng=[3, 60], value=30,title="TopDown", pointa=(0.35,0.1),pointb=(0.64, 0.1),style='modern',)
-
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(2, 36, 67),  radius=3, test_callback=False)
 
 
     def print_point(*args, **kwargs):
@@ -166,6 +164,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def on_light_theme(self):
         print('light them')
         apply_stylesheet(self, theme='color.xml')
+
+
+    def show_slider_onBrain(self):
+        self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=0, title="UpDown_z", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
+        self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1),pointb=(0.31, 0.1), style= 'modern')
+        self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=0, title="FrontBack_y", pointa=(0.35, 0.1), pointb= (0.64, 0.1), style='modern')
+
+    def hide_slider_onBrain(self):
+        print("Brain")
+
 
     def on_xslider_change(self, val):
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", val)
@@ -273,12 +281,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _scaleX = valueBt / 174
         print("_scaleX:", _scaleX)
         valueX = self.Xspin.value()
-        print("X valu:", valueX)
+        print("valueX:", valueX)
         # picNumX = int ((valueX * valueBt) / 174) + 87
         picNumX = int(valueX) + 87
         print("picNumX:", picNumX)
-
-
 
         #getvalueY
         valueAp = self.APspinbox.value()
@@ -308,6 +314,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YYY = picNumY
         self.ZZZ = picNumZ
 
+        #change value of slider &
         self.Xslider.setValue(picNumX)
         self.on_xslider_change(picNumX)
 
@@ -330,10 +337,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OAlabelShow.setText(str(("%.2f" % self.OAspin.value())))
         self.CAlabelShow.setText(str(("%.2f" % self.CAspin.value())))
 
-
-
         self.brain_point.SetCenter(20, 0, 100)
-
 
         self.NoteBrowser.setText("Go to c point")
         if motor_real:
@@ -349,17 +353,23 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zspin.setValue(0)
         self.OAspin.setValue(0)
 
+
         self.Xslider.setValue(87)
         self.Xslidertest(87)
+
         self.Yslider.setValue(122 - 14.41)
         self.Yslidertest(122 - 14.41)
+
+
         self.Zslider.setValue(99 + 43)
         self.Zslidertest(99 + 42)
 
         self.NoteBrowser.setText("Please insert your indexing")
 
+        #transfer sphere on Brain
         self.brain_point.SetCenter(-46, -13, 100)
 
+    #use not
     def onResetBotton_1(self):
         self.CAspin.setValue(0)
         self.Xspin.setValue(0)
@@ -537,7 +547,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
         # self.pixmap.fill(Qt.transparent)
 
-        # horiz line
+        # horiz line,z
         dummy = abs(141 - self.ZZZ)
         dummy += 45
         self.qpx = QPainter(self.pixmap_XX3)
@@ -546,7 +556,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.qpx.setPen(pen)
         self.qpx.drawLine(-600, dummy, 600, dummy)
 
-        # vertical line
+        # vertical line,y
 
         myy_loc = abs(211 - self.YYY) + 145
         pen = QPen(Qt.green, 3)
@@ -566,6 +576,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YYY = val
         self.Yspin.setValue(val-122)
 
+
         w1 = self.Ypiclabel.width()
         h1 = self.Ypiclabel.height()
 
@@ -575,7 +586,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.pixmap_YY1 = QPixmap(self.Ypiclabel.size())
         # self.pixmap.fill(Qt.transparent)
 
-        #  horiz Line
+        #  horiz Line ,z
         self.qpy = QPainter(self.pixmap_YY1)
         self.qpy.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveX)
 
@@ -585,7 +596,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         dummy += 45
         self.qpy.drawLine(-600, dummy, 600, dummy)
 
-        #  vert Line
+        #  vert Line,x
         pen = QPen(Qt.green, 3)
         self.qpy.setPen(pen)
         dummy = abs(173 - self.XXX)
@@ -614,14 +625,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.qpz = QPainter(self.pixmap_ZZ2)
         self.qpz.drawPixmap(self.Zpiclabel.rect(), self.pixmapZ_moveY)
 
-        # horiz
+        # horiz,y
         pen = QPen(Qt.red, 3)
         dummy = abs(211 - self.YYY)
         dummy += 45
         self.qpz.setPen(pen)
         self.qpz.drawLine(10, dummy, 600, dummy)
 
-        # vertic
+        # vertic,x
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = abs(173 - self.XXX)
