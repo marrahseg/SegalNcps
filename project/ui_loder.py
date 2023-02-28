@@ -44,8 +44,8 @@ lineY_xoffset_Zplane = +156
 lineY_yoffset_Zplane = +52
 
 #linz _y,x plain
-lineZ_yoffset_Xplane = +45
-lineZ_zoffset_Xplane = +50
+lineZ_yoffset_Xplane = +145
+lineZ_zoffset_Xplane = +45
 
 lineZ_xoffset_Yplane = +156
 lineZ_zoffset_Yplane = +45
@@ -176,18 +176,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
     def on_xslider_change(self, val):
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", val)
-        self.Xslidertest(val)
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, on_xslider_change", val)
+        self.X_axis_modifier(val)
         self.move_lineX_plainZ(val)
         self.move_lineX_plainY(val)
 
     def on_yslider_change(self, val):
-        self.Yslidertest(val)
+        print("maryammmmmmmmmmmmmmmm on_yslider_change: ", val)
+        self.Y_axis_modifier(val)
         self.move_lineY_plainX(val)
         self.move_lineY_plainZ(val)
 
     def on_zslider_change(self, val):
-        self.Zslidertest(val)
+        self.Z_axis_modifier(val)
         self.move_lineZ_plainX(val)
         self.move_lineZ_plainY(val)
 
@@ -313,6 +314,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.XXX = picNumX
         self.YYY = picNumY
         self.ZZZ = picNumZ
+        print("salam", self.XXX, self.YYY, self.ZZZ)
 
         #change value of slider &
         self.Xslider.setValue(picNumX)
@@ -347,25 +349,26 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
     def onResetBotton(self):
-        self.CAspin.setValue(0)
-        self.Xspin.setValue(0)
-        self.Yspin.setValue(0)
+        # self.CAspin.setValue(0)
+        # self.Xspin.setValue(0)
+        # self.Yspin.setValue(0)
         self.Zspin.setValue(0)
         self.OAspin.setValue(0)
 
 
         self.Xslider.setValue(87)
-        self.Xslidertest(87)
+        self.X_axis_modifier(87)
 
         self.Yslider.setValue(122 - 14.41)
-        self.Yslidertest(122 - 14.41)
+        self.Y_axis_modifier(122 - 14.41)
 
 
         self.Zslider.setValue(99 + 43)
-        self.Zslidertest(99 + 42)
+        self.Z_axis_modifier(99 + 42)
 
         self.NoteBrowser.setText("Please insert your indexing")
 
+        print("wwwwsalam", self.XXX, self.YYY, self.ZZZ)
         #transfer sphere on Brain
         self.brain_point.SetCenter(-46, -13, 100)
 
@@ -378,11 +381,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OAspin.setValue(0)
 
         self.Xslider.setValue(87)
-        self.Xslidertest(87)
+        self.X_axis_modifier(87)
         self.Yslider.setValue(122 - 14.41)
-        self.Yslidertest(122 - 14.41)
+        self.Y_axis_modifier(122 - 14.41)
         self.Zslider.setValue(99 + 43)
-        self.Zslidertest(99 + 42)
+        self.Z_axis_modifier(99 + 42)
 
 
         self.NoteBrowser.setText("Please insert your indexing")
@@ -399,12 +402,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Xpiclabel.rect(), self.pixmapX_moveZ)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, xloc_Zplain+lineZ_zoffset_Xplane, 600, xloc_Zplain+lineZ_zoffset_Xplane)
+        qp.drawLine(-600, xloc_Zplain+lineZ_zoffset_Xplane, 600, xloc_Zplain+lineZ_zoffset_Xplane)
 
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
         dummy = abs(211 - self.YYY)
         dummy += lineZ_yoffset_Xplane
+        print("dummydummydummydummy: ", dummy)
         qp.drawLine(dummy, -600, dummy, 600)
         qp.end()
 
@@ -423,7 +427,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveZ)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, yloc_Zplain+lineZ_zoffset_Yplane, 600, yloc_Zplain+lineZ_zoffset_Yplane)
+        qp.drawLine(-600, yloc_Zplain+lineZ_zoffset_Yplane, 600, yloc_Zplain+lineZ_zoffset_Yplane)
         # vertic  line
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
@@ -523,7 +527,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Zpiclabel.rect(), self.pixmapZ_moveY)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(10, zloc_Yplain+lineY_yoffset_Zplane, 600, zloc_Yplain+lineY_yoffset_Zplane)
+        qp.drawLine(-600, zloc_Yplain+lineY_yoffset_Zplane, 600, zloc_Yplain+lineY_yoffset_Zplane)
 
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
@@ -534,7 +538,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
 
-    def Xslidertest(self, val):
+    def X_axis_modifier(self, val):
+        print("ssssssssssssssssssssssssssssssssss self.xxx = ", self.XXX)
         self.XXX = int(val)
         self.Xspin.setValue(val - 87)
 
@@ -557,10 +562,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.qpx.drawLine(-600, dummy, 600, dummy)
 
         # vertical line,y
-
-        myy_loc = abs(211 - self.YYY) + 145
+        myy_loc = abs(211 - self.YYY)
+        myy_loc += 145
         pen = QPen(Qt.green, 3)
         self.qpx.setPen(pen)
+        print("myy_locmyy_locmyy_locmyy_loc: ", myy_loc)
         self.qpx.drawLine(myy_loc, 500, myy_loc, -500)
 
         self.qpx.end()
@@ -571,7 +577,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.move_lineX_plainY(val)
         # self.move_lineX_plainZ(val)
 
-    def Yslidertest(self, val):
+    def Y_axis_modifier(self, val):
         val = int(val)
         self.YYY = val
         self.Yspin.setValue(val-122)
@@ -606,11 +612,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Ypiclabel.setPixmap(self.pixmap_YY1)
 
-        #for move line in x,z img
-        # self.move_lineY_plainX(val)
-        # self.move_lineY_plainZ(val)
-
-    def Zslidertest(self, val):
+    def Z_axis_modifier(self, val):
         self.ZZZ = int(val)
         self.Zspin.setValue(val - 43)
 
@@ -630,7 +632,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         dummy = abs(211 - self.YYY)
         dummy += 45
         self.qpz.setPen(pen)
-        self.qpz.drawLine(10, dummy, 600, dummy)
+        self.qpz.drawLine(-600, dummy, 600, dummy)
 
         # vertic,x
         pen = QPen(Qt.green, 3)
@@ -687,17 +689,4 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         #label.setPixmap(pixmap3)
         #self.show()
 
-    # def update_pics(self, posX, posY, posZ):
-    #     if posX:
-    #         self.Xslidertest(posX)
-    #         self.move_lineX_plainZ(posX)
-    #         self.move_lineX_plainY(posX)
-    #     if posY:
-    #         self.Yslidertest(posY)
-    #         self.move_lineY_plainX(posY)
-    #         self.move_lineY_plainZ(posY)
-    #     if posZ:
-    #         self.Zslidertest(posZ)
-    #         self.move_lineZ_plainX(posZ)
-    #         self.move_lineZ_plainY(posZ)
 
