@@ -19,6 +19,6 @@ if __name__ == "__main__":
      # win.showFullScreen()
 
      # win.frame.hide()
-     win.onResetBotton()
+     # win.onResetBotton()
      app.exec()
 
