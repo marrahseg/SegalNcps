@@ -92,13 +92,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.valueChanged.connect(self.on_change_Xslider)
-        self.Yslider.valueChanged.connect(self.on_change_Yslider)
-        self.Zslider.valueChanged.connect(self.on_change_Zslider)
+        self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
         self.HideShowButton.clicked.connect(self.myHideShow)
-        #self.timer.timeout.connect(self.myOrbitBrain)
+        self.timer.timeout.connect(self.myOrbitBrain)
 
 
 
@@ -291,6 +291,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     #     self.mview.addItem(mesh)
     #     self.mview.setBackgroundColor(0, 0, 0)
     #     self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
+
+    def onSliderchangeClicked(self):
+        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
+        self.update_pics2(_mx, _my, _mz)
+
 
     def onStartBottonClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
@@ -601,24 +606,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.Zslidervalue = self.Zslider.sliderMoved()
 
     def on_change_Xslider(self, val):
-        _mx, _my, _mz = self.xyz_calculator(val, self.Yslider.value(), self.Zslider.value(), 0)
+        _mx, _my, _mz = self.xyz_calculator(val, self.Yslider.value(), self.Zslider.value(), 1)
         self.update_pics(_mx, _my, _mz)
-        # self.calculator_picNum_X_Y_Z(val)
-        # self.Xspin.setValue(self.XXX)
 
     def on_change_Yslider(self, val):
-        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), val, self.Zslider.value(), 0)
+        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), val, self.Zslider.value(), 1)
         self.update_pics(_mx, _my, _mz)
-
 
     def on_change_Zslider(self, val):
-        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), val, 0)
+        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), val, 1)
         self.update_pics(_mx, _my, _mz)
 
-
-
-
-
+    def slider_Position_Change(self, valX, valY, valZ):
+        self.on_change_Xslider(valX, valY, valZ)
+        self.on_change_Yslider(valX, valY, valZ)
+        self.on_change_Zslider(valX, valY, valZ)
 
     def X_label_modifier(self, valX, valY, valZ):
         print("ssssssssssssssssssssssssssssssssss self.xxx = ", valX)
@@ -672,7 +674,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.pixmapY_moveX = self.pixmapY_moveX.scaled(w1, h1, Qt.KeepAspectRatio)
 
         self.pixmap_YY1 = QPixmap(self.Ypiclabel.size())
-        # self.pixmap.fill(Qt.transparent)
 
         #  horiz Line ,z
         qpy = QPainter(self.pixmap_YY1)
@@ -740,6 +741,30 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.X_label_modifier(valX, valY, valZ)
         self.Y_label_modifier(valX, valY, valZ)
         self.Z_label_modifier(valX, valY, valZ)
+        self.slider_Position_Change(valX, valY, valZ)
+
+    def on_change_Xspin(self, val):
+        _mx, _my, _mz = self.xyz_calculator(val, self.Yspin.value(), self.Zspin.value(), 0)
+        self.update_pics(_mx, _my, _mz)
+
+    def on_change_Yspin(self, val):
+        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), val, self.Zspin.value(), 0)
+        self.update_pics(_mx, _my, _mz)
+
+    def on_change_Zspin(self, val):
+        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), val, 0)
+        self.update_pics(_mx, _my, _mz)
+
+    def spin_value_Change(self, valX, valY, valZ ):
+        self.on_change_Xspin(valX, valY, valZ)
+        self.on_change_Yspin(valX, valY, valZ)
+        self.on_change_Zspin(valX, valY, valZ)
+
+    def update_pics2(self, valX, valY, valZ):
+        self.X_label_modifier(valX, valY, valZ)
+        self.Y_label_modifier(valX, valY, valZ)
+        self.Z_label_modifier(valX, valY, valZ)
+        self.spin_value_Change(valX, valY, valZ)
 
     def myHideShow(self):
         if self.frame_36.isHidden() == False:
