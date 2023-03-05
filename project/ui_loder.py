@@ -30,35 +30,35 @@ my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
 
 #linx _y,z plain
-lineX_xoffset_Yplane = +157
-lineX_zoffset_Yplane = +45
+LINEX_XOFFSET_YPLAN = +157
+LINEX_ZOFFSET_YPLAN = +45
 
-lineX_xoffset_Zplane = +156
-lineX_yoffset_Zplane = +45
+LINEX_XOFFSET_ZPLAN = +156
+LINEX_YOFFSET_ZPLAN = +45
 
 #liny _x,z plain
-lineY_yoffset_Xplane = +145
-lineY_zoffset_Xplane = +45
+LINEY_YOFFSET_XPLAN = +145
+LINEY_ZOFFSET_XPLAN = +45
 
-lineY_xoffset_Zplane = +156
-lineY_yoffset_Zplane = +52
+LINEY_XOFFSET_ZPLAN = +156
+LINEY_YOFFSET_ZPLAN = +52
 
 #linz _y,x plain
-lineZ_yoffset_Xplane = +145
-lineZ_zoffset_Xplane = +45
+LINEZ_YOFFSET_XPLAN = +145
+LINEZ_ZOFFSET_XPLAN = +45
 
-lineZ_xoffset_Yplane = +156
-lineZ_zoffset_Yplane = +45
+LINEZ_XOFFSET_YPLAN = +156
+LINEZ_ZOFFSET_YPLAN = +45
 
 #for set number of pic
-x_offset_pic = 87
-y_offset_pic = 122
-z_offset_pic = 43
+X_PIC_OFFSET = 87
+Y_PIC_OFFSET = 122
+Z_PIC_OFFSET = 43
 
 #number of list x,y ,z
-number_ofList_X = 173
-number_ofList_Y = 211
-number_ofList_Z = 141
+NUMBER_X_LIST = 174
+NUMBER_Y_LIST = 212
+NUMBER_Z_LIST = 142
 
 
 
@@ -92,12 +92,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
-        self.Yslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
-        self.Zslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
+        self.Xslider.valueChanged.connect(self.on_change_Xslider)
+        self.Yslider.valueChanged.connect(self.on_change_Yslider)
+        self.Zslider.valueChanged.connect(self.on_change_Zslider)
         self.ResetButton.clicked.connect(self.onResetBotton)
-
-
 
         self.HideShowButton.clicked.connect(self.myHideShow)
         #self.timer.timeout.connect(self.myOrbitBrain)
@@ -295,9 +293,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     #     self.gridLayout_3.addWidget(self.mview, 0, 0, 1, 1)
 
     def onStartBottonClicked(self):
-
-        self.calculator_picNum_X_Y_Z()
+        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+        # self.calculator_picNum_X_Y_Z()
+        self.update_pics(_mx, _my, _mz)
         self.brain_point.SetCenter(20, 0, 100)
+        # self.motor_drive()
 
     def onResetBotton(self):
         self.Xspin.setValue(0)
@@ -307,6 +307,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OAspin.setValue(0)
 
         self.calculator_picNum_X_Y_Z()
+
+
         # self.Xslider.setValue(87)
         # self.X_label_modifier(87)
         #
@@ -327,7 +329,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     #for z slidr,x
     def move_lineZ_plainX(self, xloc_Zplain):
-        dummy = abs(number_ofList_Z - xloc_Zplain)
+        dummy = abs(NUMBER_Z_LIST - 1 - xloc_Zplain)
         self.pixmapX_moveZ = QPixmap(my_Xside_pics_add + self.picListX[self.XXX])
         # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
@@ -337,12 +339,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpZ_onX.drawPixmap(self.Xpiclabel.rect(), self.pixmapX_moveZ)
         pen = QPen(Qt.red, 3)
         qpZ_onX.setPen(pen)
-        qpZ_onX.drawLine(-600, dummy+lineZ_zoffset_Xplane, 600, dummy+lineZ_zoffset_Xplane)
+        qpZ_onX.drawLine(-600, dummy + LINEZ_ZOFFSET_XPLAN, 600, dummy + LINEZ_ZOFFSET_XPLAN)
 
         pen = QPen(Qt.green, 3)
         qpZ_onX.setPen(pen)
-        dummy = abs(number_ofList_Y - self.YYY)
-        dummy += lineZ_yoffset_Xplane
+        dummy = abs(NUMBER_Y_LIST  - 1 - self.YYY)
+        dummy += LINEZ_YOFFSET_XPLAN
         print("dummydummydummydummy: ", dummy)
         qpZ_onX.drawLine(dummy, -600, dummy, 600)
         qpZ_onX.end()
@@ -352,24 +354,22 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     #for z slide,y
     def move_lineZ_plainY(self, yloc_Zplain):
 
-        dummy = abs(number_ofList_Z - yloc_Zplain)
+        dummy = abs(NUMBER_Z_LIST - 1 - yloc_Zplain)
         self.pixmapY_moveZ = QPixmap(my_Yside_pics_add + self.picListY[self.YYY])
-
         self.pixmap_YY3 = QPixmap(self.Ypiclabel.size())
-        # self.pixmap.fill(Qt.transparent)
 
         # horiz line
         qpX_onY = QPainter(self.pixmap_YY3)
         qpX_onY.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveZ)
         pen = QPen(Qt.red, 3)
         qpX_onY.setPen(pen)
-        qpX_onY.drawLine(-600, dummy+lineZ_zoffset_Yplane, 600, dummy+lineZ_zoffset_Yplane)
+        qpX_onY.drawLine(-600, dummy + LINEZ_ZOFFSET_YPLAN, 600, dummy + LINEZ_ZOFFSET_YPLAN)
 
         # vertic  line
         pen = QPen(Qt.green, 3)
         qpX_onY.setPen(pen)
-        dummy = abs(number_ofList_X - self.XXX)
-        dummy += lineZ_xoffset_Yplane
+        dummy = abs(NUMBER_X_LIST  - 1- self.XXX)
+        dummy += LINEZ_XOFFSET_YPLAN
         qpX_onY.drawLine(dummy, -600, dummy, 600)
         qpX_onY.end()
 
@@ -387,11 +387,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpX_onY.drawPixmap(self.Ypiclabel.rect(), self.pixmapY_moveX)
         linevert = QPen(Qt.green, 3)
         qpX_onY.setPen(linevert)
-        qpX_onY.drawLine(yloc_Xplain+lineX_xoffset_Yplane, 500, yloc_Xplain+lineX_xoffset_Yplane, -500)
+        qpX_onY.drawLine(yloc_Xplain + LINEX_XOFFSET_YPLAN, 500, yloc_Xplain + LINEX_XOFFSET_YPLAN, -500)
 
         # horiz
-        dummy = abs(number_ofList_Z - self.ZZZ)
-        dummy += lineX_zoffset_Yplane
+        dummy = abs(NUMBER_Z_LIST - 1 - self.ZZZ)
+        dummy += LINEX_ZOFFSET_YPLAN
         linehoriz = QPen(Qt.red, 3)
         qpX_onY.setPen(linehoriz)
         qpX_onY.drawLine(-600, dummy, 600, dummy)
@@ -401,7 +401,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     # for X slide,z
     def move_lineX_plainZ(self, zloc_Xplain):
-        # zloc_Xplain = abs(173 - zloc_Xplain)
+
         self.pixmapZ_moveX = QPixmap(my_Zside_pics_add + self.picListZ[self.ZZZ])
         # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
         self.pixmap_ZZ1 = QPixmap(self.Zpiclabel.size())
@@ -411,12 +411,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpX_onZ.drawPixmap(self.Ypiclabel.rect(), self.pixmapZ_moveX)
         pen = QPen(Qt.green, 3)
         qpX_onZ.setPen(pen)
-        qpX_onZ.drawLine(zloc_Xplain+lineX_xoffset_Zplane, 500, zloc_Xplain+lineX_xoffset_Zplane, -500)
+        qpX_onZ.drawLine(zloc_Xplain + LINEX_XOFFSET_ZPLAN, 500, zloc_Xplain + LINEX_XOFFSET_ZPLAN, -500)
 
         pen = QPen(Qt.red, 3)
         qpX_onZ.setPen(pen)
-        dummy = abs(number_ofList_Y - self.YYY)
-        dummy += lineX_yoffset_Zplane
+        dummy = abs(NUMBER_Y_LIST - 1 - self.YYY)
+        dummy += LINEX_YOFFSET_ZPLAN
         qpX_onZ.drawLine(5, dummy, 600, dummy)
 
         qpX_onZ.end()
@@ -426,7 +426,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     #for Y slide,x
     def move_lineY_plainX(self, xloc_Yplain):
         print("cccccccccccccccccc", xloc_Yplain)
-        dummy = abs(number_ofList_Y - xloc_Yplain)
+        dummy = abs(NUMBER_Y_LIST - 1- xloc_Yplain)
         pixmapX_moveY = QPixmap(my_Xside_pics_add + self.picListX[self.XXX])
         pixmap_XX2 = QPixmap(self.Xpiclabel.size())
         # vertig
@@ -434,13 +434,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpY_onX.drawPixmap(self.Xpiclabel.rect(), pixmapX_moveY)
         pen = QPen(Qt.green, 3)
         qpY_onX.setPen(pen)
-        qpY_onX.drawLine(dummy+lineY_yoffset_Xplane, -600, dummy+lineY_yoffset_Xplane, 600)
+        qpY_onX.drawLine(dummy + LINEY_YOFFSET_XPLAN, -600, dummy + LINEY_YOFFSET_XPLAN, 600)
 
         # horiz
         pen = QPen(Qt.red, 3)
         qpY_onX.setPen(pen)
-        dummy = abs(number_ofList_Z - self.ZZZ)
-        dummy += lineY_zoffset_Xplane
+        dummy = abs(NUMBER_Z_LIST - 1 - self.ZZZ)
+        dummy += LINEY_ZOFFSET_XPLAN
         qpY_onX.drawLine(-600, dummy, 600, dummy)
         qpY_onX.end()
 
@@ -448,7 +448,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     #for Y slide,z
     def move_lineY_plainZ(self, zloc_Yplain):
-        dummy = abs(number_ofList_Y - zloc_Yplain)
+        dummy = abs(NUMBER_Y_LIST - 1 - zloc_Yplain)
         self.pixmapZ_moveY = QPixmap(my_Zside_pics_add + self.picListZ[self.ZZZ])
         # self.pixmap_myx_img = self.pixmap_myx_img.scaled(w1, h1, Qt.KeepAspectRatio)
         self.pixmap_ZZ2 = QPixmap(self.Zpiclabel.size())
@@ -460,16 +460,36 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qp.drawPixmap(self.Zpiclabel.rect(), self.pixmapZ_moveY)
         pen = QPen(Qt.red, 3)
         qp.setPen(pen)
-        qp.drawLine(-600, dummy+lineY_yoffset_Zplane, 600, dummy+lineY_yoffset_Zplane)
+        qp.drawLine(-600, dummy + LINEY_YOFFSET_ZPLAN, 600, dummy + LINEY_YOFFSET_ZPLAN)
 
         pen = QPen(Qt.green, 3)
         qp.setPen(pen)
-        dummy = abs(number_ofList_X - self.XXX)
-        dummy += lineY_xoffset_Zplane
+        dummy = abs(NUMBER_X_LIST - 1 - self.XXX)
+        dummy += LINEY_XOFFSET_ZPLAN
         qp.drawLine(dummy, -600, dummy, 600)
         qp.end()
 
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
+
+    def xyz_calculator(self, mx, my, mz, scale_flag):
+        if scale_flag:
+            ######################################### calculate x value
+            valueBt = self.BTspinbox.value()
+            _scaleX = valueBt / NUMBER_X_LIST
+            _cx = int(mx) + X_PIC_OFFSET
+            ######################################### calculate y value
+            valueAp = self.APspinbox.value()
+            _scaleY = valueAp / NUMBER_Y_LIST
+            _cy = int(my) + Y_PIC_OFFSET
+            ######################################### calculate z value
+            valueEv = self.EVspinbox.value()
+            _scaleZ = valueEv / NUMBER_Z_LIST
+            _cz = int(mz) + Z_PIC_OFFSET
+        else:
+            _cx = int(mx)
+            _cy = int(my)
+            _cz = int(mz)
+        return _cx, _cy, _cz
 
     def calculator_picNum_X_Y_Z (self):
 
@@ -506,9 +526,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         picNumZ = int(valueZ) + 43
 
         # executing on pictures
-        self.XXX = picNumX
-        self.YYY = picNumY
-        self.ZZZ = picNumZ
+        # self.XXX = picNumX
+        # self.YYY = picNumY
+        # self.ZZZ = picNumZ
+
+
+        _X = picNumX
+        _Y = picNumY
+        _Z = picNumZ
+
+
 
         print("salam", self.XXX, self.YYY, self.ZZZ)
 
@@ -516,12 +543,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.Xslider.setValue(picNumX)
         # self.Yslider.setValue(picNumY)
         # self.Zslider.setValue(picNumZ)
-
-
-        # self.on_change_Xslider(picNumX)
-        # self.on_change_Yslider(picNumY)
-        # self.on_change_Zslider(picNumZ)
-
 
 
         ############################################REZAA
@@ -544,6 +565,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.NoteBrowser.setText("Go to c point")
 
+        return _X, _Y, _Z
+
 
         if motor_real:
             self.motor_set(0, -15, 98, 0, 0)
@@ -552,9 +575,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
 
-        self.X_label_modifier(self.XXX, self.YYY, self.ZZZ)
-        self.Y_label_modifier(self.XXX, self.YYY, self.ZZZ)
-        self.Z_label_modifier(self.XXX, self.YYY, self.ZZZ)
+        # self.X_label_modifier(self.XXX, self.YYY, self.ZZZ)
+        # self.Y_label_modifier(self.XXX, self.YYY, self.ZZZ)
+        # self.Z_label_modifier(self.XXX, self.YYY, self.ZZZ)
+        #
+        # self.move_lineX_plainZ()
+        # self.move_lineX_plainY()
+        #
+        # self.move_lineY_plainX()
+        # self.move_lineY_plainZ()
+        #
+        # self.move_lineZ_plainX()
+        # self.move_lineZ_plainY()
 
 
 
@@ -568,23 +600,29 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.Yslideralue = self.Yslider.sliderMoved()
         # self.Zslidervalue = self.Zslider.sliderMoved()
 
-    def on_change_Xslider(self):
-        self.calculator_picNum_X_Y_Z()
-        self.update_pics()
+    def on_change_Xslider(self, val):
+        _mx, _my, _mz = self.xyz_calculator(val, self.Yslider.value(), self.Zslider.value(), 0)
+        self.update_pics(_mx, _my, _mz)
+        # self.calculator_picNum_X_Y_Z(val)
+        # self.Xspin.setValue(self.XXX)
 
-    def on_change_Yslider(self):
-        self.calculator_picNum_X_Y_Z()
-        self.update_pics()
+    def on_change_Yslider(self, val):
+        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), val, self.Zslider.value(), 0)
+        self.update_pics(_mx, _my, _mz)
 
-    def on_change_Zslider(self):
-        self.calculator_picNum_X_Y_Z()
-        self.update_pics()
+
+    def on_change_Zslider(self, val):
+        _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), val, 0)
+        self.update_pics(_mx, _my, _mz)
+
+
+
 
 
 
     def X_label_modifier(self, valX, valY, valZ):
         print("ssssssssssssssssssssssssssssssssss self.xxx = ", valX)
-        self.Xspin.setValue(valX - x_offset_pic)
+        self.Xspin.setValue(valX - X_PIC_OFFSET)
 
         w1 = self.Xpiclabel.width()
         h1 = self.Xpiclabel.height()
@@ -596,10 +634,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.pixmap.fill(Qt.transparent)
 
         # horiz line,z
-        dummy = abs(number_ofList_Z - valZ)
+        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
         # dummy += 45
         #lineZ_zoffset_Xplane=45
-        dummy += lineZ_zoffset_Xplane
+        dummy += LINEZ_ZOFFSET_XPLAN
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), self.pixmapX_moveZ)
         pen = QPen(Qt.red, 3)
@@ -607,10 +645,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.drawLine(-600, dummy, 600, dummy)
 
         # vertical line,y
-        myy_loc = abs(number_ofList_Y - valY)
+        myy_loc = abs(NUMBER_Y_LIST - 1 - valY)
         # myy_loc += 145
         # lineY_yoffset_Xplane = +145
-        myy_loc += lineY_yoffset_Xplane
+        myy_loc += LINEY_YOFFSET_XPLAN
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         print("myy_locmyy_locmyy_locmyy_loc: ", myy_loc)
@@ -619,12 +657,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
 
-        self.move_lineX_plainZ(valZ)
-        self.move_lineX_plainY(valZ)
+        # self.move_lineX_plainZ(valX)
+        # self.move_lineX_plainY(valX)
 
     def Y_label_modifier(self, valX, valY, valZ):
 
-        self.Yspin.setValue(valY-y_offset_pic)
+        self.Yspin.setValue(valY - Y_PIC_OFFSET)
 
 
         w1 = self.Ypiclabel.width()
@@ -642,26 +680,29 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
-        dummy = abs(number_ofList_Z - valZ)
+        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
         # dummy += 45
-        dummy += lineZ_zoffset_Yplane
+        dummy += LINEZ_ZOFFSET_YPLAN
         qpy.drawLine(-600, dummy, 600, dummy)
 
         #  vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
-        dummy = abs(number_ofList_X - valX)
+        dummy = abs(NUMBER_X_LIST - 1 - valX)
         # dummy += 156
         # lineX_xoffset_Yplane = +157
-        dummy += lineX_xoffset_Yplane
+        dummy += LINEX_XOFFSET_YPLAN
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
         self.Ypiclabel.setPixmap(self.pixmap_YY1)
 
+        # self.move_lineY_plainX(valY)
+        # self.move_lineY_plainZ(valY)
+
     def Z_label_modifier(self, valX, valY, valZ):
 
-        self.Zspin.setValue(valZ - z_offset_pic)
+        self.Zspin.setValue(valZ - Z_PIC_OFFSET)
 
         w1 = self.Zpiclabel.width()
         h1 = self.Zpiclabel.height()
@@ -674,32 +715,31 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         # horiz,y
         pen = QPen(Qt.red, 3)
-        dummy = abs(number_ofList_Y - valY)
+        dummy = abs(NUMBER_Y_LIST - 1 - valY)
         # dummy += 45
         # lineY_yoffset_Zplane = +52
-        dummy += lineY_yoffset_Zplane
+        dummy += LINEY_YOFFSET_ZPLAN
         self.qpz.setPen(pen)
         self.qpz.drawLine(-600, dummy, 600, dummy)
 
         # vertic,x
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
-        dummy = abs(number_ofList_X - valX)
+        dummy = abs(NUMBER_X_LIST - 1 - valX)
         # dummy += 156
-        dummy += lineX_xoffset_Zplane
+        dummy += LINEX_XOFFSET_ZPLAN
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
 
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
 
-        # self.move_lineZ_plainX(val)
-        # self.move_lineZ_plainY(val)
+        # self.move_lineZ_plainX(valZ)
+        # self.move_lineZ_plainY(valZ)
 
     def update_pics(self, valX, valY, valZ):
-
-        self.X_label_modifier(valX)
-        self.Y_label_modifier(valY)
-        self.Z_label_modifier(valZ)
+        self.X_label_modifier(valX, valY, valZ)
+        self.Y_label_modifier(valX, valY, valZ)
+        self.Z_label_modifier(valX, valY, valZ)
 
     def myHideShow(self):
         if self.frame_36.isHidden() == False:
