@@ -50,6 +50,12 @@ lineZ_zoffset_Xplane = +45
 lineZ_xoffset_Yplane = +156
 lineZ_zoffset_Yplane = +45
 
+#for set number of pic
+x_offset_pic = 87
+y_offset_pic = 122
+z_offset_pic = 43
+
+#number of list x,y ,z
 number_ofList_X = 173
 number_ofList_Y = 211
 number_ofList_Z = 141
@@ -85,12 +91,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def signalsSlat(self):
 
-        self.StartBotton.clicked.connect(self.calculator_picNum_X_Y_Z)
-        self.Xslider.sliderMoved.connect(self.update_pics)
-        self.Yslider.sliderMoved.connect(self.update_pics)
-        self.Zslider.sliderMoved.connect(self.update_pics)
+        self.StartBotton.clicked.connect(self.onStartBottonClicked)
+        self.Xslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
+        self.Yslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
+        self.Zslider.valueChanged.connect(self.calculator_picNum_X_Y_Z)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        self.Xslider.sliderMoved.connect(self.calculator_picNum_X_Y_Z)
+
 
 
         self.HideShowButton.clicked.connect(self.myHideShow)
@@ -290,124 +296,34 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onStartBottonClicked(self):
 
-        #getvalueX
-        valueBt = self.BTspinbox.value()
-        print("valueBt", valueBt)
-        _scaleX = valueBt / 174
-        print("_scaleX:", _scaleX)
-        valueX = self.Xspin.value()
-        print("valueX:", valueX)
-        # picNumX = int ((valueX * valueBt) / 174) + 87
-        picNumX = int(valueX) + 87
-        print("picNumX:", picNumX)
-
-        #getvalueY
-        valueAp = self.APspinbox.value()
-        print("valueAp:", valueAp)
-        _scaleY = valueAp / 212
-        print("_scaleY:", _scaleY)
-        valueY = self.Yspin.value()
-        print("valueY:", valueY)
-        # picNumY = int((valueY * valueAp) / 212) + 122
-        picNumY = int(valueY) + 122
-        # self.Yslidertest(picNumY)
-
-
-        # getvaluez
-        valueEv = self.EVspinbox.value()
-        print("valueEv", valueEv)
-        _scaleZ = valueEv / 142
-        print("_scaleZ:", _scaleZ)
-        valueZ = self.Zspin.value()
-        print("valueZ:", valueZ)
-        # picNumZ = int((valueZ * valueEv) / 142) + 43
-        picNumZ = int(valueZ) + 43
-
-
-        # executing on pictures
-        self.XXX = picNumX
-        self.YYY = picNumY
-        self.ZZZ = picNumZ
-        print("salam", self.XXX, self.YYY, self.ZZZ)
-
-        #change value of slider &
-        self.Xslider.setValue(picNumX)
-        self.on_xslider_change(picNumX)
-
-        self.Yslider.setValue(picNumY)
-        self.on_yslider_change(picNumY)
-
-
-        self.Zslider.setValue(picNumZ)
-        self.on_zslider_change(picNumZ)
-
-        ############################################REZAA
-        self.move_lineX_plainZ(picNumX)
-        self.move_lineX_plainY(picNumX)
-
-
-
-        mm_x = int(valueX * _scaleX)
-        mm_y = int(valueY * _scaleY)
-        mm_z = int(valueZ * _scaleZ)
-        mm_a = int(self.OAspin.value())
-        mm_b = int(self.CAspin.value())
-
-        self.xlabelShow.setText(str("%.2f" % (valueX * _scaleX)))
-        self.YlabelShow.setText(str("%.2f" % (valueY * _scaleY)))
-        self.ZlabelShow.setText(str("%.2f" % (valueZ * _scaleZ)))
-        self.OAlabelShow.setText(str(("%.2f" % self.OAspin.value())))
-        self.CAlabelShow.setText(str(("%.2f" % self.CAspin.value())))
-
+        self.calculator_picNum_X_Y_Z()
         self.brain_point.SetCenter(20, 0, 100)
 
-        self.NoteBrowser.setText("Go to c point")
-        if motor_real:
-            self.motor_set(0, -15, 98, 0, 0)
-            time.sleep(0.5)
-            self.motor_set(mm_x, mm_y, mm_z, mm_a, mm_b)
-
-
     def onResetBotton(self):
-        # self.ZAspin.setValue(0)
-        # self.Xspin.setValue(0)
-        # self.Yspin.setValue(0)
+        self.Xspin.setValue(0)
+        self.Yspin.setValue(-14.41)
+        self.Zspin.setValue(98)
         self.CAspin.setValue(0)
         self.OAspin.setValue(0)
 
-
-        self.Xslider.setValue(87)
-        self.X_label_modifier(87)
-
-        self.Yslider.setValue(122 - 14.41)
-        self.Y_label_modifier(122 - 14.41)
-
-
-        self.Zslider.setValue(99 + 43)
-        self.Z_label_modifier(99 + 42)
-
-        self.NoteBrowser.setText("Please insert your indexing")
-
-
-        self.brain_point.SetCenter(-46, -13, 100)
+        self.calculator_picNum_X_Y_Z()
+        # self.Xslider.setValue(87)
+        # self.X_label_modifier(87)
+        #
+        # self.Yslider.setValue(122 - 14.41)
+        # self.Y_label_modifier(122 - 14.41)
+        #
+        #
+        # self.Zslider.setValue(99 + 43)
+        # self.Z_label_modifier(99 + 42)
+        #
+        # self.NoteBrowser.setText("Please insert your indexing")
+        #
+        #
+        # self.brain_point.SetCenter(-46, -13, 100)
 
     #use not
-    def onResetBotton_1(self):
-        self.CAspin.setValue(0)
-        self.Xspin.setValue(0)
-        self.Yspin.setValue(0)
-        self.Zspin.setValue(0)
-        self.OAspin.setValue(0)
 
-        self.Xslider.setValue(87)
-        self.X_label_modifier(87)
-        self.Yslider.setValue(122 - 14.41)
-        self.Y_label_modifier(122 - 14.41)
-        self.Zslider.setValue(99 + 43)
-        self.Z_label_modifier(99 + 42)
-
-
-        self.NoteBrowser.setText("Please insert your indexing")
 
     #for z slidr,x
     def move_lineZ_plainX(self, xloc_Zplain):
@@ -483,7 +399,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Ypiclabel.setPixmap(self.pixmap_YY1)
 
-
     # for X slide,z
     def move_lineX_plainZ(self, zloc_Xplain):
         # zloc_Xplain = abs(173 - zloc_Xplain)
@@ -557,7 +472,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
 
     def calculator_picNum_X_Y_Z (self):
-        # getvalue_X
+
+        # getvalueX
         valueBt = self.BTspinbox.value()
         print("valueBt", valueBt)
         _scaleX = valueBt / 174
@@ -568,8 +484,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         picNumX = int(valueX) + 87
         print("picNumX:", picNumX)
 
-
-        # getvalue_Y
+        # getvalueY
         valueAp = self.APspinbox.value()
         print("valueAp:", valueAp)
         _scaleY = valueAp / 212
@@ -580,7 +495,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         picNumY = int(valueY) + 122
         # self.Yslidertest(picNumY)
 
-        # getvalue_z
+        # getvaluez
         valueEv = self.EVspinbox.value()
         print("valueEv", valueEv)
         _scaleZ = valueEv / 142
@@ -595,11 +510,52 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YYY = picNumY
         self.ZZZ = picNumZ
 
+        print("salam", self.XXX, self.YYY, self.ZZZ)
+
+        # change value of slider
+        # self.Xslider.setValue(picNumX)
+        # self.Yslider.setValue(picNumY)
+        # self.Zslider.setValue(picNumZ)
+
+
+        # self.on_change_Xslider(picNumX)
+        # self.on_change_Yslider(picNumY)
+        # self.on_change_Zslider(picNumZ)
+
+
+
+        ############################################REZAA
+        # self.move_lineX_plainZ(picNumX)
+        # self.move_lineX_plainY(picNumX)
+
+        mm_x = int(valueX * _scaleX)
+        mm_y = int(valueY * _scaleY)
+        mm_z = int(valueZ * _scaleZ)
+        mm_a = int(self.OAspin.value())
+        mm_b = int(self.CAspin.value())
+
+        self.xlabelShow.setText(str("%.2f" % (valueX * _scaleX)))
+        self.YlabelShow.setText(str("%.2f" % (valueY * _scaleY)))
+        self.ZlabelShow.setText(str("%.2f" % (valueZ * _scaleZ)))
+        self.OAlabelShow.setText(str(("%.2f" % self.OAspin.value())))
+        self.CAlabelShow.setText(str(("%.2f" % self.CAspin.value())))
+
+        self.brain_point.SetCenter(20, 0, 100)
+
+        self.NoteBrowser.setText("Go to c point")
+
+
+        if motor_real:
+            self.motor_set(0, -15, 98, 0, 0)
+            time.sleep(0.5)
+            self.motor_set(mm_x, mm_y, mm_z, mm_a, mm_b)
+
 
 
         self.X_label_modifier(self.XXX, self.YYY, self.ZZZ)
         self.Y_label_modifier(self.XXX, self.YYY, self.ZZZ)
         self.Z_label_modifier(self.XXX, self.YYY, self.ZZZ)
+
 
 
         # self.Xstring = str(picNumX)
@@ -612,10 +568,23 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.Yslideralue = self.Yslider.sliderMoved()
         # self.Zslidervalue = self.Zslider.sliderMoved()
 
+    def on_change_Xslider(self):
+        self.calculator_picNum_X_Y_Z()
+        self.update_pics()
+
+    def on_change_Yslider(self):
+        self.calculator_picNum_X_Y_Z()
+        self.update_pics()
+
+    def on_change_Zslider(self):
+        self.calculator_picNum_X_Y_Z()
+        self.update_pics()
+
+
 
     def X_label_modifier(self, valX, valY, valZ):
         print("ssssssssssssssssssssssssssssssssss self.xxx = ", valX)
-        self.Xspin.setValue(valX - 87)
+        self.Xspin.setValue(valX - x_offset_pic)
 
         w1 = self.Xpiclabel.width()
         h1 = self.Xpiclabel.height()
@@ -628,7 +597,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         # horiz line,z
         dummy = abs(number_ofList_Z - valZ)
-        dummy += 45
+        # dummy += 45
+        #lineZ_zoffset_Xplane=45
+        dummy += lineZ_zoffset_Xplane
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), self.pixmapX_moveZ)
         pen = QPen(Qt.red, 3)
@@ -637,7 +608,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         # vertical line,y
         myy_loc = abs(number_ofList_Y - valY)
-        myy_loc += 145
+        # myy_loc += 145
+        # lineY_yoffset_Xplane = +145
+        myy_loc += lineY_yoffset_Xplane
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         print("myy_locmyy_locmyy_locmyy_loc: ", myy_loc)
@@ -646,10 +619,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
 
+        self.move_lineX_plainZ(valZ)
+        self.move_lineX_plainY(valZ)
 
     def Y_label_modifier(self, valX, valY, valZ):
 
-        self.Yspin.setValue(valY-122)
+        self.Yspin.setValue(valY-y_offset_pic)
 
 
         w1 = self.Ypiclabel.width()
@@ -668,14 +643,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
         dummy = abs(number_ofList_Z - valZ)
-        dummy += 45
+        # dummy += 45
+        dummy += lineZ_zoffset_Yplane
         qpy.drawLine(-600, dummy, 600, dummy)
 
         #  vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
         dummy = abs(number_ofList_X - valX)
-        dummy += 156
+        # dummy += 156
+        # lineX_xoffset_Yplane = +157
+        dummy += lineX_xoffset_Yplane
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
@@ -683,7 +661,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def Z_label_modifier(self, valX, valY, valZ):
 
-        self.Zspin.setValue(valZ - 43)
+        self.Zspin.setValue(valZ - z_offset_pic)
 
         w1 = self.Zpiclabel.width()
         h1 = self.Zpiclabel.height()
@@ -697,7 +675,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # horiz,y
         pen = QPen(Qt.red, 3)
         dummy = abs(number_ofList_Y - valY)
-        dummy += 45
+        # dummy += 45
+        # lineY_yoffset_Zplane = +52
+        dummy += lineY_yoffset_Zplane
         self.qpz.setPen(pen)
         self.qpz.drawLine(-600, dummy, 600, dummy)
 
@@ -705,7 +685,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = abs(number_ofList_X - valX)
-        dummy += 156
+        # dummy += 156
+        dummy += lineX_xoffset_Zplane
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
 
@@ -719,11 +700,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.X_label_modifier(valX)
         self.Y_label_modifier(valY)
         self.Z_label_modifier(valZ)
-
-
-    # def myRestore(self):
-    #self.restoreGeometry()
-
 
     def myHideShow(self):
         if self.frame_36.isHidden() == False:
