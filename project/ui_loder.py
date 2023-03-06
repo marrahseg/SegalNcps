@@ -1,10 +1,9 @@
 
 import os
 import pickle
-import time
 import pyvista as pv
 from pyvistaqt import QtInteractor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
 from qt_material import apply_stylesheet
@@ -61,8 +60,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CloseButton.hide()
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
-        #self.timer = QtCore.QTimer()
-        #self.timer.start(100)
+        self.timer = QTimer()
+        # self.timer.start(500)
+        # self.timer.stop(self)
 
         # self.mesh = pv.read('Brain for Half_Skull.stl')
         self.frame_23.setMaximumWidth(560)
@@ -75,9 +75,20 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.show_3Brain()
 
 
-        self.XXX = 0
-        self.YYY = 0
-        self.ZZZ = 0
+        self.x_now = 0
+        self.y_now = 0
+        self.z_now = 0
+
+        self.x_go = 0
+        self.y_go = 0
+        self.z_go = 0
+
+        self.onResetBotton()
+        self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
+        self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
+        # self.x_go = self.x_now - 1
+        # self.y_go = self.y_now - 1
+        # self.z_go = self.z_now - 1
 
     def signalsSlat(self):
 
@@ -88,7 +99,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ResetButton.clicked.connect(self.onResetBotton)
 
         self.HideShowButton.clicked.connect(self.myHideShow)
-        # self.timer.timeout.connect(self.myOrbitBrain)
+        self.timer.timeout.connect(self.onTimer_interrupt)
 
         ###############################MENU BAR
         self.actionDark.triggered.connect(self.on_dark_theme)
@@ -112,6 +123,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = QPixmap(my_Zside_pics_add + self.picListZ[0])
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
+
+
     ########## slots
 
     def show_3Brain(self):
@@ -219,9 +232,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListZ.extend(listZplus)
         # print(self.picListZ)
 
-    def myOrbitBrain(self):
-        self.mview.orbit(5, 0)
-
     def onSliderchangeClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
         self.update_pics_lines(_mx, _my, _mz)
@@ -229,8 +239,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onStartBottonClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
-        self.update_pics_lines(_mx, _my, _mz)
-        self.change_slider_Pos(_mx, _my, _mz)
+        self.x_go = _mx
+        self.y_go = _my
+        self.z_go = _mz
+        print("starting timer ....")
+        self.timer.start(100)
+
+
         self.brain_point.SetCenter(20, 0, 100)
 
     def onResetBotton(self):
@@ -241,11 +256,65 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OAspin.setValue(0)
 
         _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+        self.x_go = _mx
+        self.y_go = _my
+        self.z_go = _mz
+
+
+
+        # self.timer.start(100)
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
         self.brain_point.SetCenter(-46, -13, 100)
         self.brain_point.SetCenter(-46, -13, 100)
+
+    def onTimer_interrupt(self):
+        _mx = 0
+        _my = 0
+        _mz = 0
+        ################################# x check
+        if self.x_now != self.x_go:
+            if self.x_now < self.x_go:
+                _mx = self.x_now + 1
+            else:
+                _mx = self.x_now - 1
+
+            _my = self.y_now
+            _mz = self.z_now
+            self.update_pics_lines_and_now_position(_mx, _my, _mz)
+            self.change_slider_Pos(_mx, _my, _mz)
+
+        else:
+            _mx = self.x_now
+            ################################# y check
+            if self.y_now != self.y_go:
+                if self.y_now < self.y_go:
+                    _my = self.y_now + 1
+                else:
+                    _my = self.y_now - 1
+
+                _mz = self.z_now
+                self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                self.change_slider_Pos(_mx, _my, _mz)
+
+            else:
+                _my = self.y_now
+                ################################# z check
+                if self.z_now != self.z_go:
+                    if self.z_now < self.z_go:
+                        _mz = self.z_now + 1
+                    else:
+                        _mz = self.z_now - 1
+
+                    self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                    self.change_slider_Pos(_mx, _my, _mz)
+                else:
+                    _mz = self.z_now
+                    self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                    self.change_slider_Pos(_mx, _my, _mz)
+                    self.timer.stop()
+
 
     def xyz_calculator(self, mx, my, mz, scale_flag):
         if scale_flag:
@@ -293,7 +362,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.end()
 
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
-
 
     def Y_label_modifier(self, valX, valY, valZ):
         _yimg = QPixmap(my_Yside_pics_add + self.picListY[valY])
@@ -346,6 +414,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.X_label_modifier(valX, valY, valZ)
         self.Y_label_modifier(valX, valY, valZ)
         self.Z_label_modifier(valX, valY, valZ)
+
+
+    def update_pics_lines_and_now_position(self, valX, valY, valZ):
+        self.X_label_modifier(valX, valY, valZ)
+        self.Y_label_modifier(valX, valY, valZ)
+        self.Z_label_modifier(valX, valY, valZ)
+        self.x_now = valX
+        self.y_now = valY
+        self.z_now = valZ
+        self.XlabelShow.setText(str(self.x_now - X_PIC_OFFSET))
+        self.YlabelShow.setText(str(self.y_now - Y_PIC_OFFSET))
+        self.ZlabelShow.setText(str(self.z_now - Z_PIC_OFFSET))
 
     def change_spin_vals(self, valX, valY, valZ):
         self.Xspin.setValue(valX - X_PIC_OFFSET)

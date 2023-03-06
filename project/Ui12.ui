@@ -2459,7 +2459,7 @@ p, li { white-space: pre-wrap; }
                           </widget>
                          </item>
                          <item>
-                          <widget class="QLabel" name="xlabelShow">
+                          <widget class="QLabel" name="XlabelShow">
                            <property name="font">
                             <font>
                              <family>Segoe UI</family>
