@@ -90,7 +90,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.HideShowButton.clicked.connect(self.myHideShow)
         # self.timer.timeout.connect(self.myOrbitBrain)
 
-
         ###############################MENU BAR
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
