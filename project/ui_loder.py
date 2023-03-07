@@ -18,26 +18,20 @@ my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
 
-##########################linx _y,z plain
-LINEX_XOFFSET_YPLAN = +157
-LINEX_ZOFFSET_YPLAN = +45
+########################## plain X
+LINEY_OFFSET_XPLAN = +145
+LINEZ_OFFSET_XPLAN = +45
 
-LINEX_XOFFSET_ZPLAN = +156
-LINEX_YOFFSET_ZPLAN = +45
 
-########################liny _x,z plain
-LINEY_YOFFSET_XPLAN = +145
-LINEY_ZOFFSET_XPLAN = +45
+########################### plain Y
+LINEX_OFFSET_YPLAN = +157
+LINEZ_OFFSET_YPLAN = +45
 
-LINEY_XOFFSET_ZPLAN = +156
-LINEY_YOFFSET_ZPLAN = +52
 
-##################3####linz _y,x plain
-LINEZ_YOFFSET_XPLAN = +145
-LINEZ_ZOFFSET_XPLAN = +45
+##########################plain Z
+LINEX_OFFSET_ZPLAN = +156
+LINEY_OFFSET_ZPLAN = +52
 
-LINEZ_XOFFSET_YPLAN = +156
-LINEZ_ZOFFSET_YPLAN = +45
 
 #################for set number of pic
 X_PIC_OFFSET = 87
@@ -60,18 +54,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CloseButton.hide()
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
-        self.timer = QTimer()
-        # self.timer.start(500)
-        # self.timer.stop(self)
-
-        # self.mesh = pv.read('Brain for Half_Skull.stl')
         self.frame_23.setMaximumWidth(560)
+        pv.set_plot_theme("dark")
 
 
+        self.timer = QTimer()
         self.initAllpicture()
         self.signalsSlat()
-        #self.dmodel()
-        pv.set_plot_theme("dark")
         self.show_3Brain()
 
 
@@ -98,16 +87,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
-        self.HideShowButton.clicked.connect(self.myHideShow)
+        self.HideShowButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
 
         ###############################MENU BAR
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
         self.actiondialog.triggered.connect(self.on_show_dialog)
-        self.actionSave_as.triggered.connect(self.saveFigData)
-        self.actionShow_Botten.triggered.connect(self.show_slider_onBrain)
-        self.actionHide_Botton.triggered.connect(self.hide_slider_onBrain)
+        self.actionSave_as.triggered.connect(self.onSaveFigData)
+        self.actionShow_Botten.triggered.connect(self.onShow_slider_onBrain)
+        self.actionHide_Botton.triggered.connect(self.onHide_slider_onBrain)
 
         ####################show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -125,8 +114,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
 
-    ########## slots
-
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
@@ -134,11 +121,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         mesh = pv.read('Brain for Half_Skull.stl')
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(2, 36, 67),  radius=3, test_callback=False)
+        # self.Brain_interactor.camera_set(0, 0, 0)
 
     def print_point(*args, **kwargs):
         print(args[1])
 
-    def saveFigData(self):
+    def onSaveFigData(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
         if (fileName[0] == ''):
             return
@@ -168,12 +156,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print('light them')
         apply_stylesheet(self, theme='color.xml')
 
-    def show_slider_onBrain(self):
+    def onShow_slider_onBrain(self):
         self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=0, title="UpDown_z", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
         self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1),pointb=(0.31, 0.1), style= 'modern')
         self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=0, title="FrontBack_y", pointa=(0.35, 0.1), pointb= (0.64, 0.1), style='modern')
 
-    def hide_slider_onBrain(self):
+    def onHide_slider_onBrain(self):
         print("Brain")
 
     def initAllpicture(self):
@@ -261,13 +249,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_go = _mz
 
 
-
-        # self.timer.start(100)
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
         self.brain_point.SetCenter(-46, -13, 100)
-        self.brain_point.SetCenter(-46, -13, 100)
+
 
     def onTimer_interrupt(self):
         _mx = 0
@@ -315,7 +301,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
                     self.change_slider_Pos(_mx, _my, _mz)
                     self.timer.stop()
 
-
     def xyz_calculator(self, mx, my, mz, scale_flag):
         if scale_flag:
             ######################################### calculate x value
@@ -345,8 +330,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
 
+
+        #horiz line  z
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_ZOFFSET_XPLAN
+        dummy += LINEZ_OFFSET_XPLAN
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), _ximg)
         pen = QPen(Qt.red, 3)
@@ -355,7 +342,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         # vertical line,y
         myy_loc = abs(NUMBER_Y_LIST - 1 - valY)
-        myy_loc += LINEY_YOFFSET_XPLAN
+        myy_loc += LINEY_OFFSET_XPLAN
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
@@ -374,14 +361,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_ZOFFSET_YPLAN
+        dummy += LINEZ_OFFSET_YPLAN
         qpy.drawLine(-600, dummy, 600, dummy)
 
         ###########vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
-        dummy =  valX
-        dummy += LINEX_XOFFSET_YPLAN
+        dummy = valX
+        dummy += LINEX_OFFSET_YPLAN
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
@@ -397,7 +384,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         ########### horiz,y
         pen = QPen(Qt.red, 3)
         dummy = abs(NUMBER_Y_LIST - 1 - valY)
-        dummy += LINEY_YOFFSET_ZPLAN
+        dummy += LINEY_OFFSET_ZPLAN
         self.qpz.setPen(pen)
         self.qpz.drawLine(-600, dummy, 600, dummy)
 
@@ -405,7 +392,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = valX
-        dummy += LINEX_XOFFSET_ZPLAN
+        dummy += LINEX_OFFSET_ZPLAN
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
@@ -414,7 +401,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.X_label_modifier(valX, valY, valZ)
         self.Y_label_modifier(valX, valY, valZ)
         self.Z_label_modifier(valX, valY, valZ)
-
 
     def update_pics_lines_and_now_position(self, valX, valY, valZ):
         self.X_label_modifier(valX, valY, valZ)
@@ -432,7 +418,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yspin.setValue(valY - Y_PIC_OFFSET)
         self.Zspin.setValue(valZ - Z_PIC_OFFSET)
 
-    def myHideShow(self):
+    def onMyHideShow(self):
         if self.frame_36.isHidden() == False:
             self.frame_36.hide()
             self.HideShowButton.setText("Show Menu")
