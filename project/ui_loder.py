@@ -51,11 +51,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
 
+        self.centerBX = 0
+        self.centerBY = 0
+        self.centerBZ = 0
+
         self.CloseButton.hide()
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.frame_23.setMaximumWidth(560)
         pv.set_plot_theme("dark")
+
 
 
         self.timer = QTimer()
@@ -75,6 +80,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
+
         # self.x_go = self.x_now - 1
         # self.y_go = self.y_now - 1
         # self.z_go = self.z_now - 1
@@ -113,6 +119,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
+        #################### Signal and slot for brain sphere update
+        self.Xslider.valueChanged.connect(self.on_change_sphere_by_sliderX)
+        self.Yslider.valueChanged.connect(self.on_change_sphere_by_sliderY)
+        self.Zslider.valueChanged.connect(self.on_change_sphere_by_sliderZ)
+
+    def on_change_sphere_by_sliderX(self, val):
+        self.centerBY = val
+        self.show_sphere()
+
+    def on_change_sphere_by_sliderY(self, val):
+        self.centerBX = val
+        self.show_sphere()
+
+    def on_change_sphere_by_sliderZ(self, val):
+        self.centerBZ = val
+        self.show_sphere()
+
+    def show_sphere(self):
+        self.brain_point.SetCenter(self.centerBX, self.centerBY, self.centerBZ)
 
     def show_3Brain(self):
 
@@ -120,8 +145,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(2, 36, 67),  radius=3, test_callback=False)
-        # self.Brain_interactor.camera_set(0, 0, 0)
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0 ),  radius=3, test_callback=False)
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -426,6 +450,3 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         else:
             self.frame_36.show()
             self.HideShowButton.setText("Hide Menu")
-
-
-
