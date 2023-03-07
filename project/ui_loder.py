@@ -1,4 +1,4 @@
-
+import configparser
 import os
 import pickle
 import pyvista as pv
@@ -144,13 +144,32 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), c)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0 ),  radius=3, test_callback=False)
 
     def print_point(*args, **kwargs):
         print(args[1])
 
     def onSaveFigData(self):
+
+        config = configparser.ConfigParser()
+        config['Head Adjusted Coordinates (Coil Position):'] = {}
+        config['forge.example'] = {}
+        config['forge.example']['X'] = self.XlabelShow.text()
+        config['forge.example']['Y'] = self.YlabelShow.text()
+        config['forge.example']['Z'] = self.ZlabelShow.text()
+        config['forge.example']['OA'] = self.OAlabelShow.text()
+        config['forge.example']['CA'] = self.CAlabelShow.text()
+
+
+
+        with open('Ncps.seg', 'w') as configfile:
+            config.write(configfile)
+
+        pickle.dump(self.figure, config.write(configfile), -1)
+
+
+    def onSaveFigData1(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
         if (fileName[0] == ''):
             return
