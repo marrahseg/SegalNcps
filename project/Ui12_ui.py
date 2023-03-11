@@ -774,6 +774,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_22.addWidget(self.ResetButton)
         self.horizontalLayout_5.addWidget(self.frame_59)
         self.verticalLayout_18.addWidget(self.frame_9, 0, QtCore.Qt.AlignTop)
+        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_6)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.verticalLayout_18.addWidget(self.pushButton_3)
         self.StartBotton = QtWidgets.QPushButton(self.groupBox_6)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
@@ -1708,6 +1711,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "OA:"))
         self.label_6.setText(_translate("MainWindow", "CA:"))
         self.ResetButton.setText(_translate("MainWindow", "Reset"))
+        self.pushButton_3.setText(_translate("MainWindow", "move point"))
         self.StartBotton.setText(_translate("MainWindow", "start"))
         self.groupBox_8.setTitle(_translate("MainWindow", "Note"))
         self.NoteBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

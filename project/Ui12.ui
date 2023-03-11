@@ -1609,6 +1609,13 @@ background-color: rgb(122, 122, 122);
                         </widget>
                        </item>
                        <item>
+                        <widget class="QPushButton" name="pushButton_3">
+                         <property name="text">
+                          <string>move point</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
                         <widget class="QPushButton" name="StartBotton">
                          <property name="font">
                           <font>

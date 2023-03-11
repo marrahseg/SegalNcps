@@ -1,9 +1,10 @@
 import configparser
 import os
-import pickle
 
-import numpy as np
+
+
 import pyvista as pv
+
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
@@ -60,7 +61,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # pv.set_plot_theme("dark")
 
 
-
         self.timer = QTimer()
         self.initAllpicture()
         self.signalsSlat()
@@ -75,9 +75,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.y_now = 0
         self.z_now = 0
 
+
         self.x_go = 0
         self.y_go = 0
         self.z_go = 0
+
 
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
@@ -94,6 +96,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
         self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
+        self.pushButton_3.clicked.connect(self.onMovePoint)
 
         self.HideShowButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
@@ -126,7 +129,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yslider.valueChanged.connect(self.on_change_sphere_by_sliderY)
         self.Zslider.valueChanged.connect(self.on_change_sphere_by_sliderZ)
 
-
     def on_change_sphere_by_sliderX(self, val):
         self.centerBY = val
         self.show_sphere()
@@ -147,10 +149,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity= 0.6 )
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
+        # , opacity = 0.6
         self.Brain_interactor.background_color = (0, 0, 0)
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
+        print("center of point:" , self.brain_point.SetCenter)
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -166,20 +170,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example']['OA'] = self.OAlabelShow.text()
         config['forge.example']['CA'] = self.CAlabelShow.text()
 
-        with open('Ncps.seg', 'w') as configfile:
+        fileName = QFileDialog.getSaveFileName(self, ("Save data"), '',("*.txt"))
+
+
+        with open(fileName[0], 'w') as configfile:
             config.write(configfile)
-
-        pickle.dump(self.figure, config.write(configfile), -1)
-
-    def onSaveFigData1(self):
-        fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
-        if (fileName[0] == ''):
-            return
-        fileName = str(fileName[0])
-        file_pi = open(fileName, 'wb')
-        pickle.dump(self.figure, file_pi, -1)
-        file_pi.close()
-        return
 
     def on_show_dialog(self, s):
         dlg = QMessageBox(self)
@@ -206,9 +201,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=-14, title="FrontBack_y", pointa=(0.35, 0.1), pointb=(0.64, 0.1), style='modern')
         self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=98, title="UpDown_z", pointa=(0.67, 0.1), pointb=(0.98, 0.1), style='modern')
 
-
     def onHide_slider_onBrain(self):
-      
         print("Brain")
 
     def initAllpicture(self):
@@ -227,7 +220,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListX.extend(listXminus)
         self.picListX.append('0x.jpg')
         self.picListX.extend(listXplus)
-
 
 
         ########################################### sort of listY
@@ -265,7 +257,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListZ.extend(listZminus)
         self.picListZ.append('0z.jpg')
         self.picListZ.extend(listZplus)
-        # print(self.picListZ)
+        print(self.picListZ)
 
     def onSliderchangeClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
@@ -273,15 +265,27 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.change_spin_vals(_mx, _my, _mz)
 
     def onStartBottonClicked(self):
-        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(),  1)
         self.x_go = _mx
         self.y_go = _my
         self.z_go = _mz
         print("starting timer ....")
         self.timer.start(100)
+        # self.brain_point.SetCenter(0, 0, 0)
+
+    def onMovePoint(self):
+        _sx, _sy, _sz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+
+        _divisionX= self.centerBY + X_PIC_OFFSET - 1
+        _sx = _divisionX / (NUMBER_X_LIST - 1)
+
+        _division = self.centerBY + X_PIC_OFFSET - 1
+        _sx = _division / (NUMBER_X_LIST - 1)
 
 
-        self.brain_point.SetCenter(20, 0, 100)
+
+        _sz = self.centerBZ + Z_PIC_OFFSET - 1
+        self.brain_point.SetCenter(_sx, _sy, _sz)
 
     def onResetBotton(self):
         self.Xspin.setValue(0)
@@ -301,11 +305,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.brain_point.SetCenter(-46, -13, 100)
 
-
     def onTimer_interrupt(self):
         _mx = 0
         _my = 0
         _mz = 0
+
         ################################# x check
         if self.x_now != self.x_go:
             if self.x_now < self.x_go:
@@ -456,9 +460,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.x_now = valX
         self.y_now = valY
         self.z_now = valZ
+        self.a_now = self.OAspin.value()
+        self.b_now = self.CAspin.value()
         self.XlabelShow.setText(str(self.x_now - X_PIC_OFFSET))
         self.YlabelShow.setText(str(self.y_now - Y_PIC_OFFSET))
         self.ZlabelShow.setText(str(self.z_now - Z_PIC_OFFSET))
+        self.OAlabelShow.setText(str(self.a_now))
+        self.CAlabelShow.setText(str(self.b_now))
 
     def change_spin_vals(self, valX, valY, valZ):
         self.Xspin.setValue(valX - X_PIC_OFFSET)
