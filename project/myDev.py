@@ -7,7 +7,7 @@ from random import randint
 
 
 
-from ui_loder import Window_ui, motor_real
+from ui_loader import Window_ui, motor_real
 
 import myThreads
 

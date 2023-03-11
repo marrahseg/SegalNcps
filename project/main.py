@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from myDev import Window_withDev
-from ui_loder import Window_ui
+from ui_loader import Window_ui
 from qt_material import apply_stylesheet
 
 

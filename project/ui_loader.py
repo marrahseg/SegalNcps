@@ -1,6 +1,8 @@
 import configparser
 import os
 import pickle
+
+import numpy as np
 import pyvista as pv
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
@@ -51,15 +53,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
 
-        self.centerBX = 0
-        self.centerBY = 0
-        self.centerBZ = 0
-
         self.CloseButton.hide()
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.frame_23.setMaximumWidth(560)
-        pv.set_plot_theme("dark")
+        # pv.set_plot_theme("dark")
 
 
 
@@ -67,6 +65,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
+
+        self.centerBX = 0
+        self.centerBY = 0
+        self.centerBZ = 0
 
 
         self.x_now = 0
@@ -124,6 +126,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yslider.valueChanged.connect(self.on_change_sphere_by_sliderY)
         self.Zslider.valueChanged.connect(self.on_change_sphere_by_sliderZ)
 
+
     def on_change_sphere_by_sliderX(self, val):
         self.centerBY = val
         self.show_sphere()
@@ -144,8 +147,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), c)
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0 ),  radius=3, test_callback=False)
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity= 0.6 )
+        self.Brain_interactor.background_color = (0, 0, 0)
+        self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -161,13 +166,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example']['OA'] = self.OAlabelShow.text()
         config['forge.example']['CA'] = self.CAlabelShow.text()
 
-
-
         with open('Ncps.seg', 'w') as configfile:
             config.write(configfile)
 
         pickle.dump(self.figure, config.write(configfile), -1)
-
 
     def onSaveFigData1(self):
         fileName = QFileDialog.getSaveFileName(self, 'Save Figure Data', '', 'pickle (*.seg)')
@@ -200,11 +202,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         apply_stylesheet(self, theme='color.xml')
 
     def onShow_slider_onBrain(self):
-        self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=0, title="UpDown_z", pointa= (0.67, 0.1), pointb= (0.98, 0.1), style= 'modern')
-        self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1),pointb=(0.31, 0.1), style= 'modern')
-        self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=0, title="FrontBack_y", pointa=(0.35, 0.1), pointb= (0.64, 0.1), style='modern')
+        self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1), pointb=(0.31, 0.1), style='modern')
+        self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=-14, title="FrontBack_y", pointa=(0.35, 0.1), pointb=(0.64, 0.1), style='modern')
+        self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=98, title="UpDown_z", pointa=(0.67, 0.1), pointb=(0.98, 0.1), style='modern')
+
 
     def onHide_slider_onBrain(self):
+      
         print("Brain")
 
     def initAllpicture(self):
