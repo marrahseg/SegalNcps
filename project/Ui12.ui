@@ -1088,8 +1088,8 @@ background-color: rgb(122, 122, 122);
                               <rect>
                                <x>0</x>
                                <y>0</y>
-                               <width>397</width>
-                               <height>329</height>
+                               <width>98</width>
+                               <height>28</height>
                               </rect>
                              </property>
                             </widget>
@@ -1606,13 +1606,6 @@ background-color: rgb(122, 122, 122);
                            </widget>
                           </item>
                          </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="pushButton_3">
-                         <property name="text">
-                          <string>move point</string>
-                         </property>
                         </widget>
                        </item>
                        <item>

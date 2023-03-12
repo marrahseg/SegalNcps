@@ -92,11 +92,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
+        # self.StartBotton.clicked.connect(self.onSliderchangeClicked_MoveSphere)
         self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
         self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
         self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        self.pushButton_3.clicked.connect(self.onMovePoint)
+
 
         self.HideShowButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
@@ -141,20 +142,53 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.centerBZ = val
         self.show_sphere()
 
+    def onSliderchangeClicked_MoveSphere(self):
+        self.centerBX, self.centerBY, self.centerBZ = self.fit_sphere_by_SpinValues()
+        self.show_sphere()
+
     def show_sphere(self):
         self.brain_point.SetCenter(self.centerBX, self.centerBY, self.centerBZ)
+        #valbx, valby , valbz = self.fit_sphere_by_SpinValues()
+        #self.brain_point.SetCenter(valbx, valby, valbz)
 
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity = 0.6)
         # , opacity = 0.6
         self.Brain_interactor.background_color = (0, 0, 0)
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
-        print("center of point:" , self.brain_point.SetCenter)
+        print("center of point:", self.brain_point.SetCenter)
+
+    def fit_sphere_by_SpinValues(self):
+
+        _By, _Bx, _Bz = self.Xspin.value(), self.Yspin.value(), self.Zspin.value()
+
+        ###############################set centrt Bx
+        # x1 = (11.643465536911336, 35.129540907013, 71.48390264981094)
+        # x0 = (-17.707246882133617, -38.81887688908655, -15.006373327980562)
+
+        _Xpoint = (_Bx + 122) * (11.64 + 17.70) / 211
+        _centerBX = _Xpoint - 17.70
+
+        ###############################SET CENTER BY
+        # y0 = (33.396049032976, 13.409308184148962, -26.161069183297798)
+        # y1 = (-73.43569190838251, 5.346513764206035, 15.038880227604743)
+        _Ypoint = (_By + 86) * (5.34 - 13.40) / 173
+        _centerBY = _Ypoint + 13.40
+
+        #########################set center BZ
+        # z0 = (-75.3923963096923, -3.1382854698743365, 71.24888719019613)
+        # z1= (-9.376288619889035, 6.480567051263014, 11.482385368673533)
+        _Zpoint = (_Bz + 43) * (11.48 - 71.24) / 141
+        _centerBZ = _Zpoint + 71.24
+        ##################################
+
+
+        return _centerBX, _centerBY, _centerBZ
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -171,7 +205,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example']['CA'] = self.CAlabelShow.text()
 
         fileName = QFileDialog.getSaveFileName(self, ("Save data"), '',("*.txt"))
-
 
         with open(fileName[0], 'w') as configfile:
             config.write(configfile)
@@ -240,7 +273,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListY.extend(listYminus)
         self.picListY.append('0y.jpg')
         self.picListY.extend(listYplus)
-        # print(self.picListY)
 
         ######################################### SORT OF LIST Z
         picListZ = os.listdir(my_Zside_pics_add)
@@ -257,7 +289,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListZ.extend(listZminus)
         self.picListZ.append('0z.jpg')
         self.picListZ.extend(listZplus)
-        print(self.picListZ)
 
     def onSliderchangeClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
@@ -271,21 +302,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_go = _mz
         print("starting timer ....")
         self.timer.start(100)
-        # self.brain_point.SetCenter(0, 0, 0)
+        self.onSliderchangeClicked_MoveSphere()
 
-    def onMovePoint(self):
-        _sx, _sy, _sz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
-
-        _divisionX= self.centerBY + X_PIC_OFFSET - 1
-        _sx = _divisionX / (NUMBER_X_LIST - 1)
-
-        _division = self.centerBY + X_PIC_OFFSET - 1
-        _sx = _division / (NUMBER_X_LIST - 1)
-
-
-
-        _sz = self.centerBZ + Z_PIC_OFFSET - 1
-        self.brain_point.SetCenter(_sx, _sy, _sz)
 
     def onResetBotton(self):
         self.Xspin.setValue(0)
@@ -457,11 +475,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.X_label_modifier(valX, valY, valZ)
         self.Y_label_modifier(valX, valY, valZ)
         self.Z_label_modifier(valX, valY, valZ)
+
         self.x_now = valX
         self.y_now = valY
         self.z_now = valZ
         self.a_now = self.OAspin.value()
         self.b_now = self.CAspin.value()
+
         self.XlabelShow.setText(str(self.x_now - X_PIC_OFFSET))
         self.YlabelShow.setText(str(self.y_now - Y_PIC_OFFSET))
         self.ZlabelShow.setText(str(self.z_now - Z_PIC_OFFSET))
