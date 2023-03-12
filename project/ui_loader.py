@@ -126,9 +126,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
         #################### Signal and slot for brain sphere update
-        self.Xslider.valueChanged.connect(self.on_change_sphere_by_sliderX)
-        self.Yslider.valueChanged.connect(self.on_change_sphere_by_sliderY)
-        self.Zslider.valueChanged.connect(self.on_change_sphere_by_sliderZ)
+        self.Xslider.sliderMoved.connect(self.on_change_sphere_by_sliderX)
+        self.Yslider.sliderMoved.connect(self.on_change_sphere_by_sliderY)
+        self.Zslider.sliderMoved.connect(self.on_change_sphere_by_sliderZ)
 
     def on_change_sphere_by_sliderX(self, val):
         self.centerBY = val
@@ -142,26 +142,31 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.centerBZ = val
         self.show_sphere()
 
-    def onSliderchangeClicked_MoveSphere(self):
+
+    def onSpinChangeClicked_MoveSphere(self):
         self.centerBX, self.centerBY, self.centerBZ = self.fit_sphere_by_SpinValues()
         self.show_sphere()
 
     def show_sphere(self):
+
         self.brain_point.SetCenter(self.centerBX, self.centerBY, self.centerBZ)
-        #valbx, valby , valbz = self.fit_sphere_by_SpinValues()
-        #self.brain_point.SetCenter(valbx, valby, valbz)
 
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity = 0.6)
-        # , opacity = 0.6
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
+        # opacity = 0.6
+        camera = pv.camera
+        camera.position = (30.0, 30.0, 30.0)
+
         self.Brain_interactor.background_color = (0, 0, 0)
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
         print("center of point:", self.brain_point.SetCenter)
+
+
 
     def fit_sphere_by_SpinValues(self):
 
@@ -171,24 +176,26 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # x1 = (11.643465536911336, 35.129540907013, 71.48390264981094)
         # x0 = (-17.707246882133617, -38.81887688908655, -15.006373327980562)
 
-        _Xpoint = (_Bx + 122) * (11.64 + 17.70) / 211
-        _centerBX = _Xpoint - 17.70
+        _Xpoint = (_Bx + 122) * (55 + 55) / 211
+        _centerBX = _Xpoint - 55
 
         ###############################SET CENTER BY
         # y0 = (33.396049032976, 13.409308184148962, -26.161069183297798)
         # y1 = (-73.43569190838251, 5.346513764206035, 15.038880227604743)
-        _Ypoint = (_By + 86) * (5.34 - 13.40) / 173
-        _centerBY = _Ypoint + 13.40
+        _Ypoint = (_By + 86) * (40 + 50) / 173
+        _centerBY = _Ypoint - 50
 
         #########################set center BZ
         # z0 = (-75.3923963096923, -3.1382854698743365, 71.24888719019613)
         # z1= (-9.376288619889035, 6.480567051263014, 11.482385368673533)
-        _Zpoint = (_Bz + 43) * (11.48 - 71.24) / 141
-        _centerBZ = _Zpoint + 71.24
+        _Zpoint = (_Bz + 43) * (100 + 25) / 141
+        _centerBZ = _Zpoint - 15
         ##################################
 
-
+        print('center point:', self.centerBX, self.centerBY, self.centerBZ)
         return _centerBX, _centerBY, _centerBZ
+
+
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -302,7 +309,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_go = _mz
         print("starting timer ....")
         self.timer.start(100)
-        self.onSliderchangeClicked_MoveSphere()
 
 
     def onResetBotton(self):
@@ -327,6 +333,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mx = 0
         _my = 0
         _mz = 0
+        self.onSpinChangeClicked_MoveSphere()
 
         ################################# x check
         if self.x_now != self.x_go:
