@@ -130,6 +130,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Yslider.sliderMoved.connect(self.on_change_sphere_by_sliderY)
         self.Zslider.sliderMoved.connect(self.on_change_sphere_by_sliderZ)
 
+
+
     def on_change_sphere_by_sliderX(self, val):
         self.centerBY = val
         self.show_sphere()
@@ -153,14 +155,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def show_3Brain(self):
 
+
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158))
         # opacity = 0.6
-        camera = pv.camera
-        camera.position = (30.0, 30.0, 30.0)
 
+        self.Brain_interactor.camera.position = (100, 300, 100)
+        # self.Brain_interactor.camera.elevation = 90
         self.Brain_interactor.background_color = (0, 0, 0)
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
@@ -171,7 +174,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def fit_sphere_by_SpinValues(self):
 
         _By, _Bx, _Bz = self.Xspin.value(), self.Yspin.value(), self.Zspin.value()
-
         ###############################set centrt Bx
         # x1 = (11.643465536911336, 35.129540907013, 71.48390264981094)
         # x0 = (-17.707246882133617, -38.81887688908655, -15.006373327980562)
