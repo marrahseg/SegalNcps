@@ -74,11 +74,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.x_now = 0
         self.y_now = 0
         self.z_now = 0
+        self.oa_now = 0
+        self.ca_now = 0
 
 
         self.x_go = 0
         self.y_go = 0
         self.z_go = 0
+        self.oa_go = 0
+        self.ca_go = 0
 
 
         self.onResetBotton()
@@ -131,7 +135,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zslider.sliderMoved.connect(self.on_change_sphere_by_sliderZ)
 
 
-
     def on_change_sphere_by_sliderX(self, val):
         self.centerBY = val
         self.show_sphere()
@@ -144,7 +147,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.centerBZ = val
         self.show_sphere()
 
-
     def onSpinChangeClicked_MoveSphere(self):
         self.centerBX, self.centerBY, self.centerBZ = self.fit_sphere_by_SpinValues()
         self.show_sphere()
@@ -154,7 +156,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.brain_point.SetCenter(self.centerBX, self.centerBY, self.centerBZ)
 
     def show_3Brain(self):
-
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
@@ -168,8 +169,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
         print("center of point:", self.brain_point.SetCenter)
-
-
 
     def fit_sphere_by_SpinValues(self):
 
@@ -196,8 +195,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         print('center point:', self.centerBX, self.centerBY, self.centerBZ)
         return _centerBX, _centerBY, _centerBZ
-
-
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -301,17 +298,20 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onSliderchangeClicked(self):
         _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
+
         self.update_pics_lines(_mx, _my, _mz)
         self.change_spin_vals(_mx, _my, _mz)
 
     def onStartBottonClicked(self):
-        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(),  1)
+        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+
         self.x_go = _mx
         self.y_go = _my
         self.z_go = _mz
+        self.oa_go = self.OAspin.value()
+        self.ca_go = self.CAspin.value()
         print("starting timer ....")
         self.timer.start(100)
-
 
     def onResetBotton(self):
         self.Xspin.setValue(0)
@@ -321,6 +321,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OAspin.setValue(0)
 
         _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+
+
         self.x_go = _mx
         self.y_go = _my
         self.z_go = _mz
@@ -335,6 +337,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mx = 0
         _my = 0
         _mz = 0
+        _moa = 0
+        _mca = 0
         self.onSpinChangeClicked_MoveSphere()
 
         ################################# x check
@@ -346,7 +350,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
             _my = self.y_now
             _mz = self.z_now
-            self.update_pics_lines_and_now_position(_mx, _my, _mz)
+            _moa = self.oa_now
+            _mca = self.ca_now
+            self.update_pics_lines_and_now_position(_mx, _my, _mz, _moa, _mca)
             self.change_slider_Pos(_mx, _my, _mz)
 
         else:
@@ -359,6 +365,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
                     _my = self.y_now - 1
 
                 _mz = self.z_now
+                _moa = self.oa_now
+                _mca = self.ca_now
                 self.update_pics_lines_and_now_position(_mx, _my, _mz)
                 self.change_slider_Pos(_mx, _my, _mz)
 
@@ -371,13 +379,44 @@ class Window_ui(QMainWindow, Ui_MainWindow):
                     else:
                         _mz = self.z_now - 1
 
+                    _moa = self.oa_now
+                    _mca = self.ca_now
                     self.update_pics_lines_and_now_position(_mx, _my, _mz)
                     self.change_slider_Pos(_mx, _my, _mz)
+
                 else:
                     _mz = self.z_now
-                    self.update_pics_lines_and_now_position(_mx, _my, _mz)
-                    self.change_slider_Pos(_mx, _my, _mz)
-                    self.timer.stop()
+                    if self.oa != self.oa_go:
+                        if self.oa < self.oa_go:
+                            _moa = self.oa_now + 1
+                        else:
+                            _moa = self.oa_now - 1
+                        _mca = self.ca_now
+                        self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                        self.change_slider_Pos(_mx, _my, _mz)
+
+                    else:
+                        _moa = self.oa_now
+                        if self.ca_now != self.ca_go:
+                            if self.ca_now < self.ca_go:
+                                _mca = self.ca_now + 1
+                            else:
+                                _mca = self.ca_now - 1
+
+                        else:
+                            _mca = self.ca_now
+                            self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                            self.change_slider_Pos(_mx, _my, _mz)
+                            self.timer.stop()
+
+
+            # else:
+                #     _mz = self.z_now
+
+                #     self.update_pics_lines_and_now_position(_mx, _my, _mz)
+                #     self.change_slider_Pos(_mx, _my, _mz)
+                #     self.timer.stop()
+
 
     def xyz_calculator(self, mx, my, mz, scale_flag):
         if scale_flag:
@@ -393,16 +432,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             valueEv = self.EVspinbox.value()
             _scaleZ = valueEv / NUMBER_Z_LIST
             _cz = int(mz) + Z_PIC_OFFSET
+
         else:
             _cx = int(mx)
             _cy = int(my)
             _cz = int(mz)
+
         return _cx, _cy, _cz
 
-    def change_slider_Pos(self, valX, valY, valZ):
+    def change_slider_Pos(self,valX, valY, valZ):
         self.Xslider.setValue(valX)
         self.Yslider.setValue(valY)
         self.Zslider.setValue(valZ)
+
 
     def X_label_modifier(self, valX, valY, valZ):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
@@ -488,19 +530,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.x_now = valX
         self.y_now = valY
         self.z_now = valZ
-        self.a_now = self.OAspin.value()
-        self.b_now = self.CAspin.value()
+
 
         self.XlabelShow.setText(str(self.x_now - X_PIC_OFFSET))
         self.YlabelShow.setText(str(self.y_now - Y_PIC_OFFSET))
         self.ZlabelShow.setText(str(self.z_now - Z_PIC_OFFSET))
-        self.OAlabelShow.setText(str(self.a_now))
-        self.CAlabelShow.setText(str(self.b_now))
+        self.OAlabelShow.setText(str(self.oa_go))
+        self.CAlabelShow.setText(str(self.ca_go))
 
     def change_spin_vals(self, valX, valY, valZ):
         self.Xspin.setValue(valX - X_PIC_OFFSET)
         self.Yspin.setValue(valY - Y_PIC_OFFSET)
         self.Zspin.setValue(valZ - Z_PIC_OFFSET)
+
 
     def onMyHideShow(self):
         if self.frame_36.isHidden() == False:
