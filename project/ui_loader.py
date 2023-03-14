@@ -58,13 +58,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.frame_23.setMaximumWidth(560)
-        # pv.set_plot_theme("dark")
 
 
         self.timer = QTimer()
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
+
 
         self.centerBX = 0
         self.centerBY = 0
@@ -84,19 +84,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.oa_go = 0
         self.ca_go = 0
 
-
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
-        # self.x_go = self.x_now - 1
-        # self.y_go = self.y_now - 1
-        # self.z_go = self.z_now - 1
 
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        # self.StartBotton.clicked.connect(self.onSliderchangeClicked_MoveSphere)
         self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
         self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
         self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
@@ -152,37 +147,33 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
     def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz, _oa):
-        _xx, _yy, _zz = self.change_Coordinate_origin(_By, _Bx, _Bz)
+        _xx, _yy, _zz = self.change_Coordinate_origin(_Bx, _By, _Bz)
 
         # do calcultations based on _xx , _yy, _zz, _oa
-        _finalx, _finaly, _finalz = 0, 0, 0
+        # _finalx, _finaly, _finalz = 0, 0, 0
 
-        return _finalx, _finaly, _finalz
+        # return _finalx, _finaly, _finalz
+        return _xx, _yy, _zz
 
 
     def change_Coordinate_origin(self, _Bx, _By, _Bz):
-        # _By, _Bx, _Bz = self.Xspin.value(), self.Yspin.value(), self.Zspin.value()
-        ###############################set centrt Bx
-        # x1 = (11.643465536911336, 35.129540907013, 71.48390264981094)
-        # x0 = (-17.707246882133617, -38.81887688908655, -15.006373327980562)
 
-        _Xpoint = (_Bx + 122) * (55 + 55) / 211
+        ###############################set centrt Bx
+        _Xpoint = (_By + 122) * (55 + 55) / 211
         _centerBX = _Xpoint - 55
 
+
         ###############################SET CENTER BY
-        # y0 = (33.396049032976, 13.409308184148962, -26.161069183297798)
-        # y1 = (-73.43569190838251, 5.346513764206035, 15.038880227604743)
-        _Ypoint = (_By + 86) * (40 + 50) / 173
+        _Ypoint = (_Bx + 86) * (40 + 50) / 173
         _centerBY = _Ypoint - 50
 
+
         #########################set center BZ
-        # z0 = (-75.3923963096923, -3.1382854698743365, 71.24888719019613)
-        # z1= (-9.376288619889035, 6.480567051263014, 11.482385368673533)
         _Zpoint = (_Bz + 43) * (100 + 25) / 141
         _centerBZ = _Zpoint - 15
         ##################################
 
-        print('center point:', self.centerBX, self.centerBY, self.centerBZ)
+        print('center point:', _centerBX, _centerBY, _centerBZ)
         return _centerBX, _centerBY, _centerBZ
 
     def print_point(*args, **kwargs):
@@ -193,8 +184,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read('Brain for Half_Skull.stl')
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity = 0.6)
-        # opacity = 0.6
+        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
         self.Brain_interactor.camera.position = (100, 300, 100)
         # self.Brain_interactor.camera.elevation = 90
@@ -332,6 +322,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.x_go = _mx
         self.y_go = _my
         self.z_go = _mz
+        # self.oa_go = _moa
+        # self.ca_go = _mca
 
 
         self.update_pics_lines(_mx, _my, _mz)
@@ -346,6 +338,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
         self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
+        # print("ssss;", self.x_now, self.y_now, self.z_now, self.oa_now)
 
         ################################# x check
         if self.x_now != self.x_go:
