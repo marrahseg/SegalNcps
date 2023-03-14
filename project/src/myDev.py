@@ -35,7 +35,7 @@ class Window_withDev(Window_ui):
         # self.pushButton_up.setShortcut('w')
         # self.pushButton_down.setShortcut('s')
         try:
-            self.DevSer = serial.Serial('COM9', 38400, timeout=1)  # open serial port
+            self.DevSer = serial.Serial('COM4', 38400, timeout=1)  # open serial port
         except:
             print("no device found")
 
