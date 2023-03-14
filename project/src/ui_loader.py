@@ -92,9 +92,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
-        self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
-        self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.Xslider.sliderMoved.connect(self.onSliderchangeClicked)
+        self.Yslider.sliderMoved.connect(self.onSliderchangeClicked)
+        self.Zslider.sliderMoved.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
 
@@ -149,27 +149,27 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz, _oa):
         _xx, _yy, _zz = self.change_Coordinate_origin(_Bx, _By, _Bz)
 
-        # do calcultations based on _xx , _yy, _zz, _oa
-        # _finalx, _finaly, _finalz = 0, 0, 0
+        #do calcultations based on _xx , _yy, _zz, _oa
+        #_finalx, _finaly, _finalz = 0, 0, 0
 
-        # return _finalx, _finaly, _finalz
+        #return _finalx, _finaly, _finalz
         return _xx, _yy, _zz
 
 
     def change_Coordinate_origin(self, _Bx, _By, _Bz):
 
         ###############################set centrt Bx
-        _Xpoint = (_By + 122) * (55 + 55) / 211
+        _Xpoint = (_By + Y_PIC_OFFSET) * (55 + 55) / (NUMBER_Y_LIST - 1)
         _centerBX = _Xpoint - 55
 
 
         ###############################SET CENTER BY
-        _Ypoint = (_Bx + 86) * (40 + 50) / 173
+        _Ypoint = (_Bx + X_PIC_OFFSET) * (40 + 50) / (NUMBER_X_LIST - 1)
         _centerBY = _Ypoint - 50
 
 
         #########################set center BZ
-        _Zpoint = (_Bz + 43) * (100 + 25) / 141
+        _Zpoint = (_Bz + Z_PIC_OFFSET) * (100 + 25) / (NUMBER_Z_LIST - 1)
         _centerBZ = _Zpoint - 15
         ##################################
 
@@ -192,6 +192,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
         print("center of point:", self.brain_point.SetCenter)
+
 
     def onSaveFigData(self):
 
@@ -338,7 +339,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
         self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
-        # print("ssss;", self.x_now, self.y_now, self.z_now, self.oa_now)
+
 
         ################################# x check
         if self.x_now != self.x_go:
@@ -537,7 +538,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Xspin.setValue(valX - X_PIC_OFFSET)
         self.Yspin.setValue(valY - Y_PIC_OFFSET)
         self.Zspin.setValue(valZ - Z_PIC_OFFSET)
-
 
     def onMyHideShow(self):
         if self.frame_36.isHidden() == False:
