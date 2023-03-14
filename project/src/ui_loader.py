@@ -146,11 +146,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.brain_point.SetCenter(self.fit_sphere_by_SpinValues(_x, _y, _z, _oa))
 
 
+
     def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz, _oa):
         _xx, _yy, _zz = self.change_Coordinate_origin(_Bx, _By, _Bz)
 
         #do calcultations based on _xx , _yy, _zz, _oa
-        #_finalx, _finaly, _finalz = 0, 0, 0
+        # _finalx, _finaly, _finalz = 0, 0, 0
 
         #return _finalx, _finaly, _finalz
         return _xx, _yy, _zz
@@ -159,18 +160,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def change_Coordinate_origin(self, _Bx, _By, _Bz):
 
         ###############################set centrt Bx
-        _Xpoint = (_By + Y_PIC_OFFSET) * (55 + 55) / (NUMBER_Y_LIST - 1)
-        _centerBX = _Xpoint - 55
+        _Xpoint = (_By + Y_PIC_OFFSET) * (33 + 42) / (NUMBER_Y_LIST - 1)
+        _centerBX = _Xpoint - 42
 
 
         ###############################SET CENTER BY
-        _Ypoint = (_Bx + X_PIC_OFFSET) * (40 + 50) / (NUMBER_X_LIST - 1)
-        _centerBY = _Ypoint - 50
+        _Ypoint = (_Bx + X_PIC_OFFSET) * (50 + 13) / (NUMBER_X_LIST - 1)
+        _centerBY = _Ypoint - 13
 
 
         #########################set center BZ
-        _Zpoint = (_Bz + Z_PIC_OFFSET) * (100 + 25) / (NUMBER_Z_LIST - 1)
-        _centerBZ = _Zpoint - 15
+        _Zpoint = (_Bz + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
+        _centerBZ = _Zpoint - 91
         ##################################
 
         print('center point:', _centerBX, _centerBY, _centerBZ)
@@ -338,8 +339,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mz = 0
 
 
+        
         self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
-
 
         ################################# x check
         if self.x_now != self.x_go:
