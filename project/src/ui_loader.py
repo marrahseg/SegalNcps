@@ -10,15 +10,15 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
 from qt_material import apply_stylesheet
-from Ui12_ui import Ui_MainWindow
+from src.Ui12_ui import Ui_MainWindow
 
 
 motor_real = False
-
+brain_stlfile_path ='./UI/Brain for Half_Skull.stl'
 ########################addres of All pic
-my_Xside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/X_174/'
-my_Yside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
-my_Zside_pics_add = './MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
+my_Xside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
+my_Yside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
+my_Zside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
 
 ########################## plain X
@@ -183,7 +183,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Brain_interactor = QtInteractor(self.frame_8)
         self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
-        mesh = pv.read('Brain for Half_Skull.stl')
+        mesh = pv.read(brain_stlfile_path)
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
         self.Brain_interactor.camera.position = (100, 300, 100)

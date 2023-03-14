@@ -1,11 +1,4 @@
-import time
-from PyQt5 import QtCore
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QMainWindow, QWidget, QFileDialog
-from random import randint
-
-
 
 from ui_loader import Window_ui, motor_real
 
