@@ -13,6 +13,7 @@ from qt_material import apply_stylesheet
 from src.Ui12_ui import Ui_MainWindow
 
 
+
 motor_real = False
 brain_stlfile_path ='../UI/Brain for Half_Skull.stl'
 ########################addres of All pic
@@ -92,9 +93,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.sliderChange.connect(self.onSliderchangeClicked)
-        self.Yslider.sliderChange.connect(self.onSliderchangeClicked)
-        self.Zslider.sliderChange.connect(self.onSliderchangeClicked)
+        self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
 
@@ -124,40 +125,20 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
-        #################### Signal and slot for brain sphere update
-        # self.Xslider.sliderMoved.connect(self.on_change_sphere_by_sliderX)
-        # self.Yslider.sliderMoved.connect(self.on_change_sphere_by_sliderY)
-        # self.Zslider.sliderMoved.connect(self.on_change_sphere_by_sliderZ)
+    def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz):
+        _xx, _yy, _zz, _oa = self.change_Coordinate_origin()
+        self.brain_point.SetCenter(_xx, _yy, _zz)
 
+        # do calcultations based on _xx , _yy, _zz, _oa
+        _finalx, _finaly, _finalz = 0, 0, 0
+        return _finalx, _finaly, _finalz
+        # return _xx, _yy, _zz
 
-    # def on_change_sphere_by_sliderX(self, val):
-    #     self.centerBY = val
-    #     self.show_sphere()
-    #
-    # def on_change_sphere_by_sliderY(self, val):
-    #     self.centerBX = val
-    #     self.show_sphere()
-    #
-    # def on_change_sphere_by_sliderZ(self, val):
-    #     self.centerBZ = val
-    #     self.show_sphere()
+    def change_Coordinate_origin(self):
 
-    def moveSphere(self, _x, _y, _z, _oa):
-        self.brain_point.SetCenter(self.fit_sphere_by_SpinValues(_x, _y, _z, _oa))
+        _Bx, _By, _Bz, _Boa = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text()), int(self.OAlabelShow.text())
+        print(_Bx, _By, _Bz, _Boa)
 
-
-
-    def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz, _oa):
-        _xx, _yy, _zz = self.change_Coordinate_origin(_Bx, _By, _Bz)
-
-        #do calcultations based on _xx , _yy, _zz, _oa
-        # _finalx, _finaly, _finalz = 0, 0, 0
-        #return _finalx, _finaly, _finalz
-
-        return _xx, _yy, _zz
-
-
-    def change_Coordinate_origin(self, _Bx, _By, _Bz):
 
         ###############################set centrt Bx
         _Xpoint = (_By + Y_PIC_OFFSET) * (33 + 42) / (NUMBER_Y_LIST - 1)
@@ -172,14 +153,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         #########################set center BZ
         _Zpoint = (_Bz + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
         _centerBZ = _Zpoint - 91
-        ##################################
 
-        # _oapoint = (_oa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
-        # _centerO = _oapoint - 91
+        ########################################
+
+
+        ############################set center oa
+        _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
+        _centerBoa = _oapoint - 91
+
 
         print('center point:', _centerBX, _centerBY, _centerBZ)
-        return _centerBX, _centerBY, _centerBZ
 
+        return _centerBX, _centerBY, _centerBZ, _centerBoa
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -191,13 +176,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         mesh = pv.read(brain_stlfile_path)
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
-        self.Brain_interactor.camera.position = (100, 300, 100)
+        # self.Brain_interactor.camera.position = (100, 300, 100)
         # self.Brain_interactor.camera.elevation = 90
         self.Brain_interactor.background_color = (0, 0, 0)
-        self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position= 'upper_edge', font= 'arial', font_size=5, color=None)
+        self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position='upper_edge', font='arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
         print("center of point:", self.brain_point.SetCenter)
-
 
     def onSaveFigData(self):
 
@@ -335,7 +319,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
-        self.brain_point.SetCenter(-46, -13, 100)
+        # self.brain_point.SetCenter(-46, -13, 100)
 
     def onTimer_interrupt(self):
         _mx = 0
@@ -343,8 +327,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mz = 0
 
 
-
-        self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
+        self.fit_sphere_by_SpinValues(self.x_now, self.y_now,self.z_now)
+        # self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
 
         ################################# x check
         if self.x_now != self.x_go:
