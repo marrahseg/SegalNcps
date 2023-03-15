@@ -14,11 +14,11 @@ from src.Ui12_ui import Ui_MainWindow
 
 
 motor_real = False
-brain_stlfile_path ='./UI/Brain for Half_Skull.stl'
+brain_stlfile_path ='../UI/Brain for Half_Skull.stl'
 ########################addres of All pic
-my_Xside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
-my_Yside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
-my_Zside_pics_add = './UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
+my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
+my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
+my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
 
 
 ########################## plain X
@@ -51,7 +51,7 @@ NUMBER_Z_LIST = 142
 class Window_ui(QMainWindow, Ui_MainWindow):
     def __init__(self,  parent=None):
         super().__init__(parent)
-
+        os.getcwd()
         self.setupUi(self)
 
         self.CloseButton.hide()
@@ -92,9 +92,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.sliderMoved.connect(self.onSliderchangeClicked)
-        self.Yslider.sliderMoved.connect(self.onSliderchangeClicked)
-        self.Zslider.sliderMoved.connect(self.onSliderchangeClicked)
+        self.Xslider.sliderChange.connect(self.onSliderchangeClicked)
+        self.Yslider.sliderChange.connect(self.onSliderchangeClicked)
+        self.Zslider.sliderChange.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
 
@@ -152,8 +152,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         #do calcultations based on _xx , _yy, _zz, _oa
         # _finalx, _finaly, _finalz = 0, 0, 0
-
         #return _finalx, _finaly, _finalz
+
         return _xx, _yy, _zz
 
 
@@ -174,8 +174,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _centerBZ = _Zpoint - 91
         ##################################
 
+        # _oapoint = (_oa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
+        # _centerO = _oapoint - 91
+
         print('center point:', _centerBX, _centerBY, _centerBZ)
         return _centerBX, _centerBY, _centerBZ
+
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -339,7 +343,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mz = 0
 
 
-        
+
         self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
 
         ################################# x check

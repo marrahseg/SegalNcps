@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
 
      # apply_stylesheet(app, theme='color.xml')
-     apply_stylesheet(app, theme='./UI/dark_purp_segal.xml')
+     apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
 
      win.show()
      # win.showFullScreen()
