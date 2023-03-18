@@ -1,0 +1,9 @@
+[Head Adjusted Coordinates (Coil Position):]
+
+[forge.example]
+x = 0
+y = -14
+z = 98
+oa = 0
+ca = 0
+

@@ -65,6 +65,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.minimizedButton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.frame_23.setMaximumWidth(560)
+        self.Yslider.setMaximum(212)
+        self.Zslider.setMaximum(142)
 
 
         self.timer = QTimer()
@@ -139,7 +141,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         _Bx, _By, _Bz = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
 
-
         ###############################set centrt Bx
         _Xpoint = (_By + Y_PIC_OFFSET) * (47+ 38) / (NUMBER_Y_LIST - 1)
         _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
@@ -191,6 +192,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example']['Z'] = self.ZlabelShow.text()
         config['forge.example']['OA'] = self.OAlabelShow.text()
         config['forge.example']['CA'] = self.CAlabelShow.text()
+
+
+
 
         fileName = QFileDialog.getSaveFileName(self, ("Save data"), '',("*.txt"))
 
@@ -278,7 +282,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListZ.append('0z.jpg')
         self.picListZ.extend(listZplus)
 
-    def onSliderchangeClicked(self):
+    def onSliderchangeClicked(self, val):
         _mx, _my, _mz = self.xyz_calculator(self.Xslider.value(), self.Yslider.value(), self.Zslider.value(), 0)
 
         self.update_pics_lines(_mx, _my, _mz)
@@ -520,6 +524,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CAlabelShow.setText(str(self.ca_now))
 
     def change_spin_vals(self, valX, valY, valZ):
+        # print(f'Spin values: {valX}, {valY}, {valZ}')
         self.Xspin.setValue(valX - X_PIC_OFFSET)
         self.Yspin.setValue(valY - Y_PIC_OFFSET)
         self.Zspin.setValue(valZ - Z_PIC_OFFSET)
