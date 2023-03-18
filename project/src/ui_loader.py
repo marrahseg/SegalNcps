@@ -48,6 +48,12 @@ NUMBER_Y_LIST = 212
 NUMBER_Z_LIST = 142
 
 
+####################FOR BRAIN OFFSET
+X_BRAIN_OFFSET = 7
+Y_BRAIN_OFFSET = -21
+Z_BRAIN_offset = 44
+
+
 
 class Window_ui(QMainWindow, Ui_MainWindow):
     def __init__(self,  parent=None):
@@ -126,8 +132,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
     def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz):
-        _xx, _yy, _zz, _oa = self.change_Coordinate_origin()
+        _xx, _yy, _zz  = self.change_Coordinate_origin()
         self.brain_point.SetCenter(_xx, _yy, _zz)
+        print("cccccccccccccccc", _xx , _yy, _zz)
 
         # do calcultations based on _xx , _yy, _zz, _oa
         _finalx, _finaly, _finalz = 0, 0, 0
@@ -136,35 +143,36 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def change_Coordinate_origin(self):
 
-        _Bx, _By, _Bz, _Boa = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text()), int(self.OAlabelShow.text())
-        print(_Bx, _By, _Bz, _Boa)
+        _Bx, _By, _Bz  = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
+
 
 
         ###############################set centrt Bx
-        _Xpoint = (_By + Y_PIC_OFFSET) * (33 + 42) / (NUMBER_Y_LIST - 1)
-        _centerBX = _Xpoint - 42
+        _Xpoint = (_By + Y_PIC_OFFSET) * (47+ 38) / (NUMBER_Y_LIST - 1)
+        _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
 
 
         ###############################SET CENTER BY
-        _Ypoint = (_Bx + X_PIC_OFFSET) * (50 + 13) / (NUMBER_X_LIST - 1)
-        _centerBY = _Ypoint - 13
+        _Ypoint = (_Bx + X_PIC_OFFSET) * (50 + 21) / (NUMBER_X_LIST - 1)
+        _centerBY = _Ypoint - 21 + Y_BRAIN_OFFSET
 
 
         #########################set center BZ
-        _Zpoint = (_Bz + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
-        _centerBZ = _Zpoint - 91
+        _Zpoint = (_Bz + Z_PIC_OFFSET) * (53 + 12) / (NUMBER_Z_LIST - 1)
+        _centerBZ = _Zpoint - 12 + Z_BRAIN_offset
+
 
         ########################################
 
 
         ############################set center oa
-        _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
-        _centerBoa = _oapoint - 91
+        # _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
+        # _centerBoa = _oapoint - 91
 
 
         print('center point:', _centerBX, _centerBY, _centerBZ)
 
-        return _centerBX, _centerBY, _centerBZ, _centerBoa
+        return _centerBX, _centerBY, _centerBZ
 
     def print_point(*args, **kwargs):
         print(args[1])
@@ -319,7 +327,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
-        # self.brain_point.SetCenter(-46, -13, 100)
+        self.fit_sphere_by_SpinValues(0, -14 , 98)
 
     def onTimer_interrupt(self):
         _mx = 0
