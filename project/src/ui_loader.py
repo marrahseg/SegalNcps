@@ -95,7 +95,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
-
     def signalsSlat(self):
 
         self.StartBotton.clicked.connect(self.onStartBottonClicked)
@@ -131,20 +130,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
-    def fit_sphere_by_SpinValues(self, _Bx, _By, _Bz):
-        _xx, _yy, _zz  = self.change_Coordinate_origin()
+    def moveSphere(self, _Bx, _By, _Bz):
+        _xx, _yy, _zz = self.change_Coordinate_origin()
         self.brain_point.SetCenter(_xx, _yy, _zz)
-        print("cccccccccccccccc", _xx , _yy, _zz)
-
-        # do calcultations based on _xx , _yy, _zz, _oa
-        _finalx, _finaly, _finalz = 0, 0, 0
-        return _finalx, _finaly, _finalz
-        # return _xx, _yy, _zz
+        print("cccccccccccccccc", _xx, _yy, _zz)
 
     def change_Coordinate_origin(self):
 
-        _Bx, _By, _Bz  = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
-
+        _Bx, _By, _Bz = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
 
 
         ###############################set centrt Bx
@@ -162,8 +155,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _centerBZ = _Zpoint - 12 + Z_BRAIN_offset
 
 
-        ########################################
-
 
         ############################set center oa
         # _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
@@ -171,7 +162,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
         print('center point:', _centerBX, _centerBY, _centerBZ)
-
         return _centerBX, _centerBY, _centerBZ
 
     def print_point(*args, **kwargs):
@@ -327,16 +317,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
-        self.fit_sphere_by_SpinValues(0, -14 , 98)
+        self.moveSphere(0, -14, 98)
 
     def onTimer_interrupt(self):
         _mx = 0
         _my = 0
         _mz = 0
 
+        self.moveSphere(self.x_now, self.y_now, self.z_now)
 
-        self.fit_sphere_by_SpinValues(self.x_now, self.y_now,self.z_now)
-        # self.moveSphere(self.x_now, self.y_now, self.z_now, self.oa_now)
 
         ################################# x check
         if self.x_now != self.x_go:
@@ -437,7 +426,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Xslider.setValue(valX)
         self.Yslider.setValue(valY)
         self.Zslider.setValue(valZ)
-
 
     def X_label_modifier(self, valX, valY, valZ):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])

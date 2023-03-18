@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1389</width>
-    <height>869</height>
+    <height>875</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -509,7 +509,7 @@ background-color: rgb(122, 122, 122);
                    </font>
                   </property>
                   <property name="currentIndex">
-                   <number>1</number>
+                   <number>2</number>
                   </property>
                   <widget class="QWidget" name="tab_Setting">
                    <attribute name="title">
@@ -1797,7 +1797,7 @@ p, li { white-space: pre-wrap; }
                                </property>
                                <property name="icon">
                                 <iconset>
-                                 <normaloff>icons/images/LEFT.svg</normaloff>icons/images/LEFT.svg</iconset>
+                                 <normaloff>../icons/images/angle left.svg</normaloff>../icons/images/angle left.svg</iconset>
                                </property>
                                <property name="iconSize">
                                 <size>
@@ -2974,7 +2974,7 @@ Axis</string>
                      </font>
                     </property>
                     <property name="maximum">
-                     <number>211</number>
+                     <number>212</number>
                     </property>
                     <property name="orientation">
                      <enum>Qt::Vertical</enum>
@@ -3094,7 +3094,7 @@ Axis</string>
                      </font>
                     </property>
                     <property name="maximum">
-                     <number>141</number>
+                     <number>142</number>
                     </property>
                     <property name="tracking">
                      <bool>true</bool>
