@@ -161,7 +161,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
         # _centerBoa = _oapoint - 91
 
-
         print('center point:', _centerBX, _centerBY, _centerBZ)
         return _centerBX, _centerBY, _centerBZ
 
@@ -307,7 +306,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zspin.setValue(98)
         self.CAspin.setValue(0)
         self.OAspin.setValue(0)
-
+        self.moveSphere(0, -14, 98)
         _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
 
 
@@ -321,7 +320,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
-        self.moveSphere(0, -14, 98)
+
 
     def onTimer_interrupt(self):
         _mx = 0
