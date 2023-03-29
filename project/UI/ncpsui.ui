@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1022</width>
+    <width>1093</width>
     <height>715</height>
    </rect>
   </property>
@@ -14,6 +14,12 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>2</number>
@@ -61,7 +67,7 @@
         <number>3</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="HideMenuButton">
          <property name="palette">
           <palette>
            <active>
@@ -483,14 +489,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="CpPositionButton">
          <property name="text">
           <string>Cp  Position</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="ResetPositionButton">
          <property name="text">
           <string>Reset Position</string>
          </property>
@@ -532,8 +538,11 @@ background-color: rgb(98, 20, 103);</string>
     </item>
     <item>
      <widget class="QFrame" name="frame_2">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -545,6 +554,9 @@ background-color: rgb(98, 20, 103);</string>
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
        <property name="leftMargin">
         <number>5</number>
        </property>
@@ -557,8 +569,14 @@ background-color: rgb(98, 20, 103);</string>
        <property name="bottomMargin">
         <number>5</number>
        </property>
-       <item alignment="Qt::AlignLeft">
+       <item>
         <widget class="QFrame" name="frame_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -566,20 +584,29 @@ background-color: rgb(98, 20, 103);</string>
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
+          <property name="spacing">
+           <number>2</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QFrame" name="frame_15">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -627,7 +654,7 @@ background-color: rgb(98, 20, 103);</string>
           <item>
            <widget class="QFrame" name="frame_16">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -655,7 +682,7 @@ background-color: rgb(98, 20, 103);</string>
               <number>2</number>
              </property>
              <item row="0" column="0">
-              <widget class="QTabWidget" name="tabWidget">
+              <widget class="QTabWidget" name="InformationtabWidget">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -663,9 +690,9 @@ background-color: rgb(98, 20, 103);</string>
                 </sizepolicy>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
-               <widget class="QWidget" name="tab">
+               <widget class="QWidget" name="Inputtab">
                 <attribute name="title">
                  <string>Input</string>
                 </attribute>
@@ -676,113 +703,161 @@ background-color: rgb(98, 20, 103);</string>
                     <string>Patient Head Indices:</string>
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <property name="spacing">
+                     <number>9</number>
+                    </property>
                     <property name="leftMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="topMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="rightMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>6</number>
+                     <number>9</number>
                     </property>
                     <item>
-                     <widget class="QFrame" name="frame_17">
+                     <widget class="QFrame" name="frame_40">
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
                       </property>
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_14">
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_27">
                        <item>
-                        <widget class="QLabel" name="label_24">
-                         <property name="text">
-                          <string>BT:</string>
+                        <widget class="QFrame" name="frame_18">
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
                          </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_15">
+                          <property name="spacing">
+                           <number>5</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>5</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_25">
+                            <property name="text">
+                             <string>AP:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="APSpin">
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                            <property name="value">
+                             <double>212.000000000000000</double>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_18">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_15">
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="label_25">
-                         <property name="text">
-                          <string>AP:</string>
+                        <widget class="QFrame" name="frame_19">
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
                          </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_16">
+                          <property name="spacing">
+                           <number>5</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>5</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_26">
+                            <property name="text">
+                             <string>EV:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="EVSpin">
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                            <property name="value">
+                             <double>142.000000000000000</double>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_19">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_16">
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="label_26">
-                         <property name="text">
-                          <string>EV:</string>
+                        <widget class="QFrame" name="frame_17">
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
                          </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_14">
+                          <property name="spacing">
+                           <number>5</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>5</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>5</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_24">
+                            <property name="text">
+                             <string>BT:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="BTSpin">
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                            <property name="value">
+                             <double>174.000000000000000</double>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </widget>
-                       </item>
-                       <item>
-                        <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
                        </item>
                       </layout>
                      </widget>
@@ -796,17 +871,20 @@ background-color: rgb(98, 20, 103);</string>
                     <string>Goal Coordinates</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_9">
+                    <property name="spacing">
+                     <number>9</number>
+                    </property>
                     <property name="leftMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="topMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="rightMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>2</number>
+                     <number>9</number>
                     </property>
                     <item>
                      <widget class="QFrame" name="frame_20">
@@ -818,19 +896,19 @@ background-color: rgb(98, 20, 103);</string>
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_17">
                        <property name="spacing">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="leftMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="topMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="rightMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="bottomMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <item>
                         <widget class="QFrame" name="frame_23">
@@ -842,21 +920,21 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_18">
                           <property name="spacing">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
-                          <item>
+                          <item alignment="Qt::AlignLeft">
                            <widget class="QLabel" name="label_27">
                             <property name="text">
                              <string>x:</string>
@@ -864,7 +942,14 @@ background-color: rgb(98, 20, 103);</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+                           <widget class="QDoubleSpinBox" name="XSpin">
+                            <property name="minimum">
+                             <double>-999.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -879,21 +964,21 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_19">
                           <property name="spacing">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
-                          <item>
+                          <item alignment="Qt::AlignLeft">
                            <widget class="QLabel" name="label_28">
                             <property name="text">
                              <string>Y:</string>
@@ -901,7 +986,14 @@ background-color: rgb(98, 20, 103);</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
+                           <widget class="QDoubleSpinBox" name="YSpin">
+                            <property name="minimum">
+                             <double>-999.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -915,19 +1007,22 @@ background-color: rgb(98, 20, 103);</string>
                           <enum>QFrame::Raised</enum>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_20">
+                          <property name="spacing">
+                           <number>5</number>
+                          </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
-                          <item>
+                          <item alignment="Qt::AlignLeft">
                            <widget class="QLabel" name="label_29">
                             <property name="text">
                              <string>Z:</string>
@@ -935,7 +1030,14 @@ background-color: rgb(98, 20, 103);</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
+                           <widget class="QDoubleSpinBox" name="ZSpin">
+                            <property name="minimum">
+                             <double>-999.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -952,17 +1054,20 @@ background-color: rgb(98, 20, 103);</string>
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_21">
+                       <property name="spacing">
+                        <number>9</number>
+                       </property>
                        <property name="leftMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="topMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="rightMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <property name="bottomMargin">
-                        <number>2</number>
+                        <number>9</number>
                        </property>
                        <item>
                         <widget class="QFrame" name="frame_27">
@@ -974,19 +1079,19 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_24">
                           <property name="spacing">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <item>
                            <widget class="QLabel" name="label_30">
@@ -996,7 +1101,14 @@ background-color: rgb(98, 20, 103);</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_7"/>
+                           <widget class="QDoubleSpinBox" name="OASpin">
+                            <property name="minimum">
+                             <double>-999.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -1011,21 +1123,21 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_23">
                           <property name="spacing">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
-                          <item>
+                          <item alignment="Qt::AlignLeft">
                            <widget class="QLabel" name="label_31">
                             <property name="text">
                              <string>CA:</string>
@@ -1033,7 +1145,14 @@ background-color: rgb(98, 20, 103);</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_8"/>
+                           <widget class="QDoubleSpinBox" name="CASpin">
+                            <property name="minimum">
+                             <double>-999.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>999.000000000000000</double>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -1047,20 +1166,23 @@ background-color: rgb(98, 20, 103);</string>
                           <enum>QFrame::Raised</enum>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_22">
+                          <property name="spacing">
+                           <number>5</number>
+                          </property>
                           <property name="leftMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="topMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="rightMargin">
-                           <number>2</number>
+                           <number>5</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>6</number>
+                           <number>5</number>
                           </property>
                           <item>
-                           <widget class="QPushButton" name="pushButton_6">
+                           <widget class="QPushButton" name="ResetButton">
                             <property name="text">
                              <string>Reset</string>
                             </property>
@@ -1073,9 +1195,9 @@ background-color: rgb(98, 20, 103);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QPushButton" name="pushButton_7">
+                     <widget class="QPushButton" name="StartButton">
                       <property name="text">
-                       <string>start</string>
+                       <string>Start</string>
                       </property>
                      </widget>
                     </item>
@@ -1089,7 +1211,7 @@ background-color: rgb(98, 20, 103);</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
                     <item>
-                     <widget class="QLabel" name="label_32">
+                     <widget class="QLabel" name="Notelabel">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                         <horstretch>0</horstretch>
@@ -1102,14 +1224,14 @@ background-color: rgb(98, 20, 103);</string>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignBottom">
-                     <widget class="QTextBrowser" name="textBrowser"/>
+                     <widget class="QTextBrowser" name="NoteBrowser"/>
                     </item>
                    </layout>
                   </widget>
                  </item>
                 </layout>
                </widget>
-               <widget class="QWidget" name="tab_2">
+               <widget class="QWidget" name="Movementtab">
                 <attribute name="title">
                  <string>Movement</string>
                 </attribute>
@@ -1148,7 +1270,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item>
-                        <widget class="QPushButton" name="pushButton_12">
+                        <widget class="QPushButton" name="Y_BackButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1211,7 +1333,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item>
-                        <widget class="QPushButton" name="pushButton_13">
+                        <widget class="QPushButton" name="Y_ForceButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1274,7 +1396,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item>
-                        <widget class="QPushButton" name="pushButton_10">
+                        <widget class="QPushButton" name="X_RightButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1337,7 +1459,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item alignment="Qt::AlignHCenter">
-                        <widget class="QPushButton" name="pushButton_9">
+                        <widget class="QPushButton" name="Z_UpButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1400,7 +1522,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item>
-                        <widget class="QPushButton" name="pushButton_14">
+                        <widget class="QPushButton" name="Z_DownButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1460,7 +1582,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item>
-                        <widget class="QPushButton" name="pushButton_11">
+                        <widget class="QPushButton" name="X_LeftButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1535,7 +1657,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item alignment="Qt::AlignHCenter">
-                        <widget class="QPushButton" name="pushButton_17">
+                        <widget class="QPushButton" name="Down_PitchButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1598,7 +1720,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item alignment="Qt::AlignHCenter">
-                        <widget class="QPushButton" name="pushButton_16">
+                        <widget class="QPushButton" name="Up_PitchButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1661,7 +1783,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item alignment="Qt::AlignHCenter">
-                        <widget class="QPushButton" name="pushButton_15">
+                        <widget class="QPushButton" name="Left_RowButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1724,7 +1846,7 @@ background-color: rgb(98, 20, 103);</string>
                         <number>2</number>
                        </property>
                        <item alignment="Qt::AlignHCenter">
-                        <widget class="QPushButton" name="pushButton_18">
+                        <widget class="QPushButton" name="Right_RowButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1755,7 +1877,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_42">
                          <property name="text">
-                          <string>Rotat RightRow</string>
+                          <string>Rotat Right Row</string>
                          </property>
                         </widget>
                        </item>
@@ -1766,7 +1888,44 @@ background-color: rgb(98, 20, 103);</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_8">
+                  <widget class="QPushButton" name="ResetDeviceButton">
+                   <property name="palette">
+                    <palette>
+                     <active>
+                      <colorrole role="Button">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>97</red>
+                         <green>97</green>
+                         <blue>97</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                     </active>
+                     <inactive>
+                      <colorrole role="Button">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>97</red>
+                         <green>97</green>
+                         <blue>97</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                     </inactive>
+                     <disabled>
+                      <colorrole role="Button">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>97</red>
+                         <green>97</green>
+                         <blue>97</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                     </disabled>
+                    </palette>
+                   </property>
                    <property name="text">
                     <string>Rest Device to Reset Point</string>
                    </property>
@@ -1784,6 +1943,12 @@ background-color: rgb(98, 20, 103);</string>
        </item>
        <item>
         <widget class="QFrame" name="frame_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -1792,40 +1957,43 @@ background-color: rgb(98, 20, 103);</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
-           <number>4</number>
+           <number>2</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>4</number>
+           <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>4</number>
+           <number>2</number>
           </property>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QGroupBox" name="groupBox">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="title">
              <string>Head Adjusted Coordinates (Coil Position):</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <property name="spacing">
-              <number>2</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
-              <number>2</number>
+              <number>6</number>
              </property>
              <property name="topMargin">
-              <number>2</number>
+              <number>6</number>
              </property>
              <property name="rightMargin">
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>6</number>
              </property>
              <item>
               <widget class="QFrame" name="frame_10">
@@ -1844,7 +2012,7 @@ background-color: rgb(98, 20, 103);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_9">
+                 <widget class="QLabel" name="Xshowlabel">
                   <property name="text">
                    <string/>
                   </property>
@@ -1877,7 +2045,7 @@ background-color: rgb(98, 20, 103);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_11">
+                 <widget class="QLabel" name="Yshowlabel">
                   <property name="text">
                    <string/>
                   </property>
@@ -1910,7 +2078,7 @@ background-color: rgb(98, 20, 103);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_16">
+                 <widget class="QLabel" name="Zshowlabel">
                   <property name="text">
                    <string/>
                   </property>
@@ -1943,7 +2111,7 @@ background-color: rgb(98, 20, 103);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_19">
+                 <widget class="QLabel" name="OAshowlabel">
                   <property name="text">
                    <string/>
                   </property>
@@ -1976,7 +2144,7 @@ background-color: rgb(98, 20, 103);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_21">
+                 <widget class="QLabel" name="CAshowlabel">
                   <property name="text">
                    <string/>
                   </property>
@@ -1992,11 +2160,27 @@ background-color: rgb(98, 20, 103);</string>
                </layout>
               </widget>
              </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
             </layout>
            </widget>
           </item>
           <item>
            <widget class="QFrame" name="frame_14">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -2009,7 +2193,7 @@ background-color: rgb(98, 20, 103);</string>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_6">
+            <layout class="QHBoxLayout" name="horizontalLayout_28">
              <property name="spacing">
               <number>2</number>
              </property>
@@ -2036,6 +2220,18 @@ background-color: rgb(98, 20, 103);</string>
        </item>
        <item>
         <widget class="QFrame" name="frame_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>311</width>
+           <height>625</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -2045,6 +2241,9 @@ background-color: rgb(98, 20, 103);</string>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="spacing">
            <number>2</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
           </property>
           <property name="leftMargin">
            <number>2</number>
@@ -2067,24 +2266,81 @@ background-color: rgb(98, 20, 103);</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
              <item>
-              <widget class="QSlider" name="verticalSlider">
-               <property name="maximum">
-                <number>173</number>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="spacing">
+                <number>0</number>
                </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksAbove</enum>
-               </property>
-               <property name="tickInterval">
-                <number>5</number>
-               </property>
-              </widget>
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Right</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSlider" name="XSlider">
+                 <property name="maximum">
+                  <number>173</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="tickPosition">
+                  <enum>QSlider::TicksAbove</enum>
+                 </property>
+                 <property name="tickInterval">
+                  <number>5</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Left</string>
+                 </property>
+                 <property name="scaledContents">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item alignment="Qt::AlignLeft">
-              <widget class="QLabel" name="label_5">
+              <widget class="QLabel" name="X_Axislabel">
                <property name="text">
                 <string> X 
 Axis</string>
@@ -2092,15 +2348,24 @@ Axis</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="Xpiclabel">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
+                 <verstretch>50</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>246</width>
+                 <height>199</height>
+                </size>
                </property>
                <property name="text">
                 <string>TextLabel</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -2116,24 +2381,63 @@ Axis</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
              <item>
-              <widget class="QSlider" name="verticalSlider_2">
-               <property name="maximum">
-                <number>212</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksAbove</enum>
-               </property>
-               <property name="tickInterval">
-                <number>5</number>
-               </property>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Front</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSlider" name="YSlider">
+                 <property name="maximum">
+                  <number>212</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="tickPosition">
+                  <enum>QSlider::TicksAbove</enum>
+                 </property>
+                 <property name="tickInterval">
+                  <number>5</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_43">
+                 <property name="text">
+                  <string>Back</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item alignment="Qt::AlignLeft">
-              <widget class="QLabel" name="label_6">
+              <widget class="QLabel" name="Y_Axislabel">
                <property name="text">
                 <string> Y
 Axis</string>
@@ -2141,15 +2445,24 @@ Axis</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="Ypiclabel">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
+                 <verstretch>50</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>246</width>
+                 <height>199</height>
+                </size>
                </property>
                <property name="text">
                 <string>TextLabel</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -2165,24 +2478,63 @@ Axis</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
              <item>
-              <widget class="QSlider" name="verticalSlider_3">
-               <property name="maximum">
-                <number>142</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksAbove</enum>
-               </property>
-               <property name="tickInterval">
-                <number>5</number>
-               </property>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_44">
+                 <property name="text">
+                  <string>Up</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSlider" name="ZSlider">
+                 <property name="maximum">
+                  <number>142</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="tickPosition">
+                  <enum>QSlider::TicksAbove</enum>
+                 </property>
+                 <property name="tickInterval">
+                  <number>5</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_45">
+                 <property name="text">
+                  <string>Down</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item alignment="Qt::AlignLeft">
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="Z_Axislabel">
                <property name="text">
                 <string> Z
 Axis</string>
@@ -2190,15 +2542,24 @@ Axis</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QLabel" name="Zpiclabel">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
+                 <verstretch>50</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>246</width>
+                 <height>199</height>
+                </size>
                </property>
                <property name="text">
                 <string>TextLabel</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -2218,7 +2579,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1022</width>
+     <width>1093</width>
      <height>21</height>
     </rect>
    </property>
@@ -2235,7 +2596,6 @@ Axis</string>
     <addaction name="actionClose"/>
     <addaction name="actionPrint"/>
     <addaction name="actionType_Here"/>
-    <addaction name="actionAdd_Separator"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -2245,14 +2605,12 @@ Axis</string>
     <addaction name="actionRedo"/>
     <addaction name="actionSelect_All"/>
     <addaction name="actionType_Here_2"/>
-    <addaction name="actionAdd_Separator_2"/>
    </widget>
    <widget class="QMenu" name="menuForm">
     <property name="title">
      <string>Form</string>
     </property>
     <addaction name="actiondialog"/>
-    <addaction name="actionAdd_Separtor"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
