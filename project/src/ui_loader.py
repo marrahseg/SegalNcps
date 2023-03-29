@@ -10,7 +10,7 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
 from qt_material import apply_stylesheet
-from src.Ui12_ui import Ui_MainWindow
+from src.NCPSUI_ui import Ui_MainWindow
 
 
 
@@ -61,12 +61,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         os.getcwd()
         self.setupUi(self)
 
-        self.CloseButton.hide()
-        self.minimizedButton.hide()
+        self.closeBotton.hide()
+        self.minimizBotton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.frame_23.setMaximumWidth(560)
-        self.Yslider.setMaximum(212)
-        self.Zslider.setMaximum(142)
+        # self.Yslider.setMaximum(212)
+        # self.Zslider.setMaximum(142)
 
 
         self.timer = QTimer()
@@ -99,14 +99,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def signalsSlat(self):
 
-        self.StartBotton.clicked.connect(self.onStartBottonClicked)
-        self.Xslider.valueChanged.connect(self.onSliderchangeClicked)
-        self.Yslider.valueChanged.connect(self.onSliderchangeClicked)
-        self.Zslider.valueChanged.connect(self.onSliderchangeClicked)
+        self.StartButton.clicked.connect(self.onStartBottonClicked)
+        self.XSlider.valueChanged.connect(self.onSliderchangeClicked)
+        self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
+        self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
 
-        self.HideShowButton.clicked.connect(self.onMyHideShow)
+        # self.HideShowButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
 
         ###############################MENU BAR
@@ -114,8 +114,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionLight.triggered.connect(self.on_light_theme)
         self.actiondialog.triggered.connect(self.on_show_dialog)
         self.actionSave_as.triggered.connect(self.onSaveFigData)
-        self.actionShow_Botten.triggered.connect(self.onShow_slider_onBrain)
-        self.actionHide_Botton.triggered.connect(self.onHide_slider_onBrain)
+        self.actionShow.triggered.connect(self.onShow_slider_onBrain)
+        self.actionHide.triggered.connect(self.onHide_slider_onBrain)
 
         ####################show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -139,7 +139,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def change_Coordinate_origin(self):
 
-        _Bx, _By, _Bz = int(self.XlabelShow.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
+        _Bx, _By, _Bz = int(self.Xshowlabel.text()), int(self.YlabelShow.text()), int(self.ZlabelShow.text())
 
         ###############################set centrt Bx
         _Xpoint = (_By + Y_PIC_OFFSET) * (47+ 38) / (NUMBER_Y_LIST - 1)
@@ -169,8 +169,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def show_3Brain(self):
 
-        self.Brain_interactor = QtInteractor(self.frame_8)
-        self.verticalLayout_38.addWidget(self.Brain_interactor.interactor)
+        self.Brain_interactor = QtInteractor(self.frame_14)
+        self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read(brain_stlfile_path)
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
@@ -301,13 +301,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.timer.start(100)
 
     def onResetBotton(self):
-        self.Xspin.setValue(0)
-        self.Yspin.setValue(-14.41)
-        self.Zspin.setValue(98)
-        self.CAspin.setValue(0)
-        self.OAspin.setValue(0)
+        self.XSpin.setValue(0)
+        self.YSpin.setValue(-14.41)
+        self.ZSpin.setValue(98)
+        self.CASpin.setValue(0)
+        self.OASpin.setValue(0)
         self.moveSphere(0, -14, 98)
-        _mx, _my, _mz = self.xyz_calculator(self.Xspin.value(), self.Yspin.value(), self.Zspin.value(), 1)
+        _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
 
 
         self.x_go = _mx
