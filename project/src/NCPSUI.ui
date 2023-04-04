@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1093</width>
+    <width>1165</width>
     <height>715</height>
    </rect>
   </property>
@@ -577,6 +577,12 @@ background-color: rgb(98, 20, 103);</string>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -704,19 +710,19 @@ background-color: rgb(98, 20, 103);</string>
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_13">
                     <property name="spacing">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="leftMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="topMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="rightMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <item>
                      <widget class="QFrame" name="frame_40">
@@ -727,6 +733,9 @@ background-color: rgb(98, 20, 103);</string>
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_27">
+                       <property name="spacing">
+                        <number>9</number>
+                       </property>
                        <item>
                         <widget class="QFrame" name="frame_18">
                          <property name="frameShape">
@@ -872,19 +881,19 @@ background-color: rgb(98, 20, 103);</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_9">
                     <property name="spacing">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="leftMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="topMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="rightMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>9</number>
+                     <number>5</number>
                     </property>
                     <item>
                      <widget class="QFrame" name="frame_20">
@@ -1158,37 +1167,10 @@ background-color: rgb(98, 20, 103);</string>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QFrame" name="frame_25">
-                         <property name="frameShape">
-                          <enum>QFrame::StyledPanel</enum>
+                        <widget class="QPushButton" name="ResetButton">
+                         <property name="text">
+                          <string>Reset</string>
                          </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
-                         </property>
-                         <layout class="QHBoxLayout" name="horizontalLayout_22">
-                          <property name="spacing">
-                           <number>5</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>5</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>5</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>5</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>5</number>
-                          </property>
-                          <item>
-                           <widget class="QPushButton" name="ResetButton">
-                            <property name="text">
-                             <string>Reset</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
                         </widget>
                        </item>
                       </layout>
@@ -1196,6 +1178,151 @@ background-color: rgb(98, 20, 103);</string>
                     </item>
                     <item>
                      <widget class="QPushButton" name="StartButton">
+                      <property name="palette">
+                       <palette>
+                        <active>
+                         <colorrole role="Button">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>23</red>
+                            <green>35</green>
+                            <blue>102</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Text">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>0</red>
+                            <green>0</green>
+                            <blue>0</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Shadow">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>15</red>
+                            <green>105</green>
+                            <blue>60</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Highlight">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>0</red>
+                            <green>120</green>
+                            <blue>215</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="HighlightedText">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>39</red>
+                            <green>104</green>
+                            <blue>255</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                        </active>
+                        <inactive>
+                         <colorrole role="Button">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>23</red>
+                            <green>35</green>
+                            <blue>102</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Text">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>0</red>
+                            <green>0</green>
+                            <blue>0</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Shadow">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>14</red>
+                            <green>105</green>
+                            <blue>52</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Highlight">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>43</red>
+                            <green>224</green>
+                            <blue>240</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="HighlightedText">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>0</red>
+                            <green>0</green>
+                            <blue>0</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                        </inactive>
+                        <disabled>
+                         <colorrole role="Button">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>23</red>
+                            <green>35</green>
+                            <blue>102</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Text">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>255</red>
+                            <green>255</green>
+                            <blue>255</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Shadow">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>14</red>
+                            <green>105</green>
+                            <blue>52</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="Highlight">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>0</red>
+                            <green>120</green>
+                            <blue>215</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                         <colorrole role="HighlightedText">
+                          <brush brushstyle="SolidPattern">
+                           <color alpha="255">
+                            <red>44</red>
+                            <green>29</green>
+                            <blue>255</blue>
+                           </color>
+                          </brush>
+                         </colorrole>
+                        </disabled>
+                       </palette>
+                      </property>
                       <property name="text">
                        <string>Start</string>
                       </property>
@@ -1210,6 +1337,21 @@ background-color: rgb(98, 20, 103);</string>
                     <string>Note</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                    <property name="spacing">
+                     <number>5</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>5</number>
+                    </property>
                     <item>
                      <widget class="QLabel" name="Notelabel">
                       <property name="sizePolicy">
@@ -1984,13 +2126,13 @@ background-color: rgb(98, 20, 103);</string>
               <number>6</number>
              </property>
              <property name="leftMargin">
-              <number>6</number>
+              <number>5</number>
              </property>
              <property name="topMargin">
-              <number>6</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
-              <number>2</number>
+              <number>5</number>
              </property>
              <property name="bottomMargin">
               <number>6</number>
@@ -2014,7 +2156,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="Xshowlabel">
                   <property name="text">
-                   <string/>
+                   <string>12</string>
                   </property>
                  </widget>
                 </item>
@@ -2047,7 +2189,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="Yshowlabel">
                   <property name="text">
-                   <string/>
+                   <string>22</string>
                   </property>
                  </widget>
                 </item>
@@ -2080,7 +2222,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="Zshowlabel">
                   <property name="text">
-                   <string/>
+                   <string>2</string>
                   </property>
                  </widget>
                 </item>
@@ -2113,7 +2255,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="OAshowlabel">
                   <property name="text">
-                   <string/>
+                   <string>1</string>
                   </property>
                  </widget>
                 </item>
@@ -2146,7 +2288,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="CAshowlabel">
                   <property name="text">
-                   <string/>
+                   <string>3</string>
                   </property>
                  </widget>
                 </item>
@@ -2228,8 +2370,8 @@ background-color: rgb(98, 20, 103);</string>
          </property>
          <property name="minimumSize">
           <size>
-           <width>311</width>
-           <height>625</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
          <property name="frameShape">
@@ -2357,8 +2499,8 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>246</width>
-                 <height>199</height>
+                 <width>627</width>
+                 <height>306</height>
                 </size>
                </property>
                <property name="text">
@@ -2454,8 +2596,8 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>246</width>
-                 <height>199</height>
+                 <width>627</width>
+                 <height>306</height>
                 </size>
                </property>
                <property name="text">
@@ -2551,8 +2693,8 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>246</width>
-                 <height>199</height>
+                 <width>627</width>
+                 <height>306</height>
                 </size>
                </property>
                <property name="text">
@@ -2579,7 +2721,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1093</width>
+     <width>1165</width>
      <height>21</height>
     </rect>
    </property>

@@ -10,15 +10,15 @@ from qt_material import apply_stylesheet
 if __name__ == "__main__":
      print(os.getcwd())
      app = QApplication(sys.argv)
-     # win = Window_withDev()
-     win = Window_ui()
+     win = Window_withDev()
+     # win = Window_ui()
 
 
      # apply_stylesheet(app, theme='color.xml')
      apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
 
      win.show()
-     # win.showFullScreen()
+     win.showFullScreen()
 
      # win.frame.hide()
      # win.onResetBotton()

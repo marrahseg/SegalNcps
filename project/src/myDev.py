@@ -113,30 +113,30 @@ class Window_withDev(Window_ui):
         #
         # self.pushButton_set.released.connect(self.do_set_go)
     def motor_mvm_connector(self):
-        self.pushButton_zUp.pressed.connect(self.do_Z_up)
-        self.pushButton_zUp.released.connect(self.do_Z_stop)
-        self.pushButton_zDown.pressed.connect(self.do_Z_down)
-        self.pushButton_zDown.released.connect(self.do_Z_stop)
+        self.Z_UpButton.pressed.connect(self.do_Z_up)
+        self.Z_UpButton.released.connect(self.do_Z_stop)
+        self.Z_DownButton.pressed.connect(self.do_Z_down)
+        self.Z_DownButton.released.connect(self.do_Z_stop)
 
-        self.pushButton_xLeft.pressed.connect(self.do_X_back)
-        self.pushButton_xLeft.released.connect(self.do_Z_stop)
-        self.pushButton_xRight.pressed.connect(self.do_X_forth)
-        self.pushButton_xRight.released.connect(self.do_Z_stop)
+        self.X_LeftButton.pressed.connect(self.do_X_back)
+        self.X_LeftButton.released.connect(self.do_Z_stop)
+        self.X_RightButton.pressed.connect(self.do_X_forth)
+        self.X_RightButton.released.connect(self.do_Z_stop)
 
-        self.pushButton_yRight.pressed.connect(self.do_Y_right)
-        self.pushButton_yRight.released.connect(self.do_Z_stop)
-        self.pushButton_yLeft.pressed.connect(self.do_Y_left)
-        self.pushButton_yLeft.released.connect(self.do_Z_stop)
+        self.Y_ForceButton.pressed.connect(self.do_Y_right)
+        self.Y_ForceButton.released.connect(self.do_Z_stop)
+        self.Y_BackButton.pressed.connect(self.do_Y_left)
+        self.Y_BackButton.released.connect(self.do_Z_stop)
 
-        self.pushButton_aClock.pressed.connect(self.do_alpha_clock)
-        self.pushButton_aClock.released.connect(self.do_Z_stop)
-        self.pushButton_aCClock.pressed.connect(self.do_alpha_count_clock)
-        self.pushButton_aCClock.released.connect(self.do_Z_stop)
+        self.Up_PitchButton.pressed.connect(self.do_alpha_clock)
+        self.Up_PitchButton.released.connect(self.do_Z_stop)
+        self.Down_PitchButton.pressed.connect(self.do_alpha_count_clock)
+        self.Down_PitchButton.released.connect(self.do_Z_stop)
 
-        self.pushButton_bRight.pressed.connect(self.do_b_right)
-        self.pushButton_bRight.released.connect(self.do_Z_stop)
-        self.pushButton_bLeft.pressed.connect(self.do_b_left)
-        self.pushButton_bLeft.released.connect(self.do_Z_stop)
+        self.Right_RowButton.pressed.connect(self.do_b_right)
+        self.Right_RowButton.released.connect(self.do_Z_stop)
+        self.Left_RowButton.pressed.connect(self.do_b_left)
+        self.Left_RowButton.released.connect(self.do_Z_stop)
 
 
     def do_connect(self):
