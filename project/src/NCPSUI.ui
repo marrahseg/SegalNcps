@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1165</width>
-    <height>715</height>
+    <width>1405</width>
+    <height>1036</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -696,7 +696,7 @@ background-color: rgb(98, 20, 103);</string>
                 </sizepolicy>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="Inputtab">
                 <attribute name="title">
@@ -1798,7 +1798,7 @@ background-color: rgb(98, 20, 103);</string>
                        <property name="bottomMargin">
                         <number>2</number>
                        </property>
-                       <item alignment="Qt::AlignHCenter">
+                       <item>
                         <widget class="QPushButton" name="Down_PitchButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1827,7 +1827,7 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                         </widget>
                        </item>
-                       <item alignment="Qt::AlignHCenter">
+                       <item>
                         <widget class="QLabel" name="label_41">
                          <property name="text">
                           <string>Rotat Down Pitch</string>
@@ -2374,6 +2374,12 @@ background-color: rgb(98, 20, 103);</string>
            <height>0</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>580</width>
+           <height>166666</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -2499,7 +2505,13 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>627</width>
+                 <width>550</width>
+                 <height>306</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>550</width>
                  <height>306</height>
                 </size>
                </property>
@@ -2596,7 +2608,13 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>627</width>
+                 <width>550</width>
+                 <height>306</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>550</width>
                  <height>306</height>
                 </size>
                </property>
@@ -2693,7 +2711,13 @@ Axis</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>627</width>
+                 <width>550</width>
+                 <height>306</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>550</width>
                  <height>306</height>
                 </size>
                </property>
@@ -2721,7 +2745,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1165</width>
+     <width>1405</width>
      <height>21</height>
     </rect>
    </property>

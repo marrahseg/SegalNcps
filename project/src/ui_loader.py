@@ -1,9 +1,11 @@
 import configparser
 import os
 
-
-
+import numpy as np
+import pyvista
 import pyvista as pv
+from matplotlib.colors import ListedColormap
+from pyvista.core import dataset
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
@@ -76,12 +78,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
 
-
         self.timer = QTimer()
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
-
 
         self.centerBX = 0
         self.centerBY = 0
@@ -100,7 +100,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_go = 0
         self.oa_go = 0
         self.ca_go = 0
-
+        # self.brain_point.SetCenter(12, -6, 97)
 
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
@@ -183,14 +183,27 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_14)
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read(brain_stlfile_path)
+
+        # edges = mesh.extract_feature_edges(45)
+
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
-        # self.Brain_interactor.camera.position = (100, 300, 100)
-        # self.Brain_interactor.camera.elevation = 90
         self.Brain_interactor.background_color = (0, 0, 0)
+
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position='upper_edge', font='arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
+
         print("center of point:", self.brain_point.SetCenter)
+
+        # self.brain_point.SetCenter(14, -6, 96)
+
+
+        # self.Brain_interactor.add_mesh(edges, color="green", line_width=5)
+        # self.Brain_interactor.add_mesh(dataset, style='wireframe', color='blue', label='Input')
+        # self.Brain_interactor.add_mesh(edges, color="red", line_width=2)
+
+
+
 
     def onSaveFigData(self):
 
@@ -320,7 +333,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ZSpin.setValue(98)
         self.CASpin.setValue(0)
         self.OASpin.setValue(0)
-        self.moveSphere(0, -14, 98)
+        # self.moveSphere(0, -14, 98)
+        self.brain_point.SetCenter(12, -6, 97)
+
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
         self.NoteBrowser.setText("Please enter the numbers")
 
