@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1405</width>
-    <height>1036</height>
+    <width>1360</width>
+    <height>1034</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -715,7 +715,7 @@ background-color: rgb(98, 20, 103);</string>
                 </sizepolicy>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="Inputtab">
                 <attribute name="title">
@@ -1514,6 +1514,72 @@ background-color: rgb(98, 20, 103);</string>
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_2">
+                    <item row="2" column="1" alignment="Qt::AlignHCenter">
+                     <widget class="QFrame" name="frame_31">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_17">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>2</number>
+                       </property>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="Z_DownButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset>
+                           <normaloff>../icons/images/chevron down.svg</normaloff>../icons/images/chevron down.svg</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>40</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="label_37">
+                         <property name="text">
+                          <string>Z DOWN</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
                     <item row="2" column="0" alignment="Qt::AlignHCenter">
                      <widget class="QFrame" name="frame_35">
                       <property name="frameShape">
@@ -1567,10 +1633,79 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                         </widget>
                        </item>
-                       <item alignment="Qt::AlignHCenter">
+                       <item>
                         <widget class="QLabel" name="label_38">
                          <property name="text">
                           <string>Y BACK</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="1" column="3" alignment="Qt::AlignHCenter">
+                     <widget class="QFrame" name="frame_34">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_13">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>2</number>
+                       </property>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="X_RightButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset>
+                           <normaloff>../icons/images/chevron right.svg</normaloff>../icons/images/chevron right.svg</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>40</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="label_34">
+                         <property name="text">
+                          <string>X RIGHT</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
                          </property>
                         </widget>
                        </item>
@@ -1579,6 +1714,12 @@ background-color: rgb(98, 20, 103);</string>
                     </item>
                     <item row="0" column="3" alignment="Qt::AlignHCenter">
                      <widget class="QFrame" name="frame_33">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
                       </property>
@@ -1601,7 +1742,7 @@ background-color: rgb(98, 20, 103);</string>
                        <property name="bottomMargin">
                         <number>2</number>
                        </property>
-                       <item>
+                       <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="Y_ForceButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1635,68 +1776,8 @@ background-color: rgb(98, 20, 103);</string>
                          <property name="text">
                           <string>Y FORCE</string>
                          </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="1" column="3" alignment="Qt::AlignHCenter">
-                     <widget class="QFrame" name="frame_34">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_13">
-                       <property name="spacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QPushButton" name="X_RightButton">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                         <property name="icon">
-                          <iconset>
-                           <normaloff>../icons/images/chevron right.svg</normaloff>../icons/images/chevron right.svg</iconset>
-                         </property>
-                         <property name="iconSize">
-                          <size>
-                           <width>40</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </widget>
-                       </item>
-                       <item alignment="Qt::AlignHCenter">
-                        <widget class="QLabel" name="label_34">
-                         <property name="text">
-                          <string>X RIGHT</string>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
                          </property>
                         </widget>
                        </item>
@@ -1705,6 +1786,12 @@ background-color: rgb(98, 20, 103);</string>
                     </item>
                     <item row="0" column="1" alignment="Qt::AlignHCenter">
                      <widget class="QFrame" name="frame_30">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
                       </property>
@@ -1758,71 +1845,17 @@ background-color: rgb(98, 20, 103);</string>
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_33">
-                         <property name="text">
-                          <string>Z UP</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="2" column="1" alignment="Qt::AlignHCenter">
-                     <widget class="QFrame" name="frame_31">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_17">
-                       <property name="spacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QPushButton" name="Z_DownButton">
                          <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
                          </property>
-                         <property name="font">
-                          <font>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
                          <property name="text">
-                          <string/>
+                          <string>Z UP</string>
                          </property>
-                         <property name="icon">
-                          <iconset>
-                           <normaloff>../icons/images/chevron down.svg</normaloff>../icons/images/chevron down.svg</iconset>
-                         </property>
-                         <property name="iconSize">
-                          <size>
-                           <width>40</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </widget>
-                       </item>
-                       <item alignment="Qt::AlignHCenter">
-                        <widget class="QLabel" name="label_37">
-                         <property name="text">
-                          <string>Z DOWN</string>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
                          </property>
                         </widget>
                        </item>
@@ -1838,6 +1871,9 @@ background-color: rgb(98, 20, 103);</string>
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_15">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
                        <property name="leftMargin">
                         <number>2</number>
                        </property>
@@ -1850,7 +1886,7 @@ background-color: rgb(98, 20, 103);</string>
                        <property name="bottomMargin">
                         <number>2</number>
                        </property>
-                       <item>
+                       <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="X_LeftButton">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1879,10 +1915,13 @@ background-color: rgb(98, 20, 103);</string>
                          </property>
                         </widget>
                        </item>
-                       <item alignment="Qt::AlignHCenter">
+                       <item>
                         <widget class="QLabel" name="label_35">
                          <property name="text">
                           <string>X LEFT</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
                          </property>
                         </widget>
                        </item>
@@ -1901,69 +1940,6 @@ background-color: rgb(98, 20, 103);</string>
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_3">
-                    <item row="2" column="1" alignment="Qt::AlignHCenter">
-                     <widget class="QFrame" name="frame_38">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_21">
-                       <property name="spacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QPushButton" name="Down_PitchButton">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                         <property name="icon">
-                          <iconset>
-                           <normaloff>../icons/images/rotatedown.svg</normaloff>../icons/images/rotatedown.svg</iconset>
-                         </property>
-                         <property name="iconSize">
-                          <size>
-                           <width>40</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_41">
-                         <property name="text">
-                          <string>Rotat Down Pitch</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
                     <item row="0" column="1" alignment="Qt::AlignHCenter">
                      <widget class="QFrame" name="frame_37">
                       <property name="frameShape">
@@ -2147,6 +2123,69 @@ background-color: rgb(98, 20, 103);</string>
                         <widget class="QLabel" name="label_42">
                          <property name="text">
                           <string>Rotat Right Row</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="2" column="1" alignment="Qt::AlignHCenter">
+                     <widget class="QFrame" name="frame_38">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_21">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>2</number>
+                       </property>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="Down_PitchButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset>
+                           <normaloff>../icons/images/rotatedown.svg</normaloff>../icons/images/rotatedown.svg</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>40</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QLabel" name="label_41">
+                         <property name="text">
+                          <string>Rotat Down Pitch</string>
                          </property>
                         </widget>
                        </item>
@@ -3007,7 +3046,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1405</width>
+     <width>1360</width>
      <height>21</height>
     </rect>
    </property>
