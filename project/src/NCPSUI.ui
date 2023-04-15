@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1360</width>
-    <height>1034</height>
+    <width>1456</width>
+    <height>1044</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -522,34 +522,50 @@ background-color: rgb(122, 122, 122);
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
+        <widget class="QWidget" name="horizontalWidget" native="true">
          <property name="styleSheet">
-          <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(98, 20, 103);</string>
+          <string notr="true">background-color: rgb(98, 20, 103);</string>
          </property>
-         <property name="text">
-          <string>Segal NCPS   |   Navigated Coil Placement System</string>
-         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_25">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+ 
+
+   font-style: Arial;  
+
+</string>
+            </property>
+            <property name="text">
+             <string>Segal NCPS   |   Navigated Coil Placement System       </string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -715,7 +731,7 @@ background-color: rgb(98, 20, 103);</string>
                 </sizepolicy>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="Inputtab">
                 <attribute name="title">
@@ -1570,7 +1586,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item>
                         <widget class="QLabel" name="label_37">
                          <property name="text">
-                          <string>Z DOWN</string>
+                          <string>Z Down</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1636,7 +1652,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item>
                         <widget class="QLabel" name="label_38">
                          <property name="text">
-                          <string>Y BACK</string>
+                          <string>Y Back</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1702,7 +1718,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item>
                         <widget class="QLabel" name="label_34">
                          <property name="text">
-                          <string>X RIGHT</string>
+                          <string>X Right</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1774,7 +1790,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_36">
                          <property name="text">
-                          <string>Y FORCE</string>
+                          <string>Y Force</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1852,7 +1868,7 @@ background-color: rgb(98, 20, 103);</string>
                           </sizepolicy>
                          </property>
                          <property name="text">
-                          <string>Z UP</string>
+                          <string>Z Up </string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1918,7 +1934,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item>
                         <widget class="QLabel" name="label_35">
                          <property name="text">
-                          <string>X LEFT</string>
+                          <string>X Left</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
@@ -1996,7 +2012,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_39">
                          <property name="text">
-                          <string>Rotat Up Pitch</string>
+                          <string> Rotat Up </string>
                          </property>
                         </widget>
                        </item>
@@ -2059,7 +2075,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_40">
                          <property name="text">
-                          <string>Rotat Left Row</string>
+                          <string>Rotat Left</string>
                          </property>
                         </widget>
                        </item>
@@ -2122,7 +2138,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_42">
                          <property name="text">
-                          <string>Rotat Right Row</string>
+                          <string>Rotat Right</string>
                          </property>
                         </widget>
                        </item>
@@ -2185,7 +2201,7 @@ background-color: rgb(98, 20, 103);</string>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QLabel" name="label_41">
                          <property name="text">
-                          <string>Rotat Down Pitch</string>
+                          <string>Rotat Down</string>
                          </property>
                         </widget>
                        </item>
@@ -2450,14 +2466,14 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="label_10">
                   <property name="text">
-                   <string>X:</string>
+                   <string>X:  </string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="Xshowlabel">
                   <property name="text">
-                   <string>12</string>
+                   <string>12  </string>
                   </property>
                  </widget>
                 </item>
@@ -2483,14 +2499,14 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="label_13">
                   <property name="text">
-                   <string>Y:</string>
+                   <string>Y:  </string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="Yshowlabel">
                   <property name="text">
-                   <string>22</string>
+                   <string>22  </string>
                   </property>
                  </widget>
                 </item>
@@ -2523,7 +2539,7 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="Zshowlabel">
                   <property name="text">
-                   <string>2</string>
+                   <string>2  </string>
                   </property>
                  </widget>
                 </item>
@@ -2549,14 +2565,14 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="label_18">
                   <property name="text">
-                   <string>OA:</string>
+                   <string>OA:  </string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="OAshowlabel">
                   <property name="text">
-                   <string>1</string>
+                   <string>1  </string>
                   </property>
                  </widget>
                 </item>
@@ -2582,14 +2598,14 @@ background-color: rgb(98, 20, 103);</string>
                 <item>
                  <widget class="QLabel" name="label_22">
                   <property name="text">
-                   <string>CA:</string>
+                   <string>CA:  </string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="CAshowlabel">
                   <property name="text">
-                   <string>3</string>
+                   <string>3  </string>
                   </property>
                  </widget>
                 </item>
@@ -3046,7 +3062,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1360</width>
+     <width>1456</width>
      <height>21</height>
     </rect>
    </property>
@@ -3062,7 +3078,6 @@ Axis</string>
     <addaction name="actionSave_As_Template"/>
     <addaction name="actionClose"/>
     <addaction name="actionPrint"/>
-    <addaction name="actionType_Here"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -3071,7 +3086,6 @@ Axis</string>
     <addaction name="actionForm"/>
     <addaction name="actionRedo"/>
     <addaction name="actionSelect_All"/>
-    <addaction name="actionType_Here_2"/>
    </widget>
    <widget class="QMenu" name="menuForm">
     <property name="title">

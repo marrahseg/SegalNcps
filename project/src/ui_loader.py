@@ -1,11 +1,8 @@
 import configparser
 import os
 
-import numpy as np
-import pyvista
+import Constants
 import pyvista as pv
-from matplotlib.colors import ListedColormap
-from pyvista.core import dataset
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
@@ -22,40 +19,6 @@ brain_stlfile_path ='../UI/Brain for Half_Skull.stl'
 my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
 my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
 my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
-
-
-########################## plain X
-LINEY_OFFSET_XPLAN = +188
-LINEZ_OFFSET_XPLAN = +45
-
-
-########################### plain Y
-
-LINEX_OFFSET_YPLAN = +191
-LINEZ_OFFSET_YPLAN = +45
-
-
-##########################plain Z
-
-LINEX_OFFSET_ZPLAN = +191
-LINEY_OFFSET_ZPLAN = +60
-
-
-#################for set number of pic
-X_PIC_OFFSET = 87
-Y_PIC_OFFSET = 122
-Z_PIC_OFFSET = 43
-
-##################number of list x,y,z
-NUMBER_X_LIST = 174
-NUMBER_Y_LIST = 212
-NUMBER_Z_LIST = 142
-
-
-####################FOR BRAIN OFFSET
-X_BRAIN_OFFSET = 7
-Y_BRAIN_OFFSET = -21
-Z_BRAIN_offset = 44
 
 
 
@@ -143,6 +106,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zpiclabel.setPixmap(pixmap3)
 
 
+    # def eror_onSpin(self):
+    #     a = int(self.XSpin.value())
+    #     b = int(self.YSpin.value())
+    #     c = int(self.ZSpin.value())
+    #     if(a< -87 & a > 86):
+    #         self.timer.stop()
+    #         self.NoteBrowser.setText( "OUT OF RANGE")
+    #     else:
+    #         print("yes")
+
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
         self.brain_point.SetCenter(_xx, _yy, _zz)
@@ -153,18 +126,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _Bx, _By, _Bz = int(self.Xshowlabel.text()), int(self.Yshowlabel.text()), int(self.Zshowlabel.text())
 
         ###############################set centrt Bx
-        _Xpoint = (_By + Y_PIC_OFFSET) * (47 + 38) / (NUMBER_Y_LIST - 1)
-        _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
+        _Xpoint = (_By + Constants.Y_PIC_OFFSET) * (47 + 38) / (Constants.NUMBER_Y_LIST - 1)
+        _centerBX = _Xpoint - 38 + Constants.X_BRAIN_OFFSET
 
 
         ###############################SET CENTER BY
-        _Ypoint = (_Bx + X_PIC_OFFSET) * (50 + 21) / (NUMBER_X_LIST - 1)
-        _centerBY = _Ypoint - 21 + Y_BRAIN_OFFSET
+        _Ypoint = (_Bx + Constants.X_PIC_OFFSET) * (50 + 21) / (Constants.NUMBER_X_LIST - 1)
+        _centerBY = _Ypoint - 21 + Constants.Y_BRAIN_OFFSET
 
 
         #########################set center BZ
-        _Zpoint = (_Bz + Z_PIC_OFFSET) * (53 + 12) / (NUMBER_Z_LIST - 1)
-        _centerBZ = _Zpoint - 12 + Z_BRAIN_offset
+        _Zpoint = (_Bz + Constants.Z_PIC_OFFSET) * (53 + 12) / (Constants.NUMBER_Z_LIST - 1)
+        _centerBZ = _Zpoint - 12 + Constants.Z_BRAIN_offset
 
 
 
@@ -313,6 +286,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.change_spin_vals(_mx, _my, _mz)
 
     def onStartBottonClicked(self):
+
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
         _moa = self.OASpin.value()
         _mca = self.CASpin.value()
@@ -437,16 +411,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         if scale_flag:
             ######################################### calculate x value
             valueBt = self.BTSpin.value()
-            _scaleX = valueBt / NUMBER_X_LIST
-            _cx = int(mx) + X_PIC_OFFSET
+            _scaleX = valueBt / Constants.NUMBER_X_LIST
+            _cx = int(mx) + Constants.X_PIC_OFFSET
             ######################################### calculate y value
             valueAp = self.APSpin.value()
-            _scaleY = valueAp / NUMBER_Y_LIST
-            _cy = int(my) + Y_PIC_OFFSET
+            _scaleY = valueAp / Constants.NUMBER_Y_LIST
+            _cy = int(my) + Constants.Y_PIC_OFFSET
             ######################################### calculate z value
             valueEv = self.EVSpin.value()
-            _scaleZ = valueEv / NUMBER_Z_LIST
-            _cz = int(mz) + Z_PIC_OFFSET
+            _scaleZ = valueEv / Constants.NUMBER_Z_LIST
+            _cz = int(mz) + Constants.Z_PIC_OFFSET
 
         else:
             _cx = int(mx)
@@ -466,8 +440,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
         #horiz line  z
-        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_OFFSET_XPLAN
+        dummy = abs(Constants.NUMBER_Z_LIST - 1 - valZ)
+        dummy += Constants.LINEZ_OFFSET_XPLAN
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), _ximg)
         pen = QPen(Qt.red, 3)
@@ -475,8 +449,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.drawLine(-700, dummy, 700, dummy)
 
         # vertical line,y
-        myy_loc = abs(NUMBER_Y_LIST - 1 - valY)
-        myy_loc += LINEY_OFFSET_XPLAN
+        myy_loc = abs(Constants.NUMBER_Y_LIST - 1 - valY)
+        myy_loc += Constants.LINEY_OFFSET_XPLAN
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
@@ -494,15 +468,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
-        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_OFFSET_YPLAN
+        dummy = abs(Constants.NUMBER_Z_LIST - 1 - valZ)
+        dummy += Constants.LINEZ_OFFSET_YPLAN
         qpy.drawLine(-800, dummy, 800, dummy)
 
         ###########vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
         dummy = valX
-        dummy += LINEX_OFFSET_YPLAN
+        dummy += Constants.LINEX_OFFSET_YPLAN
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
@@ -517,8 +491,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         ########### horiz,y
         pen = QPen(Qt.red, 3)
-        dummy = abs(NUMBER_Y_LIST - 1 - valY)
-        dummy += LINEY_OFFSET_ZPLAN
+        dummy = abs(Constants.NUMBER_Y_LIST - 1 - valY)
+        dummy += Constants.LINEY_OFFSET_ZPLAN
         self.qpz.setPen(pen)
         self.qpz.drawLine(-800, dummy, 800, dummy)
 
@@ -526,7 +500,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = valX
-        dummy += LINEX_OFFSET_ZPLAN
+        dummy += Constants.LINEX_OFFSET_ZPLAN
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
@@ -546,17 +520,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_now = valZ
 
 
-        self.Xshowlabel.setText(str(self.x_now - X_PIC_OFFSET))
-        self.Yshowlabel.setText(str(self.y_now - Y_PIC_OFFSET))
-        self.Zshowlabel.setText(str(self.z_now - Z_PIC_OFFSET))
+        self.Xshowlabel.setText(str(self.x_now - Constants.X_PIC_OFFSET))
+        self.Yshowlabel.setText(str(self.y_now - Constants.Y_PIC_OFFSET))
+        self.Zshowlabel.setText(str(self.z_now - Constants.Z_PIC_OFFSET))
         self.OAshowlabel.setText(str(self.oa_now))
         self.CAshowlabel.setText(str(self.ca_now))
 
     def change_spin_vals(self, valX, valY, valZ):
         # print(f'Spin values: {valX}, {valY}, {valZ}')
-        self.XSpin.setValue(valX - X_PIC_OFFSET)
-        self.YSpin.setValue(valY - Y_PIC_OFFSET)
-        self.ZSpin.setValue(valZ - Z_PIC_OFFSET)
+        self.XSpin.setValue(valX - Constants.X_PIC_OFFSET)
+        self.YSpin.setValue(valY - Constants.Y_PIC_OFFSET)
+        self.ZSpin.setValue(valZ - Constants.Z_PIC_OFFSET)
 
     def onMyHideShow(self):
         if self.frame_3.isHidden() == False:
