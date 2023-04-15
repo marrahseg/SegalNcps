@@ -1,16 +1,17 @@
 import configparser
 import os
 
+from PyQt5.uic.properties import QtWidgets
+
 import Constants
 import pyvista as pv
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QInputDialog
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
-
 
 
 motor_real = False
@@ -34,11 +35,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.frame_23.setMaximumWidth(560)
         # self.Yslider.setMaximum(212)
         # self.Zslider.setMaximum(142)
-
-
-
-
-
 
 
         self.timer = QTimer()
@@ -69,7 +65,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
-
     def signalsSlat(self):
 
         self.StartButton.clicked.connect(self.onStartBottonClicked)
@@ -77,6 +72,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
+        self.OffsetButton.clicked.connect(self.onChangeOffset)
 
 
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
@@ -89,6 +85,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide.triggered.connect(self.onHide_slider_onBrain)
+
 
         ####################show defult pic in x
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
@@ -105,16 +102,35 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
+    def onChangeOffset(self):
+        a = int(self.Xplain_Vline.text())
+        b = int(self.Xplain_Hline.text())
+        c = int(self.Yplain_Vline.text())
+        d = int(self.Yplain_Hline.text())
+        e = int(self.Zplain_Vline.text())
+        f = int(self.Zplain_Hline.text())
 
-    # def eror_onSpin(self):
-    #     a = int(self.XSpin.value())
-    #     b = int(self.YSpin.value())
-    #     c = int(self.ZSpin.value())
-    #     if(a< -87 & a > 86):
-    #         self.timer.stop()
-    #         self.NoteBrowser.setText( "OUT OF RANGE")
-    #     else:
-    #         print("yes")
+        if (a != None):
+            Constants.LINEY_OFFSET_XPLAN += a
+            Constants.LINEZ_OFFSET_XPLAN += b
+
+        else:
+
+
+    
+
+        Constants.LINEX_OFFSET_YPLAN += c
+        Constants.LINEZ_OFFSET_YPLAN += d
+
+        Constants.LINEX_OFFSET_ZPLAN += e
+        Constants.LINEY_OFFSET_ZPLAN += f
+
+        print("ssssa", Constants.LINEY_OFFSET_XPLAN)
+
+
+
+
+
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -133,6 +149,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         ###############################SET CENTER BY
         _Ypoint = (_Bx + Constants.X_PIC_OFFSET) * (50 + 21) / (Constants.NUMBER_X_LIST - 1)
         _centerBY = _Ypoint - 21 + Constants.Y_BRAIN_OFFSET
+
 
 
         #########################set center BZ
@@ -175,9 +192,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.Brain_interactor.add_mesh(dataset, style='wireframe', color='blue', label='Input')
         # self.Brain_interactor.add_mesh(edges, color="red", line_width=2)
 
-
-
-
     def onSaveFigData(self):
 
         config = configparser.ConfigParser()
@@ -216,7 +230,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def on_light_theme(self):
         print('light them')
         apply_stylesheet(self, theme='../UI/color.xml')
-
 
     def onShow_slider_onBrain(self):
         self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1), pointb=(0.31, 0.1), style='modern')
@@ -322,9 +335,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
-
-
-
 
     def onTimer_interrupt(self):
         _mx = 0
