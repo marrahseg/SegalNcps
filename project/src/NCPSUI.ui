@@ -1475,7 +1475,7 @@ background-color: rgb(122, 122, 122);
                   </widget>
                  </item>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_5">
+                  <widget class="QGroupBox" name="OffsetinggroupBox">
                    <property name="title">
                     <string>Offseting</string>
                    </property>
@@ -3555,6 +3555,7 @@ background-color: rgb(122, 122, 122);
     <addaction name="actionLight"/>
     <addaction name="actionShow"/>
     <addaction name="actionHide"/>
+    <addaction name="actionShow_Offseting"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -3712,6 +3713,11 @@ background-color: rgb(122, 122, 122);
   <action name="actionChange_Offset">
    <property name="text">
     <string>Change Offset</string>
+   </property>
+  </action>
+  <action name="actionShow_Offseting">
+   <property name="text">
+    <string>Show Offseting</string>
    </property>
   </action>
  </widget>

@@ -79,6 +79,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ResetButton.clicked.connect(self.onResetBotton)
         self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         self.ResetOffsetButton.clicked.connect(self.onResetOffset)
+        self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
 
 
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
@@ -593,3 +594,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         else:
             self.frame_3.show()
             self.HideMenuButton.setText("Hide Menu")
+
+    def onMyHideOffseting(self):
+        if self.OffsetinggroupBox.isHidden() == False:
+            self.OffsetinggroupBox.hide()
+            # self.HideMenuButton.setText("Show Menu")
+            print("closed")
+        else:
+            self.OffsetinggroupBox.show()
+            # self.HideMenuButton.setText("Hide Menu")
