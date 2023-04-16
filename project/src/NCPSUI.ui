@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1456</width>
-    <height>1044</height>
+    <width>1414</width>
+    <height>1054</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1479,8 +1479,20 @@ background-color: rgb(122, 122, 122);
                    <property name="title">
                     <string>Offseting</string>
                    </property>
-                   <layout class="QGridLayout" name="gridLayout_5">
-                    <item row="0" column="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <property name="leftMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>5</number>
+                    </property>
+                    <item>
                      <widget class="QFrame" name="frame_25">
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
@@ -1576,6 +1588,9 @@ background-color: rgb(122, 122, 122);
                                 <height>22</height>
                                </size>
                               </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
                              </widget>
                             </item>
                            </layout>
@@ -1617,6 +1632,9 @@ background-color: rgb(122, 122, 122);
                                 <width>61</width>
                                 <height>22</height>
                                </size>
+                              </property>
+                              <property name="text">
+                               <string>0</string>
                               </property>
                               <property name="maxLength">
                                <number>10</number>
@@ -1703,6 +1721,9 @@ background-color: rgb(122, 122, 122);
                                 <height>22</height>
                                </size>
                               </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
                              </widget>
                             </item>
                            </layout>
@@ -1744,6 +1765,9 @@ background-color: rgb(122, 122, 122);
                                 <width>61</width>
                                 <height>22</height>
                                </size>
+                              </property>
+                              <property name="text">
+                               <string>0</string>
                               </property>
                              </widget>
                             </item>
@@ -1827,6 +1851,9 @@ background-color: rgb(122, 122, 122);
                                 <height>22</height>
                                </size>
                               </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
                              </widget>
                             </item>
                            </layout>
@@ -1869,6 +1896,9 @@ background-color: rgb(122, 122, 122);
                                 <height>22</height>
                                </size>
                               </property>
+                              <property name="text">
+                               <string>0</string>
+                              </property>
                              </widget>
                             </item>
                            </layout>
@@ -1879,50 +1909,50 @@ background-color: rgb(122, 122, 122);
                       </layout>
                      </widget>
                     </item>
-                    <item row="1" column="0">
-                     <widget class="QPushButton" name="OffsetButton">
-                      <property name="text">
-                       <string>Set Offset</string>
-                      </property>
-                     </widget>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_31">
+                      <item>
+                       <widget class="QPushButton" name="SetOffsetButton">
+                        <property name="text">
+                         <string>Set Offset</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="ResetOffsetButton">
+                        <property name="text">
+                         <string>Reset Offset</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </item>
                    </layout>
                   </widget>
                  </item>
                  <item>
                   <widget class="QGroupBox" name="groupBox_4">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="title">
                     <string>Note</string>
                    </property>
-                   <widget class="QLabel" name="Notelabel">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>23</y>
-                      <width>16</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                   <widget class="QTextBrowser" name="NoteBrowser">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>226</y>
-                      <width>256</width>
-                      <height>192</height>
-                     </rect>
-                    </property>
-                   </widget>
+                   <layout class="QVBoxLayout" name="verticalLayout_22">
+                    <item>
+                     <widget class="QTextBrowser" name="NoteBrowser">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>300</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                 </layout>
@@ -3476,7 +3506,7 @@ Axis</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1456</width>
+     <width>1414</width>
      <height>21</height>
     </rect>
    </property>

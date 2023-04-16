@@ -72,7 +72,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        self.OffsetButton.clicked.connect(self.onChangeOffset)
+        self.SetOffsetButton.clicked.connect(self.onChangeOffset)
+        self.ResetOffsetButton.clicked.connect(self.onResetOffset)
 
 
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
@@ -110,27 +111,61 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         e = int(self.Zplain_Vline.text())
         f = int(self.Zplain_Hline.text())
 
-        if (a != None):
+        if ( a != 0):
             Constants.LINEY_OFFSET_XPLAN += a
-            Constants.LINEZ_OFFSET_XPLAN += b
 
         else:
+            print("a is not change")
+
+            if ( b != 0):
+                Constants.LINEZ_OFFSET_XPLAN += b
+
+            else:
+                print("b is not change")
+
+                if ( c != 0):
+                    Constants.LINEX_OFFSET_YPLAN += c
+
+                else:
+                    print("b is not change")
+
+                    if( d != 0):
+                        Constants.LINEZ_OFFSET_YPLAN += d
+
+                    else:
+                        print("d is not change")
+
+                        if( e != 0):
+                            Constants.LINEX_OFFSET_ZPLAN += e
+
+                        else:
+                            print("e is not change")
+
+                            if ( f != 0):
+                                Constants.LINEY_OFFSET_ZPLAN += f
+
+                            else:
+
+                                print(" f is not change")
 
 
-    
-
-        Constants.LINEX_OFFSET_YPLAN += c
-        Constants.LINEZ_OFFSET_YPLAN += d
-
-        Constants.LINEX_OFFSET_ZPLAN += e
-        Constants.LINEY_OFFSET_ZPLAN += f
-
-        print("ssssa", Constants.LINEY_OFFSET_XPLAN)
+    def onResetOffset(self):
+        self.Xplain_Vline.setText("0")
+        self.Xplain_Hline.setText("0")
+        self.Yplain_Vline.setText("0")
+        self.Yplain_Hline.setText("0")
+        self.Zplain_Vline.setText("0")
+        self.Zplain_Hline.setText("0")
 
 
-
-
-
+        Constants.LINEY_OFFSET_XPLAN = +188
+        Constants.LINEZ_OFFSET_XPLAN = +45
+        ########################### plain Y
+        Constants.LINEX_OFFSET_YPLAN = +191
+        Constants.LINEZ_OFFSET_YPLAN = +45
+        ##########################plain Z
+        Constants.LINEX_OFFSET_ZPLAN = +191
+        Constants.LINEY_OFFSET_ZPLAN = +60
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
