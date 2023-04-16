@@ -35,6 +35,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # self.frame_23.setMaximumWidth(560)
         # self.Yslider.setMaximum(212)
         # self.Zslider.setMaximum(142)
+        print("sssssssssssssss", self.Zpiclabel.width(), self.Zpiclabel.height())
+        print("sssssssssssssss", self.Ypiclabel.width(), self.Ypiclabel.height())
+        print("sssssssssssssss", self.Xpiclabel.width(), self.Xpiclabel.height())
+
+
 
 
         self.timer = QTimer()
@@ -332,6 +337,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.update_pics_lines(_mx, _my, _mz)
         self.change_spin_vals(_mx, _my, _mz)
+        print("Xsssssssssssssss", self.Zpiclabel.width(), self.Zpiclabel.height())
+        print("Ysssssssssssssss", self.Ypiclabel.width(), self.Ypiclabel.height())
+        print("Zsssssssssssssss", self.Xpiclabel.width(), self.Xpiclabel.height())
 
     def onStartBottonClicked(self):
 

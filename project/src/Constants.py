@@ -1,11 +1,11 @@
 ########################## plain X
-LINEY_OFFSET_XPLAN = +188
+LINEY_OFFSET_XPLAN = +166
 LINEZ_OFFSET_XPLAN = +45
 ########################### plain Y
-LINEX_OFFSET_YPLAN = +191
+LINEX_OFFSET_YPLAN = +166
 LINEZ_OFFSET_YPLAN = +45
 ##########################plain Z
-LINEX_OFFSET_ZPLAN = +191
+LINEX_OFFSET_ZPLAN = +167
 LINEY_OFFSET_ZPLAN = +60
 #################for set number of pic
 X_PIC_OFFSET = 87
