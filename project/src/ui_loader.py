@@ -1,15 +1,13 @@
 import configparser
 import os
 
-from PyQt5.uic.properties import QtWidgets
-
 import Constants
 import pyvista as pv
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QInputDialog
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
 
@@ -32,14 +30,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.closeBotton.hide()
         self.minimizBotton.hide()
         self.setWindowTitle("SEGAL NCPS")
-        # self.frame_23.setMaximumWidth(560)
-        # self.Yslider.setMaximum(212)
-        # self.Zslider.setMaximum(142)
-        print("sssssssssssssss", self.Zpiclabel.width(), self.Zpiclabel.height())
-        print("sssssssssssssss", self.Ypiclabel.width(), self.Ypiclabel.height())
-        print("sssssssssssssss", self.Xpiclabel.width(), self.Xpiclabel.height())
-
-
+        self.OffsetinggroupBox.hide()
 
 
         self.timer = QTimer()
@@ -64,7 +55,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_go = 0
         self.oa_go = 0
         self.ca_go = 0
-        # self.brain_point.SetCenter(12, -6, 97)
+
 
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
@@ -80,7 +71,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         self.ResetOffsetButton.clicked.connect(self.onResetOffset)
         self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
-
 
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
@@ -119,39 +109,27 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         if ( a != 0):
             Constants.LINEY_OFFSET_XPLAN += a
-
         else:
             print("a is not change")
-
             if ( b != 0):
                 Constants.LINEZ_OFFSET_XPLAN += b
-
             else:
                 print("b is not change")
-
                 if ( c != 0):
                     Constants.LINEX_OFFSET_YPLAN += c
-
                 else:
                     print("b is not change")
-
                     if( d != 0):
                         Constants.LINEZ_OFFSET_YPLAN += d
-
                     else:
                         print("d is not change")
-
                         if( e != 0):
                             Constants.LINEX_OFFSET_ZPLAN += e
-
                         else:
                             print("e is not change")
-
                             if ( f != 0):
                                 Constants.LINEY_OFFSET_ZPLAN += f
-
                             else:
-
                                 print(" f is not change")
 
 
@@ -245,8 +223,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example']['CA'] = self.CAshowlabel.text()
 
 
-
-
         fileName = QFileDialog.getSaveFileName(self, ("Save data"), '',("*.txt"))
 
         with open(fileName[0], 'w') as configfile:
@@ -265,17 +241,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         dlg.exec()
 
     def on_dark_theme(self):
-        print('dark theme')
         apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
 
     def on_light_theme(self):
-        print('light them')
         apply_stylesheet(self, theme='../UI/color.xml')
 
     def onShow_slider_onBrain(self):
-        self.slider_onBrain_x=self.Brain_interactor.add_slider_widget(None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1), pointb=(0.31, 0.1), style='modern')
-        self.slider_onBrain_y=self.Brain_interactor.add_slider_widget(None,   rng=[-122, 90], value=-14, title="FrontBack_y", pointa=(0.35, 0.1), pointb=(0.64, 0.1), style='modern')
-        self.slider_onBrain_z= self.Brain_interactor.add_slider_widget(None,  rng=[-43, 99], value=98, title="UpDown_z", pointa=(0.67, 0.1), pointb=(0.98, 0.1), style='modern')
+        self.slider_onBrain_x=self.Brain_interactor.add_slider_widget\
+            (None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1), pointb=(0.31, 0.1), style='modern')
+        self.slider_onBrain_y=self.Brain_interactor.add_slider_widget\
+            (None,   rng=[-122, 90], value=-14, title="FrontBack_y", pointa=(0.35, 0.1), pointb=(0.64, 0.1), style='modern')
+        self.slider_onBrain_z= self.Brain_interactor.add_slider_widget\
+            (None,  rng=[-43, 99], value=98, title="UpDown_z", pointa=(0.67, 0.1), pointb=(0.98, 0.1), style='modern')
 
     def onHide_slider_onBrain(self):
         print("Brain")
@@ -296,7 +273,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListX.extend(listXminus)
         self.picListX.append('0x.jpg')
         self.picListX.extend(listXplus)
-
 
         ########################################### sort of listY
         picListY = os.listdir(my_Yside_pics_add)
@@ -338,9 +314,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.update_pics_lines(_mx, _my, _mz)
         self.change_spin_vals(_mx, _my, _mz)
-        print("Xsssssssssssssss", self.Zpiclabel.width(), self.Zpiclabel.height())
-        print("Ysssssssssssssss", self.Ypiclabel.width(), self.Ypiclabel.height())
-        print("Zsssssssssssssss", self.Xpiclabel.width(), self.Xpiclabel.height())
+
 
     def onStartBottonClicked(self):
 
@@ -492,7 +466,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
 
-
         #horiz line  z
         dummy = abs(Constants.NUMBER_Z_LIST - 1 - valZ)
         dummy += Constants.LINEZ_OFFSET_XPLAN
@@ -581,7 +554,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.CAshowlabel.setText(str(self.ca_now))
 
     def change_spin_vals(self, valX, valY, valZ):
-        # print(f'Spin values: {valX}, {valY}, {valZ}')
+
         self.XSpin.setValue(valX - Constants.X_PIC_OFFSET)
         self.YSpin.setValue(valY - Constants.Y_PIC_OFFSET)
         self.ZSpin.setValue(valZ - Constants.Z_PIC_OFFSET)
@@ -602,4 +575,5 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             print("closed")
         else:
             self.OffsetinggroupBox.show()
-            # self.HideMenuButton.setText("Hide Menu")
+
+

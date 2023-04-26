@@ -1,26 +1,29 @@
-import os
 import sys
-from PyQt5.QtWidgets import QApplication
+
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QSplashScreen
 from myDev import Window_withDev
-from ui_loader import Window_ui
 from qt_material import apply_stylesheet
 
 
 
+
+
 if __name__ == "__main__":
-     print(os.getcwd())
+
      app = QApplication(sys.argv)
      win = Window_withDev()
-     # win = Window_ui()
 
+     pixmap = QPixmap("bj - Copy.jpg")
+     splash = QSplashScreen(pixmap)
+     splash.show()
+     app.processEvents()
 
-     # apply_stylesheet(app, theme='color.xml')
      apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
+     splash.finish(win)
 
      win.show()
+
      win.showFullScreen()
 
-     # win.frame.hide()
-     # win.onResetBotton()
      app.exec()
-
