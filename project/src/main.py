@@ -18,9 +18,11 @@ if __name__ == "__main__":
      splash = QSplashScreen(pixmap)
      splash.show()
      app.processEvents()
+     splash.finish(win)
 
      apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
-     splash.finish(win)
+
+
 
      win.show()
 

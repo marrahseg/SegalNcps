@@ -1,23 +1,25 @@
 import configparser
 import os
+import easygui as easygui
 
-import Constants
 import pyvista as pv
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QPixmap, QPainter, QPen
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage, QFont, QColor
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
 
 
+
+
 motor_real = False
-brain_stlfile_path ='../UI/Brain for Half_Skull.stl'
-########################addres of All pic
-my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
-my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
-my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
+
+with open("defultvariable.txt", "r") as f:
+    contents = f.read()
+
+exec(contents)
 
 
 
@@ -26,11 +28,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         os.getcwd()
         self.setupUi(self)
-
         self.closeBotton.hide()
         self.minimizBotton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.OffsetinggroupBox.hide()
+
+
 
 
         self.timer = QTimer()
@@ -68,7 +71,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        self.SetOffsetButton.clicked.connect(self.onChangeOffset)
+        # self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         self.ResetOffsetButton.clicked.connect(self.onResetOffset)
         self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
 
@@ -82,6 +85,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide.triggered.connect(self.onHide_slider_onBrain)
+        self.actionOpen.triggered.connect(self.getfile)
 
 
         ####################show defult pic in x
@@ -99,38 +103,40 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
-    def onChangeOffset(self):
-        a = int(self.Xplain_Vline.text())
-        b = int(self.Xplain_Hline.text())
-        c = int(self.Yplain_Vline.text())
-        d = int(self.Yplain_Hline.text())
-        e = int(self.Zplain_Vline.text())
-        f = int(self.Zplain_Hline.text())
 
-        if ( a != 0):
-            Constants.LINEY_OFFSET_XPLAN += a
-        else:
-            print("a is not change")
-            if ( b != 0):
-                Constants.LINEZ_OFFSET_XPLAN += b
-            else:
-                print("b is not change")
-                if ( c != 0):
-                    Constants.LINEX_OFFSET_YPLAN += c
-                else:
-                    print("b is not change")
-                    if( d != 0):
-                        Constants.LINEZ_OFFSET_YPLAN += d
-                    else:
-                        print("d is not change")
-                        if( e != 0):
-                            Constants.LINEX_OFFSET_ZPLAN += e
-                        else:
-                            print("e is not change")
-                            if ( f != 0):
-                                Constants.LINEY_OFFSET_ZPLAN += f
-                            else:
-                                print(" f is not change")
+
+    # def onChangeOffset(self):
+    #     a = int(self.Xplain_Vline.text())
+    #     b = int(self.Xplain_Hline.text())
+    #     c = int(self.Yplain_Vline.text())
+    #     d = int(self.Yplain_Hline.text())
+    #     e = int(self.Zplain_Vline.text())
+    #     f = int(self.Zplain_Hline.text())
+    #
+    #     if ( a != 0):
+    #         LINEY_OFFSET_XPLAN += a
+    #     else:
+    #         print("a is not change")
+    #         if ( b != 0):
+    #             LINEZ_OFFSET_XPLAN += b
+    #         else:
+    #             print("b is not change")
+    #             if ( c != 0):
+    #                 LINEX_OFFSET_YPLAN += c
+    #             else:
+    #                 print("b is not change")
+    #                 if( d != 0):
+    #                     LINEZ_OFFSET_YPLAN += d
+    #                 else:
+    #                     print("d is not change")
+    #                     if( e != 0):
+    #                         LINEX_OFFSET_ZPLAN += e
+    #                     else:
+    #                         print("e is not change")
+    #                         if ( f != 0):
+    #                             LINEY_OFFSET_ZPLAN += f
+    #                         else:
+    #                             print(" f is not change")
 
 
     def onResetOffset(self):
@@ -142,14 +148,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zplain_Hline.setText("0")
 
 
-        Constants.LINEY_OFFSET_XPLAN = +188
-        Constants.LINEZ_OFFSET_XPLAN = +45
-        ########################### plain Y
-        Constants.LINEX_OFFSET_YPLAN = +191
-        Constants.LINEZ_OFFSET_YPLAN = +45
-        ##########################plain Z
-        Constants.LINEX_OFFSET_ZPLAN = +191
-        Constants.LINEY_OFFSET_ZPLAN = +60
+        # LINEY_OFFSET_XPLAN = +188
+        # LINEZ_OFFSET_XPLAN = +45
+        # ########################### plain Y
+        # LINEX_OFFSET_YPLAN = +191
+        # LINEZ_OFFSET_YPLAN = +45
+        # ##########################plain Z
+        # LINEX_OFFSET_ZPLAN = +191
+        # LINEY_OFFSET_ZPLAN = +60
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -161,19 +167,19 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _Bx, _By, _Bz = int(self.Xshowlabel.text()), int(self.Yshowlabel.text()), int(self.Zshowlabel.text())
 
         ###############################set centrt Bx
-        _Xpoint = (_By + Constants.Y_PIC_OFFSET) * (47 + 38) / (Constants.NUMBER_Y_LIST - 1)
-        _centerBX = _Xpoint - 38 + Constants.X_BRAIN_OFFSET
+        _Xpoint = (_By + Y_PIC_OFFSET) * (47 + 38) / (NUMBER_Y_LIST - 1)
+        _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
 
 
         ###############################SET CENTER BY
-        _Ypoint = (_Bx + Constants.X_PIC_OFFSET) * (50 + 21) / (Constants.NUMBER_X_LIST - 1)
-        _centerBY = _Ypoint - 21 + Constants.Y_BRAIN_OFFSET
+        _Ypoint = (_Bx + X_PIC_OFFSET) * (50 + 21) / (NUMBER_X_LIST - 1)
+        _centerBY = _Ypoint - 21 + Y_BRAIN_OFFSET
 
 
 
         #########################set center BZ
-        _Zpoint = (_Bz + Constants.Z_PIC_OFFSET) * (53 + 12) / (Constants.NUMBER_Z_LIST - 1)
-        _centerBZ = _Zpoint - 12 + Constants.Z_BRAIN_offset
+        _Zpoint = (_Bz + Z_PIC_OFFSET) * (53 + 12) / (NUMBER_Z_LIST - 1)
+        _centerBZ = _Zpoint - 12 + Z_BRAIN_offset
 
 
 
@@ -193,8 +199,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read(brain_stlfile_path)
 
-        # edges = mesh.extract_feature_edges(45)
-
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
         self.Brain_interactor.background_color = (0, 0, 0)
@@ -204,12 +208,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         print("center of point:", self.brain_point.SetCenter)
 
+###############################################
         # self.brain_point.SetCenter(14, -6, 96)
 
 
         # self.Brain_interactor.add_mesh(edges, color="green", line_width=5)
         # self.Brain_interactor.add_mesh(dataset, style='wireframe', color='blue', label='Input')
         # self.Brain_interactor.add_mesh(edges, color="red", line_width=2)
+
+
 
     def onSaveFigData(self):
 
@@ -249,6 +256,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def onShow_slider_onBrain(self):
         self.slider_onBrain_x=self.Brain_interactor.add_slider_widget\
             (None,  rng=[-87, 86], value=0, title="RightLeft_x", pointa=(0.025, 0.1), pointb=(0.31, 0.1), style='modern')
+
         self.slider_onBrain_y=self.Brain_interactor.add_slider_widget\
             (None,   rng=[-122, 90], value=-14, title="FrontBack_y", pointa=(0.35, 0.1), pointb=(0.64, 0.1), style='modern')
         self.slider_onBrain_z= self.Brain_interactor.add_slider_widget\
@@ -256,6 +264,41 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onHide_slider_onBrain(self):
         print("Brain")
+
+
+    def getfile(self):
+
+        file_path = easygui.fileopenbox()
+
+        with open(file_path, "r") as f:
+
+            lines = f.readlines()
+            line1 = lines[0].strip()
+            line2 = lines[1].strip()
+            line3 = lines[2].strip()
+
+
+            line1parts = line1.split()
+            line2parts = line2.split()
+            line3parts = line3.split()
+
+            x = int(line1parts[2])
+            y = int(line2parts[2])
+            z = int(line3parts[2])
+
+
+            message = "value of x = {}\n\nvalue of y = {}\n\nvalue of z = {}\n\n ".format(x , y , z)
+            msg_box = QMessageBox()
+            msg_box.setText(message)
+            msg_box.setWindowTitle("Confirm Information")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.resize(1200, 600)
+            msg_box.exec_()
+
+
+            self.XSpin.setValue(x)
+            self.YSpin.setValue(y)
+            self.ZSpin.setValue(z)
 
     def initAllpicture(self):
         ########################################### sort of listX
@@ -439,16 +482,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         if scale_flag:
             ######################################### calculate x value
             valueBt = self.BTSpin.value()
-            _scaleX = valueBt / Constants.NUMBER_X_LIST
-            _cx = int(mx) + Constants.X_PIC_OFFSET
+            _scaleX = valueBt / NUMBER_X_LIST
+            _cx = int(mx) + X_PIC_OFFSET
             ######################################### calculate y value
             valueAp = self.APSpin.value()
-            _scaleY = valueAp / Constants.NUMBER_Y_LIST
-            _cy = int(my) + Constants.Y_PIC_OFFSET
+            _scaleY = valueAp / NUMBER_Y_LIST
+            _cy = int(my) + Y_PIC_OFFSET
             ######################################### calculate z value
             valueEv = self.EVSpin.value()
-            _scaleZ = valueEv / Constants.NUMBER_Z_LIST
-            _cz = int(mz) + Constants.Z_PIC_OFFSET
+            _scaleZ = valueEv / NUMBER_Z_LIST
+            _cz = int(mz) + Z_PIC_OFFSET
 
         else:
             _cx = int(mx)
@@ -466,18 +509,29 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
 
-        #horiz line  z
-        dummy = abs(Constants.NUMBER_Z_LIST - 1 - valZ)
-        dummy += Constants.LINEZ_OFFSET_XPLAN
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), _ximg)
+
+
+        #########add text to pic
+        font = QFont()
+        font.setPointSize(10)
+        qpx.setFont(font)
+        qpx.setPen(QColor(158, 158, 158))
+        qpx.drawText(10, 18, " X Axis")
+
+
+
+        #horiz line  z
+        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
+        dummy += LINEZ_OFFSET_XPLAN
         pen = QPen(Qt.red, 3)
         qpx.setPen(pen)
         qpx.drawLine(-700, dummy, 700, dummy)
 
         # vertical line,y
-        myy_loc = abs(Constants.NUMBER_Y_LIST - 1 - valY)
-        myy_loc += Constants.LINEY_OFFSET_XPLAN
+        myy_loc = abs(NUMBER_Y_LIST - 1 - valY)
+        myy_loc += LINEY_OFFSET_XPLAN
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
@@ -489,21 +543,30 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _yimg = QPixmap(my_Yside_pics_add + self.picListY[valY])
         self.pixmap_YY = QPixmap(self.Ypiclabel.size())
 
-        ############# horiz Line ,z
+
         qpy = QPainter(self.pixmap_YY)
         qpy.drawPixmap(self.Ypiclabel.rect(), _yimg)
 
+        #########add text to pic
+        font = QFont()
+        font.setPointSize(10)
+        qpy.setFont(font)
+        qpy.setPen(QColor(158, 158, 158))
+        qpy.drawText(10, 18, " Y Axis")
+
+
+        ############# horiz Line ,z
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
-        dummy = abs(Constants.NUMBER_Z_LIST - 1 - valZ)
-        dummy += Constants.LINEZ_OFFSET_YPLAN
+        dummy = abs(NUMBER_Z_LIST - 1 - valZ)
+        dummy += LINEZ_OFFSET_YPLAN
         qpy.drawLine(-800, dummy, 800, dummy)
 
         ###########vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
         dummy = valX
-        dummy += Constants.LINEX_OFFSET_YPLAN
+        dummy += LINEX_OFFSET_YPLAN
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
@@ -516,10 +579,23 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.qpz = QPainter(self.pixmap_ZZ2)
         self.qpz.drawPixmap(self.Zpiclabel.rect(), _zimg)
 
+
+
+
+        #########add text to pic
+        font = QFont()
+        font.setPointSize(10)
+        self.qpz.setFont(font)
+        self.qpz.setPen(QColor(158, 158, 158))
+        self.qpz.drawText(10, 18, " Z Axis")
+
+
+
+
         ########### horiz,y
         pen = QPen(Qt.red, 3)
-        dummy = abs(Constants.NUMBER_Y_LIST - 1 - valY)
-        dummy += Constants.LINEY_OFFSET_ZPLAN
+        dummy = abs(NUMBER_Y_LIST - 1 - valY)
+        dummy += LINEY_OFFSET_ZPLAN
         self.qpz.setPen(pen)
         self.qpz.drawLine(-800, dummy, 800, dummy)
 
@@ -527,7 +603,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = valX
-        dummy += Constants.LINEX_OFFSET_ZPLAN
+        dummy += LINEX_OFFSET_ZPLAN
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
@@ -547,17 +623,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.z_now = valZ
 
 
-        self.Xshowlabel.setText(str(self.x_now - Constants.X_PIC_OFFSET))
-        self.Yshowlabel.setText(str(self.y_now - Constants.Y_PIC_OFFSET))
-        self.Zshowlabel.setText(str(self.z_now - Constants.Z_PIC_OFFSET))
+        self.Xshowlabel.setText(str(self.x_now - X_PIC_OFFSET))
+        self.Yshowlabel.setText(str(self.y_now - Y_PIC_OFFSET))
+        self.Zshowlabel.setText(str(self.z_now - Z_PIC_OFFSET))
         self.OAshowlabel.setText(str(self.oa_now))
         self.CAshowlabel.setText(str(self.ca_now))
 
     def change_spin_vals(self, valX, valY, valZ):
 
-        self.XSpin.setValue(valX - Constants.X_PIC_OFFSET)
-        self.YSpin.setValue(valY - Constants.Y_PIC_OFFSET)
-        self.ZSpin.setValue(valZ - Constants.Z_PIC_OFFSET)
+        self.XSpin.setValue(valX - X_PIC_OFFSET)
+        self.YSpin.setValue(valY - Y_PIC_OFFSET)
+        self.ZSpin.setValue(valZ - Z_PIC_OFFSET)
 
     def onMyHideShow(self):
         if self.frame_3.isHidden() == False:

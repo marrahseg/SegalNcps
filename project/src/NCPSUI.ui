@@ -3192,7 +3192,7 @@ background-color: rgb(122, 122, 122);
                <property name="spacing">
                 <number>6</number>
                </property>
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_2">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -3208,7 +3208,7 @@ background-color: rgb(122, 122, 122);
                  </property>
                 </widget>
                </item>
-               <item>
+               <item alignment="Qt::AlignLeft">
                 <widget class="QSlider" name="XSlider">
                  <property name="maximum">
                   <number>173</number>
@@ -3224,7 +3224,7 @@ background-color: rgb(122, 122, 122);
                  </property>
                 </widget>
                </item>
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_3">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -3244,13 +3244,6 @@ background-color: rgb(122, 122, 122);
                 </widget>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QLabel" name="X_Axislabel">
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
              </item>
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="Xpiclabel">
@@ -3315,7 +3308,7 @@ background-color: rgb(122, 122, 122);
              </property>
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_5">
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
                   <string>Front</string>
@@ -3341,7 +3334,7 @@ background-color: rgb(122, 122, 122);
                  </property>
                 </widget>
                </item>
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_43">
                  <property name="text">
                   <string>Back</string>
@@ -3352,13 +3345,6 @@ background-color: rgb(122, 122, 122);
                 </widget>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QLabel" name="Y_Axislabel">
-               <property name="text">
-                <string>Y</string>
-               </property>
-              </widget>
              </item>
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="Ypiclabel">
@@ -3420,7 +3406,7 @@ background-color: rgb(122, 122, 122);
                <property name="spacing">
                 <number>6</number>
                </property>
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_44">
                  <property name="text">
                   <string>Up</string>
@@ -3446,7 +3432,7 @@ background-color: rgb(122, 122, 122);
                  </property>
                 </widget>
                </item>
-               <item alignment="Qt::AlignHCenter">
+               <item alignment="Qt::AlignLeft">
                 <widget class="QLabel" name="label_45">
                  <property name="text">
                   <string>Down</string>
@@ -3457,19 +3443,6 @@ background-color: rgb(122, 122, 122);
                 </widget>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QLabel" name="Z_Axislabel">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="autoFillBackground">
-                <bool>true</bool>
-               </property>
-               <property name="text">
-                <string>Z</string>
-               </property>
-              </widget>
              </item>
              <item>
               <widget class="QLabel" name="Zpiclabel">
