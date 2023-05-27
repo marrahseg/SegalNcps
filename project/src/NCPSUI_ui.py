@@ -1471,7 +1471,6 @@ class Ui_MainWindow(object):
         self.menuEdit.addAction(self.actionForm)
         self.menuEdit.addAction(self.actionRedo)
         self.menuEdit.addAction(self.actionSelect_All)
-        self.menuEdit.addAction(self.actionChange_Offset)
         self.menuForm.addAction(self.actiondialog)
         self.menuView.addAction(self.actionDark)
         self.menuView.addAction(self.actionLight)
@@ -1491,7 +1490,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.InformationtabWidget.setCurrentIndex(0)
+        self.InformationtabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

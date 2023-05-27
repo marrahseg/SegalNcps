@@ -731,7 +731,7 @@ background-color: rgb(122, 122, 122);
                 </sizepolicy>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="Inputtab">
                 <attribute name="title">
@@ -3512,7 +3512,6 @@ background-color: rgb(122, 122, 122);
     <addaction name="actionForm"/>
     <addaction name="actionRedo"/>
     <addaction name="actionSelect_All"/>
-    <addaction name="actionChange_Offset"/>
    </widget>
    <widget class="QMenu" name="menuForm">
     <property name="title">

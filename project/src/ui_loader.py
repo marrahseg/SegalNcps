@@ -1,6 +1,7 @@
 import configparser
 import os
 import easygui as easygui
+import numpy as np
 
 import pyvista as pv
 
@@ -15,12 +16,12 @@ from src.NCPSUI_ui import Ui_MainWindow
 
 
 motor_real = False
-
-with open("defultvariable.txt", "r") as f:
+##############################read txt file
+with open("defultvariable.txt", "+r") as f:
     contents = f.read()
 
 exec(contents)
-
+#################################################
 
 
 class Window_ui(QMainWindow, Ui_MainWindow):
@@ -59,10 +60,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.oa_go = 0
         self.ca_go = 0
 
-
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
+
 
     def signalsSlat(self):
 
@@ -77,7 +78,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
-
+        self.actionChange_Offset.triggered.connect(self.onMyHideOffseting)
         ###############################MENU BAR
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
@@ -198,6 +199,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor = QtInteractor(self.frame_14)
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
         mesh = pv.read(brain_stlfile_path)
+
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
 
@@ -519,7 +521,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.setFont(font)
         qpx.setPen(QColor(158, 158, 158))
         qpx.drawText(10, 18, " X Axis")
-
 
 
         #horiz line  z
