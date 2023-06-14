@@ -150,48 +150,69 @@ class Window_withDev(Window_ui):
         self.worker.finished.connect(self.report_connection_stat)
         self.thread.start()
 
+
+
+    def DevSerWright(self,val):
+        try:
+            self.DevSer.write(val)
+        except:
+            print("error in my dev")
+
+
+
     def do_b_right(self):
         print("bb right")
-        self.DevSer.write(b'BrooAAAABBBBCCCC')
+        self.DevSerWright(b'BrooAAAABBBBCCCC')
+        # self.DevSer.write(b'BrooAAAABBBBCCCC')
 
     def do_b_left(self):
         print("bb left")
-        self.DevSer.write(b'BlooAAAABBBBCCCC')
+        self.DevSerWright(b'BlooAAAABBBBCCCC')
+        # self.DevSer.write(b'BlooAAAABBBBCCCC')
 
     def do_Y_right(self):
         print("right")
-        self.DevSer.write(b'YrooAAAABBBBCCCC')
+        self.DevSerWright(b'YrooAAAABBBBCCCC')
+        # self.DevSer.write(b'YrooAAAABBBBCCCC')
 
     def do_Y_left(self):
         print("left")
-        self.DevSer.write(b'YlooAAAABBBBCCCC')
+        self.DevSerWright(b'YlooAAAABBBBCCCC')
+        # self.DevSer.write(b'YlooAAAABBBBCCCC')
 
     def do_alpha_clock(self):
         print("clockwise")
-        self.DevSer.write(b'AcooAAAABBBBCCCC')
+        self.DevSerWright(b'AcooAAAABBBBCCCC')
+        # self.DevSer.write(b'AcooAAAABBBBCCCC')
 
     def do_alpha_count_clock(self):
         print("counter clockwise")
-        self.DevSer.write(b'ACooAAAABBBBCCCC')
+        self.DevSerWright(b'ACooAAAABBBBCCCC')
+        # self.DevSer.write(b'ACooAAAABBBBCCCC')
 
     def do_X_back(self):
         print("back")
-        self.DevSer.write(b'XbooAAAABBBBCCCC')
+        self.DevSerWright(b'XbooAAAABBBBCCCC')
+        # self.DevSer.write(b'XbooAAAABBBBCCCC')
 
     def do_X_forth(self):
         print("forth")
-        self.DevSer.write(b'XfooAAAABBBBCCCC')
+        self.DevSerWright(b'XfooAAAABBBBCCCC')
+        # self.DevSer.write(b'XfooAAAABBBBCCCC')
 
     def do_Z_up(self):
         print("up")
-        self.DevSer.write(b'ZuooAAAABBBBCCCC')
+        self.DevSerWright(b'ZuooAAAABBBBCCCC')
+        # self.DevSer.write(b'ZuooAAAABBBBCCCC')
 
     def do_Z_down(self):
-        self.DevSer.write(b'ZdooAAAABBBBCCCC')
+        self.DevSerWright(b'ZdooAAAABBBBCCCC')
+        # self.DevSer.write(b'ZdooAAAABBBBCCCC')
         print("down")
 
     def do_Z_stop(self):
-        self.DevSer.write(b'EsooAAAABBBBCCCC')
+        self.DevSerWright(b'EsooAAAABBBBCCCC')
+        # self.DevSer.write(b'EsooAAAABBBBCCCC')
         print("stop")
 
     def do_set_go(self):    # 71 = g

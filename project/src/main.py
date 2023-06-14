@@ -14,7 +14,7 @@ if __name__ == "__main__":
      app = QApplication(sys.argv)
      win = Window_withDev()
 
-     pixmap = QPixmap("bj - Copy.jpg")
+     pixmap = QPixmap("../UI/bj - Copy.jpg")
      splash = QSplashScreen(pixmap)
      splash.show()
      app.processEvents()

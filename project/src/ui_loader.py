@@ -2,7 +2,6 @@ import configparser
 import os
 import easygui as easygui
 import numpy as np
-
 import pyvista as pv
 
 from pyvistaqt import QtInteractor
@@ -16,12 +15,15 @@ from src.NCPSUI_ui import Ui_MainWindow
 
 
 motor_real = False
+
+
 ##############################read txt file
-with open("defultvariable.txt", "+r") as f:
+with open("../UI/defultvariable.txt", "+r") as f:
     contents = f.read()
 
 exec(contents)
 #################################################
+
 
 
 class Window_ui(QMainWindow, Ui_MainWindow):
@@ -35,12 +37,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OffsetinggroupBox.hide()
 
 
-
-
         self.timer = QTimer()
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
+
 
         self.centerBX = 0
         self.centerBY = 0
@@ -65,6 +66,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
 
+
     def signalsSlat(self):
 
         self.StartButton.clicked.connect(self.onStartBottonClicked)
@@ -72,7 +74,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-        # self.SetOffsetButton.clicked.connect(self.onChangeOffset)
+        self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         self.ResetOffsetButton.clicked.connect(self.onResetOffset)
         self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
 
@@ -106,38 +108,51 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
 
-    # def onChangeOffset(self):
-    #     a = int(self.Xplain_Vline.text())
-    #     b = int(self.Xplain_Hline.text())
-    #     c = int(self.Yplain_Vline.text())
-    #     d = int(self.Yplain_Hline.text())
-    #     e = int(self.Zplain_Vline.text())
-    #     f = int(self.Zplain_Hline.text())
-    #
-    #     if ( a != 0):
-    #         LINEY_OFFSET_XPLAN += a
-    #     else:
-    #         print("a is not change")
-    #         if ( b != 0):
-    #             LINEZ_OFFSET_XPLAN += b
-    #         else:
-    #             print("b is not change")
-    #             if ( c != 0):
-    #                 LINEX_OFFSET_YPLAN += c
-    #             else:
-    #                 print("b is not change")
-    #                 if( d != 0):
-    #                     LINEZ_OFFSET_YPLAN += d
-    #                 else:
-    #                     print("d is not change")
-    #                     if( e != 0):
-    #                         LINEX_OFFSET_ZPLAN += e
-    #                     else:
-    #                         print("e is not change")
-    #                         if ( f != 0):
-    #                             LINEY_OFFSET_ZPLAN += f
-    #                         else:
-    #                             print(" f is not change")
+    def onChangeOffset(self):
+        a = int(self.Xplain_Vline.text())
+        b = int(self.Xplain_Hline.text())
+        c = int(self.Yplain_Vline.text())
+        d = int(self.Yplain_Hline.text())
+        e = int(self.Zplain_Vline.text())
+        f = int(self.Zplain_Hline.text())
+
+        self.aa = LINEY_OFFSET_XPLAN + a
+        self.bb = LINEZ_OFFSET_XPLAN + b
+        print("hhhhhhhhhhhhh",self.aa)
+
+        ########################### plain Y
+        self.cc = LINEX_OFFSET_YPLAN + c
+        self.dd = LINEZ_OFFSET_YPLAN + d
+
+        ##########################plain Z
+        self.ee = LINEX_OFFSET_ZPLAN + e
+        self.ff = LINEY_OFFSET_ZPLAN + f
+
+
+        if ( a != 0):
+            self.aa += a
+        else:
+            print("a is not change")
+            if ( b != 0):
+                self.bb += b
+            else:
+                print("b is not change")
+                if ( c != 0):
+                    self.cc += c
+                else:
+                    print("b is not change")
+                    if( d != 0):
+                        self.dd += d
+                    else:
+                        print("d is not change")
+                        if( e != 0):
+                            self.ee += e
+                        else:
+                            print("e is not change")
+                            if ( f != 0):
+                                self.ff += f
+                            else:
+                                print(" f is not change")
 
 
     def onResetOffset(self):
@@ -149,14 +164,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zplain_Hline.setText("0")
 
 
-        # LINEY_OFFSET_XPLAN = +188
-        # LINEZ_OFFSET_XPLAN = +45
-        # ########################### plain Y
-        # LINEX_OFFSET_YPLAN = +191
-        # LINEZ_OFFSET_YPLAN = +45
-        # ##########################plain Z
-        # LINEX_OFFSET_ZPLAN = +191
-        # LINEY_OFFSET_ZPLAN = +60
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -194,14 +201,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def print_point(*args, **kwargs):
         print(args[1])
 
+
+
+
+
+
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
-        mesh = pv.read(brain_stlfile_path)
+        mesh = pv.read(brain_stlfile_path).triangulate().decimate(0.7)
+        # mesh = examples.download_cow().triangulate().decimate(0.7)
 
 
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), opacity=0.6)
+
+        self.Brain_interactor.add_mesh(mesh ,color=(158, 158, 158), opacity=0.6)
 
         self.Brain_interactor.background_color = (0, 0, 0)
 
@@ -209,6 +223,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
 
         print("center of point:", self.brain_point.SetCenter)
+
 
 ###############################################
         # self.brain_point.SetCenter(14, -6, 96)
@@ -589,8 +604,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.qpz.setFont(font)
         self.qpz.setPen(QColor(158, 158, 158))
         self.qpz.drawText(10, 18, " Z Axis")
-
-
 
 
         ########### horiz,y
