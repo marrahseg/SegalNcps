@@ -1,0 +1,9 @@
+
+LINEY_OFFSET_XPLAN = +166
+LINEZ_OFFSET_XPLAN = +45
+########################### plain Y
+LINEX_OFFSET_YPLAN = +166
+LINEZ_OFFSET_YPLAN = +45
+##########################plain Z
+LINEX_OFFSET_ZPLAN = +167
+LINEY_OFFSET_ZPLAN = +60

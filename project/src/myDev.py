@@ -113,6 +113,8 @@ class Window_withDev(Window_ui):
         #
         # self.pushButton_set.released.connect(self.do_set_go)
     def motor_mvm_connector(self):
+
+        # self.StartButton.pressed.connect(self.do_set_go)
         self.Z_UpButton.pressed.connect(self.do_Z_up)
         self.Z_UpButton.released.connect(self.do_Z_stop)
         self.Z_DownButton.pressed.connect(self.do_Z_down)
@@ -249,7 +251,7 @@ class Window_withDev(Window_ui):
 
     def motor_set(self,  myx, myy, myz, mya, myb):  # 71 = g
 
-        myy = myy + 15
+        # myy = myy + 15
 
         if myx != 0:
             myx = - myx
@@ -262,7 +264,7 @@ class Window_withDev(Window_ui):
 
 
 
-        myz = myz - 98
+        # myz = myz - 98
 
         x_dir = 1
         y_dir = 1

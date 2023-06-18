@@ -3,6 +3,8 @@ import os
 import easygui as easygui
 import numpy as np
 import pyvista as pv
+import Constants
+
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
@@ -13,16 +15,16 @@ from src.NCPSUI_ui import Ui_MainWindow
 
 
 
-
 motor_real = False
 
 
 ##############################read txt file
-with open("../UI/defultvariable.txt", "+r") as f:
+with open("../UI/defultvariable.txt", "r") as f:
     contents = f.read()
-
+    print(contents)
 exec(contents)
-#################################################
+############################################
+
 
 
 
@@ -35,6 +37,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.minimizBotton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.OffsetinggroupBox.hide()
+
 
 
         self.timer = QTimer()
@@ -102,6 +105,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Ypiclabel.setPixmap(pixmap2)
 
         ######################## show defult pic in z
+
+
         pixmap3 = QPixmap(my_Zside_pics_add + self.picListZ[0])
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
@@ -109,6 +114,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
     def onChangeOffset(self):
+
+
         a = int(self.Xplain_Vline.text())
         b = int(self.Xplain_Hline.text())
         c = int(self.Yplain_Vline.text())
@@ -116,43 +123,42 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         e = int(self.Zplain_Vline.text())
         f = int(self.Zplain_Hline.text())
 
-        self.aa = LINEY_OFFSET_XPLAN + a
-        self.bb = LINEZ_OFFSET_XPLAN + b
-        print("hhhhhhhhhhhhh",self.aa)
-
-        ########################### plain Y
-        self.cc = LINEX_OFFSET_YPLAN + c
-        self.dd = LINEZ_OFFSET_YPLAN + d
-
-        ##########################plain Z
-        self.ee = LINEX_OFFSET_ZPLAN + e
-        self.ff = LINEY_OFFSET_ZPLAN + f
 
 
-        if ( a != 0):
-            self.aa += a
-        else:
-            print("a is not change")
-            if ( b != 0):
-                self.bb += b
-            else:
-                print("b is not change")
-                if ( c != 0):
-                    self.cc += c
-                else:
-                    print("b is not change")
-                    if( d != 0):
-                        self.dd += d
-                    else:
-                        print("d is not change")
-                        if( e != 0):
-                            self.ee += e
-                        else:
-                            print("e is not change")
-                            if ( f != 0):
-                                self.ff += f
-                            else:
-                                print(" f is not change")
+        try:
+           if (a != 0):
+               # LINEY_OFFSET_XPLAN += a
+               Constants.LINEY_OFFSET_XPLAN += a
+           else:
+               print("a is not change")
+
+               if (b != 0):
+                   Constants.LINEZ_OFFSET_XPLAN += b
+
+               else:
+                   print("b is not change")
+
+                   if (c != 0):
+                       Constants.LINEX_OFFSET_YPLAN += c
+                   else:
+                       print("b is not change")
+
+                       if (d != 0):
+                           Constants.LINEZ_OFFSET_YPLAN += d
+                       else:
+                           print("d is not change")
+
+                           if (e != 0):
+                               Constants.LINEX_OFFSET_ZPLAN += e
+                           else:
+                               print("e is not change")
+                               if (f != 0):
+                                   Constants.LINEY_OFFSET_ZPLAN += f
+                               else:
+                                   print("f is not change")
+        except:
+           print("fffffffffffffffffffffffff")
+
 
 
     def onResetOffset(self):
@@ -163,7 +169,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zplain_Vline.setText("0")
         self.Zplain_Hline.setText("0")
 
-
+        Constants.LINEY_OFFSET_XPLAN = +166
+        Constants.LINEZ_OFFSET_XPLAN = +45
+        ########################### plain Y
+        Constants.LINEX_OFFSET_YPLAN = +166
+        Constants.LINEZ_OFFSET_YPLAN = +45
+        ##########################plain Z
+        Constants.LINEX_OFFSET_ZPLAN = +167
+        Constants.LINEY_OFFSET_ZPLAN = +60
+        
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -318,6 +332,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             self.ZSpin.setValue(z)
 
     def initAllpicture(self):
+
         ########################################### sort of listX
         picListX = os.listdir(my_Xside_pics_add)
         listXminus = []
@@ -390,6 +405,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("starting timer ....")
         self.NoteBrowser.setText("Go to Cpoint")
 
+        # self.motor_set(self.x_go - self.x_go, self.y_go - self.y_go, self.z_go - self.z_go, self.oa_go - self.oa_now, self.ca_go - self.ca_now)
         self.timer.start(100)
 
     def onResetBotton(self):
@@ -540,14 +556,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         #horiz line  z
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_OFFSET_XPLAN
+        dummy += Constants.LINEZ_OFFSET_XPLAN
         pen = QPen(Qt.red, 3)
         qpx.setPen(pen)
         qpx.drawLine(-700, dummy, 700, dummy)
 
         # vertical line,y
         myy_loc = abs(NUMBER_Y_LIST - 1 - valY)
-        myy_loc += LINEY_OFFSET_XPLAN
+        myy_loc +=  Constants.LINEY_OFFSET_XPLAN
         pen = QPen(Qt.green, 3)
         qpx.setPen(pen)
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
@@ -575,14 +591,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.red, 3)
         qpy.setPen(pen)
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
-        dummy += LINEZ_OFFSET_YPLAN
+        dummy += Constants.LINEZ_OFFSET_YPLAN
         qpy.drawLine(-800, dummy, 800, dummy)
 
         ###########vert Line,x
         pen = QPen(Qt.green, 3)
         qpy.setPen(pen)
         dummy = valX
-        dummy += LINEX_OFFSET_YPLAN
+        dummy += Constants.LINEX_OFFSET_YPLAN
         qpy.drawLine(dummy, 500, dummy, -500)
         qpy.end()
 
@@ -609,7 +625,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         ########### horiz,y
         pen = QPen(Qt.red, 3)
         dummy = abs(NUMBER_Y_LIST - 1 - valY)
-        dummy += LINEY_OFFSET_ZPLAN
+        dummy +=  Constants.LINEY_OFFSET_ZPLAN
         self.qpz.setPen(pen)
         self.qpz.drawLine(-800, dummy, 800, dummy)
 
@@ -617,7 +633,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.green, 3)
         self.qpz.setPen(pen)
         dummy = valX
-        dummy += LINEX_OFFSET_ZPLAN
+        dummy +=  Constants.LINEX_OFFSET_ZPLAN
         self.qpz.drawLine(dummy, 500, dummy, -500)
         self.qpz.end()
         self.Zpiclabel.setPixmap(self.pixmap_ZZ2)
