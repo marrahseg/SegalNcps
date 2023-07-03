@@ -177,7 +177,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         ##########################plain Z
         Constants.LINEX_OFFSET_ZPLAN = +167
         Constants.LINEY_OFFSET_ZPLAN = +60
-        
+
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -215,37 +215,36 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def print_point(*args, **kwargs):
         print(args[1])
 
-
-
-
-
-
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
-        mesh = pv.read(brain_stlfile_path).triangulate().decimate(0.7)
-        # mesh = examples.download_cow().triangulate().decimate(0.7)
 
 
 
-        self.Brain_interactor.add_mesh(mesh ,color=(158, 158, 158), opacity=0.6)
+        mesh = pv.read('../UI/brain for half - Brain for Half_Skull 1-1.STL')
+        mesh2 = pv.read('../UI/brain for half - Brain for Half_Skull 2-1.STL')
+
+
+
+        self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158))
+        self.Brain_interactor.add_mesh(mesh2, color = "pink")
+
+
+
 
         self.Brain_interactor.background_color = (0, 0, 0)
-
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position='upper_edge', font='arial', font_size=5, color=None)
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
 
         print("center of point:", self.brain_point.SetCenter)
 
 
-###############################################
-        # self.brain_point.SetCenter(14, -6, 96)
 
+         ######################## color  of brain     #######
+        # color = (158, 158, 158)
+        ########################################
 
-        # self.Brain_interactor.add_mesh(edges, color="green", line_width=5)
-        # self.Brain_interactor.add_mesh(dataset, style='wireframe', color='blue', label='Input')
-        # self.Brain_interactor.add_mesh(edges, color="red", line_width=2)
 
 
 

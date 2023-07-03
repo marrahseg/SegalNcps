@@ -1,6 +1,7 @@
 
 brain_stlfile_path ='../UI/Brain for Half_Skull.stl'
 
+
 ########################addres of All pic
 
 my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
