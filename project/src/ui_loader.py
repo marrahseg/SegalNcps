@@ -1,17 +1,24 @@
 import configparser
 import os
-import easygui as easygui
-import numpy as np
+import pickle
 import pyvista as pv
+from PyQt5.uic.properties import QtCore, QtWidgets
+
 import Constants
+
+from openpyxl import load_workbook
+
+
 
 
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage, QFont, QColor
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QWidget, QDialog, QLabel
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
+from patent_ui import Ui_Dialog
+
 
 
 
@@ -28,6 +35,7 @@ exec(contents)
 
 
 
+
 class Window_ui(QMainWindow, Ui_MainWindow):
     def __init__(self,  parent=None):
         super().__init__(parent)
@@ -37,6 +45,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.minimizBotton.hide()
         self.setWindowTitle("SEGAL NCPS")
         self.OffsetinggroupBox.hide()
+        self.InformationtabWidget.setTabEnabled(2, False)
+        self.InformationtabWidget.setTabText(2, "")
+
+
 
 
 
@@ -68,15 +80,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
+        self.MyDialog_class = MyDialog()
+
+
+
 
 
     def signalsSlat(self):
 
         self.StartButton.clicked.connect(self.onStartBottonClicked)
+        self.StartWoMovementButton.clicked.connect(self.onStartWoMovementButton)
         self.XSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
+
         self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         self.ResetOffsetButton.clicked.connect(self.onResetOffset)
         self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
@@ -91,7 +109,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide.triggered.connect(self.onHide_slider_onBrain)
-        self.actionOpen.triggered.connect(self.getfile)
+        self.actionOpen1.triggered.connect(self.getingHeadSize)
+        self.CreateExamaction.triggered.connect(self.show_dialog)
+
+        #########pationmaneger
+
+        self.CpPositionButton.clicked.connect(self.SaveFile)
+
+
+
 
 
         ####################show defult pic in x
@@ -111,11 +137,18 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
+    #
+    # def show_new_widget(self):
+    #     # ایجاد یک QWidget جدید
+    #     new_widget = QWidget(self)
+    #     new_widget.setGeometry(100, 100, 400, 400)
+    #     new_widget.show()
+
+
+
 
 
     def onChangeOffset(self):
-
-
         a = int(self.Xplain_Vline.text())
         b = int(self.Xplain_Hline.text())
         c = int(self.Yplain_Vline.text())
@@ -160,6 +193,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
            print("fffffffffffffffffffffffff")
 
 
+    def DisableHeading(self):
+        self.APSpin.setEnabled(False)
+        self.EVSpin.setEnabled(False)
+        self.BTSpin.setEnabled(False)
+
+    def UnDisableHeading(self):
+        self.APSpin.setEnabled(True)
+        self.EVSpin.setEnabled(True)
+        self.BTSpin.setEnabled(True)
 
     def onResetOffset(self):
         self.Xplain_Vline.setText("0")
@@ -169,6 +211,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zplain_Vline.setText("0")
         self.Zplain_Hline.setText("0")
 
+
+
         Constants.LINEY_OFFSET_XPLAN = +166
         Constants.LINEZ_OFFSET_XPLAN = +45
         ########################### plain Y
@@ -177,7 +221,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         ##########################plain Z
         Constants.LINEX_OFFSET_ZPLAN = +167
         Constants.LINEY_OFFSET_ZPLAN = +60
-
 
     def moveSphere(self, _Bx, _By, _Bz):
         _xx, _yy, _zz = self.change_Coordinate_origin()
@@ -227,15 +270,15 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
 
-        self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158))
-        self.Brain_interactor.add_mesh(mesh2, color = "pink")
+        self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158),specular= 0.7, specular_power= 15, ambient= 0.3,smooth_shading=True)
+        self.Brain_interactor.add_mesh(mesh2, color =(171, 71, 188), specular= 0.7, specular_power= 15, ambient= 0.3,smooth_shading=True)
 
 
 
 
         self.Brain_interactor.background_color = (0, 0, 0)
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position='upper_edge', font='arial', font_size=5, color=None)
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False)
+        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False )
 
         print("center of point:", self.brain_point.SetCenter)
 
@@ -245,9 +288,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         # color = (158, 158, 158)
         ########################################
 
-
-
-
     def onSaveFigData(self):
 
         config = configparser.ConfigParser()
@@ -255,6 +295,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         config['forge.example'] = {}
         config['forge.example']['X'] = self.Xshowlabel.text()
         config['forge.example']['Y'] = self.Yshowlabel.text()
+
         config['forge.example']['Z'] = self.Zshowlabel.text()
         config['forge.example']['OA'] = self.OAshowlabel.text()
         config['forge.example']['CA'] = self.CAshowlabel.text()
@@ -296,39 +337,59 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("Brain")
 
 
-    def getfile(self):
-
-        file_path = easygui.fileopenbox()
-
-        with open(file_path, "r") as f:
-
-            lines = f.readlines()
-            line1 = lines[0].strip()
-            line2 = lines[1].strip()
-            line3 = lines[2].strip()
+    def getingHeadSize(self):
+        if self.InformationtabWidget.isTabEnabled(2) == False:
+            self.InformationtabWidget.setTabEnabled(2, True)
+            print("juh2nwurhfbrfrejk")
+            self.InformationtabWidget.setTabText(2, "Patient information")
 
 
-            line1parts = line1.split()
-            line2parts = line2.split()
-            line3parts = line3.split()
 
-            x = int(line1parts[2])
-            y = int(line2parts[2])
-            z = int(line3parts[2])
+        else:
+            self.InformationtabWidget.setTabEnabled(2, False)
+            self.InformationtabWidget.setTabText(2, "")
 
 
-            message = "value of x = {}\n\nvalue of y = {}\n\nvalue of z = {}\n\n ".format(x , y , z)
-            msg_box = QMessageBox()
-            msg_box.setText(message)
-            msg_box.setWindowTitle("Confirm Information")
-            msg_box.setStandardButtons(QMessageBox.Ok)
-            msg_box.resize(1200, 600)
-            msg_box.exec_()
 
 
-            self.XSpin.setValue(x)
-            self.YSpin.setValue(y)
-            self.ZSpin.setValue(z)
+
+
+
+
+
+
+
+        # file_path = easygui.fileopenbox()
+        #
+        # with open(file_path, "r") as f:
+        #
+        #     lines = f.readlines()
+        #     line1 = lines[0].strip()
+        #     line2 = lines[1].strip()
+        #     line3 = lines[2].strip()
+        #
+        #
+        #     line1parts = line1.split()
+        #     line2parts = line2.split()
+        #     line3parts = line3.split()
+        #
+        #     x = int(line1parts[2])
+        #     y = int(line2parts[2])
+        #     z = int(line3parts[2])
+        #
+        #
+        #     message = "value of AP = {}\n\nvalue of BT = {}\n\nvalue of EV = {}\n\n ".format(x , y , z)
+        #     msg_box = QMessageBox()
+        #     msg_box.setText(message)
+        #     msg_box.setWindowTitle("Confirm Information")
+        #     msg_box.setStandardButtons(QMessageBox.Ok)
+        #     msg_box.resize(1200, 600)
+        #     msg_box.exec_()
+        #
+        #
+        #     self.APSpin.setValue(x)
+        #     self.BTSpin.setValue(y)
+        #     self.EVSpin.setValue(z)
 
     def initAllpicture(self):
 
@@ -404,6 +465,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("starting timer ....")
         self.NoteBrowser.setText("Go to Cpoint")
 
+
         # self.motor_set(self.x_go - self.x_go, self.y_go - self.y_go, self.z_go - self.z_go, self.oa_go - self.oa_now, self.ca_go - self.ca_now)
         self.timer.start(100)
 
@@ -428,6 +490,29 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
+
+
+
+    def  onStartWoMovementButton(self):
+        _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
+        _moa = self.OASpin.value()
+        _mca = self.CASpin.value()
+
+        # self.x_go = _mx
+        # self.y_go = _my
+        # self.z_go = _mz
+        # self.oa_go = _moa
+        # self.ca_go = _mca
+
+        self.NoteBrowser.setText("Go to Cpoint")
+
+        self.update_pics_lines_and_now_position(_mx, _my, _mz)
+        self.change_slider_Pos(_mx, _my, _mz)
+        self.CAshowlabel.setText(str(_mca))
+        self.OAshowlabel.setText(str(_moa))
+
+
+
 
     def onTimer_interrupt(self):
         _mx = 0
@@ -680,5 +765,160 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             print("closed")
         else:
             self.OffsetinggroupBox.show()
+
+    def onGetInformationOfHeading(self):
+        pass
+
+
+    def onSaveSizeHeading(self):
+
+        try:
+            config = configparser.ConfigParser()
+            config['Patient Head Indices:'] = {}
+            config['size'] = {}
+            config['size']['AP'] = format(self.APSpin.value())
+            config['size']['BT'] = format(self.BTSpin.value())
+            config['size']['EV'] = format(self.EVSpin.value())
+
+
+            fileName = QFileDialog.getSaveFileName(self, ("Save data"), '', ("*.txt"))
+
+            with open(fileName[0], 'w') as configfile:
+                config.write(configfile)
+        except:
+            print("An error has occurred")
+
+
+
+
+    def patentmange(self):
+         # باز کردن فایل اکسل
+        book = load_workbook('Book1.xlsx')
+
+        # انتخاب شیت اکتیو
+        sheet = book.active
+
+        first_name = self.lineEdit_6.text()
+        last_name = self.lineEdit_9.text()
+        age = self.lineEdit_8.text()
+        female = self.lineEdit_7.text()
+
+
+        # اضافه کردن یک ردیف جدید
+        new_row = [first_name, last_name, age, female]
+        sheet.append(new_row)
+
+        next_row = sheet.max_row + 1
+
+         # اضافه کردن یک ردیف جدید
+        new_row = [first_name, last_name, age, female]
+        for col, value in enumerate(new_row, start=1):
+             sheet.cell(row=next_row, column=col, value=value)
+
+
+        # ذخیره تغییرات در فایل اکسل
+        book.save('Book1.xlsx')
+
+
+    def onExportInformation(self):
+
+        nameValue = self.lineEdit_6.text()
+        familyValue = self.lineEdit_9.text()
+        ageValue = self.lineEdit_8.text()
+        genderValue = self.lineEdit_7.text()
+
+        BtValue = self.lineEdit_3.text()
+        EvValue = self.lineEdit_4.text()
+        ApValue = self.lineEdit_5.text()
+
+
+        i = 1
+        while True:
+            users = {f'user{i}': {'name': nameValue,'family': familyValue,'age': ageValue,'gender': genderValue,'Bt' : BtValue,'Ev': BtValue,'Ap': ApValue }}
+
+            print(users)
+            with open('users.pickle', 'wb') as f:
+                pickle.dump(users, f)
+
+
+
+
+        filename = 'users.pickle'
+
+        with open(filename, "rb") as f:
+            data = pickle.load(f)
+
+        self.Bt = data['user1']['Bt']
+        self.Ev = data['user2']['Ev']
+        self.Ap = data['user3']['Ap']
+
+        print( self.Bt,  self.Ev,   self.Ap)
+
+    def show_dialog(self):
+        class MyDialog(QDialog, Ui_Dialog):
+            def __init__(self, parent=None):
+                super().__init__(parent)
+
+            def SaveFile(self):
+                Fullname = self.Fullname.text()
+                SubjectID = self.SubjectID.text()
+                Rlhande = self.RightLeftHand.text()
+                ApPatient = self.ApPatientSpin.text()
+                EvPatient = self.EvPatientSpin.text()
+                BTPatient = self.BTPatientSpin.text()
+
+
+                users = {
+                    "user1": {
+                        "fullname": Fullname,
+                        "subject_id": SubjectID,
+                        "right_left_hand": Rlhande,
+                        "ap_patient": ApPatient,
+                        "ev_patient": EvPatient,
+                        "bt_patient": BTPatient
+                    }
+                }
+
+                with open("users.pickle", "wb") as f:
+                    pickle.dump(users, f)
+
+                with open("users.pickle", "rb") as f:
+                    users = pickle.load(f)
+
+
+                user1_fullname = users["user1"]["fullname"]
+                user2_bt_patient = users["user2"]["bt_patient"]
+
+
+
+
+
+
+
+
+        dialog = QDialog()
+        ui = Ui_Dialog()
+        ui.setupUi(dialog)
+
+
+
+        apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
+
+        dialog.exec_()
+
+
+    def ddff(self):
+         self.
+
+
+
+
+
+
+
+
+
+
+
 
 
