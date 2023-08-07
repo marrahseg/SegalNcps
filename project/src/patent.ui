@@ -59,13 +59,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_52">
-            <property name="text">
-             <string>Fullname:</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="2">
            <widget class="QLineEdit" name="SubjectID">
             <property name="placeholderText">
@@ -80,6 +73,13 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_52">
+            <property name="text">
+             <string>Fullname:</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
@@ -87,37 +87,15 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame_2">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="TimeofTest"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Time of Test:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="DateOfTest"/>
-          </item>
-          <item row="0" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Date of Test:</string>
+             <string>Date of Brith</string>
             </property>
            </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLineEdit" name="DateOfBrith"/>
           </item>
          </layout>
         </widget>
@@ -232,7 +210,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame_5">
+        <widget class="QFrame" name="bottoframe">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -240,17 +218,17 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="1">
-           <widget class="QPushButton" name="OKButton">
+          <item row="0" column="3">
+           <widget class="QPushButton" name="CancelButton">
             <property name="text">
-             <string>OK</string>
+             <string>Cancel</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="CancelButton">
+           <widget class="QPushButton" name="OKButton1">
             <property name="text">
-             <string>Cancel</string>
+             <string>OK</string>
             </property>
            </widget>
           </item>
@@ -266,6 +244,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="SearchButton">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

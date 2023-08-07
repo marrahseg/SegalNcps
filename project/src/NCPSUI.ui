@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1427</width>
+    <width>1401</width>
     <height>1078</height>
    </rect>
   </property>
@@ -756,7 +756,7 @@ background-color: rgb(122, 122, 122);
 </string>
                    </property>
                    <property name="title">
-                    <string>Patient Head Indices:</string>
+                    <string>C Head Indices:</string>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_4">
                     <property name="leftMargin">
@@ -3639,7 +3639,7 @@ background-color: rgb(122, 122, 122);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1427</width>
+     <width>1401</width>
      <height>21</height>
     </rect>
    </property>
@@ -3661,6 +3661,7 @@ background-color: rgb(122, 122, 122);
     <addaction name="menuNew"/>
     <addaction name="menuOpen"/>
     <addaction name="CreateExamaction"/>
+    <addaction name="OpenExamaction"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="actionSave_all"/>
@@ -3858,6 +3859,11 @@ background-color: rgb(122, 122, 122);
   <action name="CreateExamaction">
    <property name="text">
     <string>Create Exam</string>
+   </property>
+  </action>
+  <action name="OpenExamaction">
+   <property name="text">
+    <string>Open Exam</string>
    </property>
   </action>
  </widget>

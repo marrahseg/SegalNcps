@@ -28,15 +28,14 @@ motor_real = False
 ##############################read txt file
 with open("../UI/defultvariable.txt", "r") as f:
     contents = f.read()
-    print(contents)
+    # print(contents)
 exec(contents)
 ############################################
 
 
-
-
-
 class Window_ui(QMainWindow, Ui_MainWindow):
+
+
     def __init__(self,  parent=None):
         super().__init__(parent)
         os.getcwd()
@@ -47,7 +46,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OffsetinggroupBox.hide()
         self.InformationtabWidget.setTabEnabled(2, False)
         self.InformationtabWidget.setTabText(2, "")
-
+        self.my_dialog = MyDialog()
 
 
 
@@ -80,12 +79,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
 
-        self.MyDialog_class = MyDialog()
-
-
-
-
-
     def signalsSlat(self):
 
         self.StartButton.clicked.connect(self.onStartBottonClicked)
@@ -102,19 +95,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.HideMenuButton.clicked.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
         self.actionChange_Offset.triggered.connect(self.onMyHideOffseting)
-        ###############################MENU BAR
+        ###############################>>>>>>>>>>>>>>>>>>>MENU BAR>>>>>>>>>>>>>>>>>>>>>############################
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
         self.actiondialog.triggered.connect(self.on_show_dialog)
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide.triggered.connect(self.onHide_slider_onBrain)
-        self.actionOpen1.triggered.connect(self.getingHeadSize)
-        self.CreateExamaction.triggered.connect(self.show_dialog)
+        self.actionOpen1.triggered.connect(self.ongetingHeadSize)
 
+        #############<<<<<>>>>>>>>>>>>>>Pation Information>>>>>>>>>>>#########
+        self.CreateExamaction.triggered.connect(self.onCreate_dialog)
+        self.OpenExamaction.triggered.connect(self.onLoadExam)
+        self.my_dialog.OKButton1.clicked.connect(self.onSavePationInformation)
+        self.my_dialog.CancelButton.clicked.connect(self.onCancelDialog)
+        self.my_dialog.SearchButton.clicked.connect(self.onSearchPatientID)
         #########pationmaneger
 
-        self.CpPositionButton.clicked.connect(self.SaveFile)
+
+
 
 
 
@@ -137,15 +136,54 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
         self.Zpiclabel.setPixmap(pixmap3)
 
-    #
-    # def show_new_widget(self):
-    #     # ایجاد یک QWidget جدید
-    #     new_widget = QWidget(self)
-    #     new_widget.setGeometry(100, 100, 400, 400)
-    #     new_widget.show()
+    def onCreate_dialog(self):
+        self.my_dialog.SearchButton.hide()
+        self.my_dialog.show_dialog()
 
 
+    def onCancelDialog(self):
+        self.my_dialog.close()
 
+    def onSavePationInformation(self):
+        print("ssssssssssssssssssssssss")
+        print(self.my_dialog.Fullname.text())
+        Fullname = self.my_dialog.Fullname.text()
+        SubjectID = self.my_dialog.SubjectID.text()
+        Rlhande = self.my_dialog.RightLeftHand.text()
+        DBO = self.my_dialog.DateOfBrith.text()
+        ApPatient = self.my_dialog.ApPatientSpin.text()
+        EvPatient = self.my_dialog.EvPatientSpin.text()
+        BTPatient = self.my_dialog.BTPatientSpin.text()
+
+
+        try:
+            with open("data.pickle", "rb") as far:
+                users = pickle.load(far)
+        except FileNotFoundError:
+            users = {}
+
+        users[SubjectID] = {
+            "fullname": Fullname,
+            "subject_id": SubjectID,
+            "right_left_hand": Rlhande,
+            "DBO": DBO,
+            "ap_patient": ApPatient,
+            "ev_patient": EvPatient,
+            "bt_patient": BTPatient
+        }
+
+        with open("data.pickle", "wb") as far:
+            pickle.dump(users, far)
+
+        self.my_dialog.accept()
+
+
+    def onLoadExam(self):
+        self.my_dialog.SearchButton.show()
+        self.my_dialog.show_dialog()
+
+    def onSearchPatientID(self):
+        self.my_dialog.Fullname.setDisabled()
 
 
     def onChangeOffset(self):
@@ -155,7 +193,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         d = int(self.Yplain_Hline.text())
         e = int(self.Zplain_Vline.text())
         f = int(self.Zplain_Hline.text())
-
 
 
         try:
@@ -191,6 +228,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
                                    print("f is not change")
         except:
            print("fffffffffffffffffffffffff")
+
+
+
 
 
     def DisableHeading(self):
@@ -247,7 +287,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _centerBZ = _Zpoint - 12 + Z_BRAIN_offset
 
 
-
         ############################set center oa
         # _oapoint = (_Boa + Z_PIC_OFFSET) * (51 + 91) / (NUMBER_Z_LIST - 1)
         # _centerBoa = _oapoint - 91
@@ -261,23 +300,34 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
+
+
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
 
 
 
         mesh = pv.read('../UI/brain for half - Brain for Half_Skull 1-1.STL')
+
         mesh2 = pv.read('../UI/brain for half - Brain for Half_Skull 2-1.STL')
 
 
 
-        self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158),specular= 0.7, specular_power= 15, ambient= 0.3,smooth_shading=True)
-        self.Brain_interactor.add_mesh(mesh2, color =(171, 71, 188), specular= 0.7, specular_power= 15, ambient= 0.3,smooth_shading=True)
+        self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158),specular= 0.7,
+                                       specular_power=15, ambient=0.3, smooth_shading=True)
 
+
+
+        self.Brain_interactor.add_mesh(mesh2, color =(171, 71, 188), specular= 0.7,
+                                       specular_power=15, ambient=0.3, smooth_shading=True)
 
 
 
         self.Brain_interactor.background_color = (0, 0, 0)
-        self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System", position='upper_edge', font='arial', font_size=5, color=None)
+
+        self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System",
+                                       position='upper_edge', font='arial', font_size=5, color=None)
+
+
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False )
 
         print("center of point:", self.brain_point.SetCenter)
@@ -336,8 +386,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def onHide_slider_onBrain(self):
         print("Brain")
 
-
-    def getingHeadSize(self):
+    def ongetingHeadSize(self):
         if self.InformationtabWidget.isTabEnabled(2) == False:
             self.InformationtabWidget.setTabEnabled(2, True)
             print("juh2nwurhfbrfrejk")
@@ -348,48 +397,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         else:
             self.InformationtabWidget.setTabEnabled(2, False)
             self.InformationtabWidget.setTabText(2, "")
-
-
-
-
-
-
-
-
-
-
-
-        # file_path = easygui.fileopenbox()
-        #
-        # with open(file_path, "r") as f:
-        #
-        #     lines = f.readlines()
-        #     line1 = lines[0].strip()
-        #     line2 = lines[1].strip()
-        #     line3 = lines[2].strip()
-        #
-        #
-        #     line1parts = line1.split()
-        #     line2parts = line2.split()
-        #     line3parts = line3.split()
-        #
-        #     x = int(line1parts[2])
-        #     y = int(line2parts[2])
-        #     z = int(line3parts[2])
-        #
-        #
-        #     message = "value of AP = {}\n\nvalue of BT = {}\n\nvalue of EV = {}\n\n ".format(x , y , z)
-        #     msg_box = QMessageBox()
-        #     msg_box.setText(message)
-        #     msg_box.setWindowTitle("Confirm Information")
-        #     msg_box.setStandardButtons(QMessageBox.Ok)
-        #     msg_box.resize(1200, 600)
-        #     msg_box.exec_()
-        #
-        #
-        #     self.APSpin.setValue(x)
-        #     self.BTSpin.setValue(y)
-        #     self.EVSpin.setValue(z)
 
     def initAllpicture(self):
 
@@ -450,7 +457,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_spin_vals(_mx, _my, _mz)
 
-
     def onStartBottonClicked(self):
 
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
@@ -491,8 +497,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.update_pics_lines(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
 
-
-
     def  onStartWoMovementButton(self):
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
         _moa = self.OASpin.value()
@@ -510,9 +514,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.change_slider_Pos(_mx, _my, _mz)
         self.CAshowlabel.setText(str(_mca))
         self.OAshowlabel.setText(str(_moa))
-
-
-
 
     def onTimer_interrupt(self):
         _mx = 0
@@ -769,7 +770,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def onGetInformationOfHeading(self):
         pass
 
-
     def onSaveSizeHeading(self):
 
         try:
@@ -787,8 +787,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
                 config.write(configfile)
         except:
             print("An error has occurred")
-
-
 
 
     def patentmange(self):
@@ -818,97 +816,56 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         # ذخیره تغییرات در فایل اکسل
         book.save('Book1.xlsx')
+    #
+    # def onExportInformation(self):
+    #
+    #     nameValue = self.lineEdit_6.text()
+    #     familyValue = self.lineEdit_9.text()
+    #     ageValue = self.lineEdit_8.text()
+    #     genderValue = self.lineEdit_7.text()
+    #
+    #     BtValue = self.lineEdit_3.text()
+    #     EvValue = self.lineEdit_4.text()
+    #     ApValue = self.lineEdit_5.text()
+    #
+    #
+    #     i = 1
+    #     while True:
+    #         users = {f'user{i}': {'name': nameValue,'family': familyValue,'age': ageValue,'gender': genderValue,'Bt' : BtValue,'Ev': BtValue,'Ap': ApValue }}
+    #
+    #         print(users)
+    #         with open('users.pickle', 'wb') as f:
+    #             pickle.dump(users, f)
+    #
+    #
+    #
+    #     filename = 'users.pickle'
+    #
+    #     with open(filename, "rb") as f:
+    #         data = pickle.load(f)
 
 
-    def onExportInformation(self):
-
-        nameValue = self.lineEdit_6.text()
-        familyValue = self.lineEdit_9.text()
-        ageValue = self.lineEdit_8.text()
-        genderValue = self.lineEdit_7.text()
-
-        BtValue = self.lineEdit_3.text()
-        EvValue = self.lineEdit_4.text()
-        ApValue = self.lineEdit_5.text()
-
-
-        i = 1
-        while True:
-            users = {f'user{i}': {'name': nameValue,'family': familyValue,'age': ageValue,'gender': genderValue,'Bt' : BtValue,'Ev': BtValue,'Ap': ApValue }}
-
-            print(users)
-            with open('users.pickle', 'wb') as f:
-                pickle.dump(users, f)
 
 
 
+    #     self.Bt = data['user1']['Bt']
+    #     self.Ev = data['user2']['Ev']
+    #     self.Ap = data['user3']['Ap']
+    #
+    #     print( self.Bt,  self.Ev,   self.Ap)
 
-        filename = 'users.pickle'
 
-        with open(filename, "rb") as f:
-            data = pickle.load(f)
+class MyDialog(QDialog, Ui_Dialog):
 
-        self.Bt = data['user1']['Bt']
-        self.Ev = data['user2']['Ev']
-        self.Ap = data['user3']['Ap']
-
-        print( self.Bt,  self.Ev,   self.Ap)
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
 
     def show_dialog(self):
-        class MyDialog(QDialog, Ui_Dialog):
-            def __init__(self, parent=None):
-                super().__init__(parent)
-
-            def SaveFile(self):
-                Fullname = self.Fullname.text()
-                SubjectID = self.SubjectID.text()
-                Rlhande = self.RightLeftHand.text()
-                ApPatient = self.ApPatientSpin.text()
-                EvPatient = self.EvPatientSpin.text()
-                BTPatient = self.BTPatientSpin.text()
-
-
-                users = {
-                    "user1": {
-                        "fullname": Fullname,
-                        "subject_id": SubjectID,
-                        "right_left_hand": Rlhande,
-                        "ap_patient": ApPatient,
-                        "ev_patient": EvPatient,
-                        "bt_patient": BTPatient
-                    }
-                }
-
-                with open("users.pickle", "wb") as f:
-                    pickle.dump(users, f)
-
-                with open("users.pickle", "rb") as f:
-                    users = pickle.load(f)
-
-
-                user1_fullname = users["user1"]["fullname"]
-                user2_bt_patient = users["user2"]["bt_patient"]
-
-
-
-
-
-
-
-
-        dialog = QDialog()
-        ui = Ui_Dialog()
-        ui.setupUi(dialog)
-
-
-
         apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
+        self.exec_()
 
-        dialog.exec_()
 
-
-    def ddff(self):
-         self.
 
 
 
