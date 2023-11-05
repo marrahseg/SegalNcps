@@ -1,0 +1,11 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<resources>
+  <color name="primaryColor">#5B016B</color> <!--BOTTOMS COLOR-->
+  <color name="primaryLightColor">#ABABAB</color> <!--BOTTOMS COLOR-->
+  <color name="secondaryColor">#F4F4F4</color> <!--LINE EDIT-->
+  <color name="secondaryLightColor">#FFFFFF</color> <!--FRAME-->
+  <color name="secondaryDarkColor">#FFFFFF</color> <!--BACKGROUNG-->
+  <color name="primaryTextColor">#3C3C3C</color>  <!--CHANGABLE TEXT COLOR IN NORMAL MODE-->
+  <color name="secondaryTextColor">#424242</color> <!--TEXT COLOR IN NORMAL MODE-->
+
+</resources>
