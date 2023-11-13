@@ -1,12 +1,13 @@
 import configparser
+
 import os
 import pickle
 import pyvista as pv
 from PyQt5.uic.properties import QtCore, QtWidgets, QtGui
-import glob
+
 import Constants
 
-from openpyxl import load_workbook
+
 
 
 
@@ -85,6 +86,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.oa_go = 0
         self.ca_go = 0
 
+        self.counter = 0
+
+
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
@@ -147,6 +151,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.actionStandard_area.triggered.connect(self.onLock_Breaker_Area)
         self.my_UnlockArea.UnLockButton.clicked.connect(self.onunlock_Successful_Area)
+
+
+
+
+        self.pushButton.clicked.connect(self.onGoMotionRobot)
+
+
 
 
 
@@ -214,10 +225,35 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.my_dialog.frame_4.setStyleSheet("border-color:#9E9E9E")
 
 
+
+
+
     def set_logo(self):
         pixiconimage = QPixmap("logo.png")
         pixiconimage = pixiconimage.scaled(260, 150, Qt.AspectRatioMode.KeepAspectRatio)
-        self.label.setPixmap(pixiconimage)
+        # self.label.setPixmap(pixiconimage)
+
+#وقتی روی دکمه کلیک کرد متنش عوض شه و اون عملیات 6 مرحله ای ربات راانجام دهد
+    def onGoMotionRobot(self):
+        self.counter += 1
+
+        if self.counter == 1:
+            self.pushButton.setText("Go to Reset")
+
+        elif self.counter == 2:
+            self.pushButton.setText("Enable Drag")
+
+        elif self.counter == 3:
+            self.pushButton.setText("Get X , Y")
+
+        elif self.counter == 4:
+            self.pushButton.setText("Get Z")
+
+        elif self.counter == 5:
+            self.pushButton.setText("Start")
+
+        if self.counter == 5:
+            self.counter = 0
 
     ################To Eneable the line edits for patient information
     def set_Enable_PatientDialog(self):
@@ -534,40 +570,80 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
 
-
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
 
-
-
-        mesh = pv.read('../UI/brain for half - Brain for Half_Skull 1-1.STL')
-
-        mesh2 = pv.read('../UI/brain for half - Brain for Half_Skull 2-1.STL')
-
-
+        mesh = pv.read('../UI/Brain for Half_Skull.stl')
 
         self.Brain_interactor.add_mesh(mesh , color = (158, 158, 158),specular= 0.7,
-                                       specular_power=15, ambient=0.3, smooth_shading=True)
+                                       specular_power=15, ambient=0.3, smooth_shading=True, opacity=1)
 
-
-
-        self.Brain_interactor.add_mesh(mesh2, color =(171, 71, 188), specular= 0.7,
-                                       specular_power=15, ambient=0.3, smooth_shading=True)
-
+        # mesh = pv.read('../UI/brain for half - Brain for Half_Skull 1-1.STL')
+        #
+        # mesh2 = pv.read('../UI/brain for half - Brain for Half_Skull 2-1.STL')
+        #
+        # self.Brain_interactor.add_mesh(mesh2, color =(171, 71, 188), specular= 0.7,
+        #                                specular_power=15, ambient=0.3, smooth_shading=True)
 
 
         self.Brain_interactor.background_color = (255, 255, 255)
-
         self.Brain_interactor.add_text("Segal NCPS   |   Navigated Coil Placement System",
                                        position='upper_edge', font='arial', font_size=5, color=(0, 0, 0))
-
 
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28), center=(0, 0, 0),  radius=3, test_callback=False )
 
         print("center of point:", self.brain_point.SetCenter)
 
-         ######################## color  of brain     #######
-        # color = (158, 158, 158)
-        ########################################
+
+        #اضافه کردن کویل و محور ها
+        self.Add_axes()
+        self.Add_coil()
+
+
+
+    def Add_axes(self):
+        axes_actor = self.Brain_interactor.add_axes_at_origin(xlabel='Y', ylabel='X', zlabel='Z', line_width=3)
+        axes_actor.GetXAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+        axes_actor.GetYAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+        axes_actor.GetZAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+
+        # قرار دادن مرکز محور مختصات روی مرکز کره
+        center = self.brain_point.GetCenter()
+        axes_actor.SetOrigin(center[0], center[1], center[2])
+
+        axes_actor.SetTotalLength(100, 100, 100)
+
+
+    def Add_coil(self):
+        center1 = [0, 45, 94]
+        radius1 = 20
+        height1 = 5
+
+        # مشخصات استوانه دوم
+        radius2 = radius1
+        height2 = height1
+
+        # محاسبه موقعیت مرکز استوانه دوم
+        center2 = [center1[0] + radius1 + radius2, center1[1], center1[2]]
+
+        # اضافه کردن استوانه اول
+        cylinder1 = pv.Cylinder(center=center1, direction=[0, 0, 1], height=height1, radius=radius1, resolution=100)
+        self.Brain_interactor.add_mesh(cylinder1, color=(0, 0, 0), opacity=0.5)
+
+        # اضافه کردن استوانه دوم
+        cylinder2 = pv.Cylinder(center=center2, direction=[0, 0, 1], height=height2, radius=radius2, resolution=100)
+        self.Brain_interactor.add_mesh(cylinder2, color=(0, 0, 0), opacity=0.5)
+
+        # تنظیم سطح جانبی استوانه‌ها به هم مماس
+        side_surface1 = pv.Cylinder(center=center1, direction=[0, 0, 1], height=height1, radius=radius1, resolution=100)
+        side_surface2 = pv.Cylinder(center=center2, direction=[0, 0, 1], height=height2, radius=radius2, resolution=100)
+
+        # تنظیم پوشش سطح جانبی
+        self.Brain_interactor.add_mesh(side_surface1, color=(0, 0, 0), opacity=0.5)
+        self.Brain_interactor.add_mesh(side_surface2, color=(0, 0, 0), opacity=0.5)
+
+
+
+
 
     def onSaveFigData(self):
 
@@ -616,10 +692,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.slider_onBrain_z= self.Brain_interactor.add_slider_widget\
             (None,  rng=[-43, 99], value=98, title="UpDown_z", pointa=(0.67, 0.1), pointb=(0.98, 0.1), style='modern')
 
+
     def onHide_slider_onBrain(self):
         print("Brain")
-
-
 
     def initAllpicture(self):
 
@@ -709,7 +784,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.brain_point.SetCenter(12, -6, 97)
 
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
-        self.NoteBrowser.setText("Please enter the numbers")
+
 
         self.x_go = _mx
         self.y_go = _my
@@ -745,6 +820,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _mz = 0
 
         self.moveSphere(self.x_now, self.y_now, self.z_now)
+
+        self.rectangle_actor.SetPosition(self.x_now, self.y_now, self.z_now)
+
 
 
         ################################# x check

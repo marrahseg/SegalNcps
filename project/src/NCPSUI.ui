@@ -1115,7 +1115,7 @@
                     </font>
                    </property>
                    <property name="title">
-                    <string>Note</string>
+                    <string>Motion</string>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_5">
                     <item row="0" column="0">
@@ -1128,18 +1128,15 @@
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_29">
                        <item>
-                        <widget class="QTextBrowser" name="NoteBrowser">
-                         <property name="maximumSize">
-                          <size>
-                           <width>16777215</width>
-                           <height>300</height>
-                          </size>
+                        <widget class="QPushButton" name="pushButton">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
                          </property>
-                         <property name="font">
-                          <font>
-                           <family>Nirmala UI</family>
-                           <pointsize>11</pointsize>
-                          </font>
+                         <property name="text">
+                          <string>Go to Reset</string>
                          </property>
                         </widget>
                        </item>
