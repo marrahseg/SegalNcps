@@ -34,6 +34,8 @@ if __name__ == "__main__":
      win.frame_22.setStyleSheet("border-color:#FFFFFF")
      win.frame_21.setStyleSheet("border-color:#FFFFFF")
      # win.groupBox_6.setStyleSheet("border-color:#7B1FA2")
+     win.frame_41.setStyleSheet("border-color:#FFFFFF")
+     win.frame_48.setStyleSheet("border-color:#FFFFFF")
 
 
      # win.frame_26.setStyleSheet("border-color:#7B1FA2")

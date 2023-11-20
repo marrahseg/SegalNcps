@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1562</width>
+    <width>1527</width>
     <height>1032</height>
    </rect>
   </property>
@@ -472,7 +472,7 @@
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_27">
                           <property name="spacing">
-                           <number>0</number>
+                           <number>6</number>
                           </property>
                           <property name="leftMargin">
                            <number>0</number>
@@ -538,54 +538,10 @@
                            </widget>
                           </item>
                           <item>
-                           <widget class="QFrame" name="frame_22">
-                            <property name="frameShape">
-                             <enum>QFrame::StyledPanel</enum>
+                           <widget class="Line" name="line_12">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
                             </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QHBoxLayout" name="horizontalLayout_20">
-                             <property name="spacing">
-                              <number>5</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>5</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>5</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>5</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>5</number>
-                             </property>
-                             <item alignment="Qt::AlignLeft">
-                              <widget class="QLabel" name="label_29">
-                               <property name="font">
-                                <font>
-                                 <pointsize>14</pointsize>
-                                 <weight>50</weight>
-                                 <bold>false</bold>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Z:</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QDoubleSpinBox" name="ZSpin">
-                               <property name="minimum">
-                                <double>-999.000000000000000</double>
-                               </property>
-                               <property name="maximum">
-                                <double>999.000000000000000</double>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
                            </widget>
                           </item>
                           <item>
@@ -639,6 +595,64 @@
                             </layout>
                            </widget>
                           </item>
+                          <item>
+                           <widget class="Line" name="line_13">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QFrame" name="frame_22">
+                            <property name="frameShape">
+                             <enum>QFrame::StyledPanel</enum>
+                            </property>
+                            <property name="frameShadow">
+                             <enum>QFrame::Raised</enum>
+                            </property>
+                            <layout class="QHBoxLayout" name="horizontalLayout_20">
+                             <property name="spacing">
+                              <number>5</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>5</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>5</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>5</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>5</number>
+                             </property>
+                             <item alignment="Qt::AlignLeft">
+                              <widget class="QLabel" name="label_29">
+                               <property name="font">
+                                <font>
+                                 <pointsize>14</pointsize>
+                                 <weight>50</weight>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Z:</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QDoubleSpinBox" name="ZSpin">
+                               <property name="minimum">
+                                <double>-999.000000000000000</double>
+                               </property>
+                               <property name="maximum">
+                                <double>999.000000000000000</double>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
                          </layout>
                         </widget>
                        </item>
@@ -652,7 +666,7 @@
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_21">
                           <property name="spacing">
-                           <number>0</number>
+                           <number>6</number>
                           </property>
                           <property name="leftMargin">
                            <number>0</number>
@@ -700,7 +714,7 @@
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Roll:</string>
+                                <string>RX:</string>
                                </property>
                               </widget>
                              </item>
@@ -715,6 +729,13 @@
                               </widget>
                              </item>
                             </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="Line" name="line_14">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
                            </widget>
                           </item>
                           <item>
@@ -749,7 +770,7 @@
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Yaw:</string>
+                                <string>RY:</string>
                                </property>
                               </widget>
                              </item>
@@ -757,6 +778,13 @@
                               <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
                              </item>
                             </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="Line" name="line_15">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
                            </widget>
                           </item>
                           <item>
@@ -798,7 +826,7 @@
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Pitch:</string>
+                                <string>RZ:</string>
                                </property>
                               </widget>
                              </item>
@@ -831,19 +859,19 @@
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_2">
                        <property name="spacing">
-                        <number>6</number>
+                        <number>4</number>
                        </property>
                        <property name="leftMargin">
-                        <number>9</number>
+                        <number>0</number>
                        </property>
                        <property name="topMargin">
-                        <number>9</number>
+                        <number>0</number>
                        </property>
                        <property name="rightMargin">
-                        <number>9</number>
+                        <number>0</number>
                        </property>
                        <property name="bottomMargin">
-                        <number>9</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <widget class="QPushButton" name="ResetButton">
@@ -899,6 +927,21 @@
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_10">
+                       <property name="spacing">
+                        <number>4</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
                        <item>
                         <widget class="QPushButton" name="StartButton">
                          <property name="minimumSize">
@@ -1194,6 +1237,21 @@
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_24">
+                       <property name="spacing">
+                        <number>4</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
                        <item>
                         <widget class="QPushButton" name="StartWoMovementButton">
                          <property name="minimumSize">
@@ -2471,7 +2529,7 @@
                       <item>
                        <widget class="QLabel" name="label_54">
                         <property name="text">
-                         <string>Pitch:</string>
+                         <string>RX:</string>
                         </property>
                        </widget>
                       </item>
@@ -2511,7 +2569,7 @@
                       <item>
                        <widget class="QLabel" name="label_51">
                         <property name="text">
-                         <string>Roll:</string>
+                         <string>RY:</string>
                         </property>
                        </widget>
                       </item>
@@ -2551,7 +2609,7 @@
                       <item>
                        <widget class="QLabel" name="label_46">
                         <property name="text">
-                         <string>Yaw:</string>
+                         <string>RZ:</string>
                         </property>
                        </widget>
                       </item>
@@ -2785,7 +2843,7 @@
                       <item>
                        <widget class="QLabel" name="label_18">
                         <property name="text">
-                         <string>Roll:</string>
+                         <string>RX:</string>
                         </property>
                        </widget>
                       </item>
@@ -2825,7 +2883,7 @@
                       <item>
                        <widget class="QLabel" name="label_57">
                         <property name="text">
-                         <string>Pitch:</string>
+                         <string>RY:</string>
                         </property>
                        </widget>
                       </item>
@@ -2865,7 +2923,7 @@
                       <item>
                        <widget class="QLabel" name="label_22">
                         <property name="text">
-                         <string>Yaw:</string>
+                         <string>RZ:</string>
                         </property>
                        </widget>
                       </item>
@@ -3335,7 +3393,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1562</width>
+     <width>1527</width>
      <height>21</height>
     </rect>
    </property>
