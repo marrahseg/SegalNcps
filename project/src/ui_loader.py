@@ -618,6 +618,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListX.append('0x.jpg')
         self.picListX.extend(listXplus)
 
+
+
+
         ########################################### sort of listY
         picListY = os.listdir(my_Yside_pics_add)
         listYplus = []
