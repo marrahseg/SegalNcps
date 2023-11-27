@@ -22,10 +22,18 @@ if __name__ == "__main__":
      app.processEvents()
      splash.finish(win)
 
-     win.frame_40.setStyleSheet("border-color:#7B1FA2")
-     win.frame_20.setStyleSheet("border-color:#7B1FA2")
-     win.groupBox_6.setStyleSheet("border-color:#FFFFFF")
+     win.frame_40.setStyleSheet("border-color:##FFFFFF")
+     win.frame_41.setStyleSheet("border-color:#FFFFFF")
+     win.frame_42.setStyleSheet("border-color:#FFFFFF")
+     win.frame_43.setStyleSheet("border-color:#FFFFFF")
+     win.frame_47.setStyleSheet("border-color:#FFFFFF")
+     win.frame_49.setStyleSheet("border-color:#FFFFFF")
+
+
+     # win.frame_20.setStyleSheet("border-color:#7B1FA2")
+     win.groupBox_HeadPosition.setStyleSheet("border-color:#FFFFFF")
      win.groupBox.setStyleSheet("border-color:#FFFFFF")
+     win.frame_37.setStyleSheet("border-color:#CFD8DC")
 
      win.frame_17.setStyleSheet("border-color:#FFFFFF")
      win.frame_18.setStyleSheet("border-color:#FFFFFF")
@@ -33,8 +41,10 @@ if __name__ == "__main__":
      win.frame_23.setStyleSheet("border-color:#FFFFFF")
      win.frame_22.setStyleSheet("border-color:#FFFFFF")
      win.frame_21.setStyleSheet("border-color:#FFFFFF")
+     win.frame_38.setStyleSheet("border-color:#FFFFFF")
+     win.frame_39.setStyleSheet("border-color:#FFFFFF")
+
      # win.groupBox_6.setStyleSheet("border-color:#7B1FA2")
-     win.frame_41.setStyleSheet("border-color:#FFFFFF")
      win.frame_48.setStyleSheet("border-color:#FFFFFF")
 
 
@@ -47,23 +57,23 @@ if __name__ == "__main__":
      win.line_6.setStyleSheet("background-color:#9E9E9E;")
      win.line_7.setStyleSheet("background-color:#9E9E9E;")
      win.line_8.setStyleSheet("background-color:#9E9E9E;")
-     win.line_9.setStyleSheet("background-color:#9E9E9E;")
+     # win.line_9.setStyleSheet("background-color:#9E9E9E;")
      win.line_10.setStyleSheet("background-color:#9E9E9E;")
      win.line_11.setStyleSheet("background-color:#9E9E9E;")
 
-     win.pushButton.setStyleSheet("border-radius: 20px")
-
+     win.Button_Motion.setStyleSheet("border-radius: 20px")
+     win.frame_30.setStyleSheet("border-color:#CFD8DC")
 
      # win.frame_36.setStyleSheet("border-color:#7B1FA2")
 
      # win.frame_37.setStyleSheet("border-color:#7B1FA2")
      # win.frame_38.setStyleSheet("border-color:#7B1FA2")
      # win.frame_39.setStyleSheet("border-color:#7B1FA2")
-     # win.frame_31.setStyleSheet("border-color:#7B1FA2")
+     win.frame_31.setStyleSheet("border-color:#FFFFFF")
      # win.frame_34.setStyleSheet("border-color:#7B1FA2")
-     # win.frame_32.setStyleSheet("border-color:#7B1FA2")
-     # win.frame_33.setStyleSheet("border-color:#7B1FA2")
-     # win.frame_30.setStyleSheet("border-color:#7B1FA2")
+     win.frame_32.setStyleSheet("border-color:#FFFFFF")
+     win.frame_33.setStyleSheet("border-color:#FFFFFF")
+     # win.frame_30.setStyleSheet("border-color:#FFFFFF")
      # win.frame_35.setStyleSheet("border-color:#7B1FA2")
      win.frame_27.setStyleSheet("border-color:#FFFFFF")
      win.frame_26.setStyleSheet("border-color:#FFFFFF")
@@ -88,14 +98,8 @@ if __name__ == "__main__":
      # win.YSlider.setStyleSheet("QSlider::handle:vertical { background-color: blue; }")
 
 
-
-
-     # apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
+         # apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
      apply_stylesheet(app, theme='../UI/reza_color.xml')
-
-
-
-
 
      win.show()
 

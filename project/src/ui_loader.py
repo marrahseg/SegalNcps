@@ -1,30 +1,31 @@
 import configparser
-
-
 import os
 import pickle
 
+import cv2
 import np as np
 import numpy as np
 import pyvista as pv
-
+from PIL import Image
 from PyQt5.uic.properties import QtCore, QtWidgets, QtGui
 from trimesh import transformations
-
 import Constants
-
 from pyvistaqt import QtInteractor
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage, QFont, QColor, QIcon
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QWidget, QDialog, QLabel, QLineEdit
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
-from patent_ui import Ui_Dialog
-from RefHead_ui import Ui_Dialog as Ui_Dialog1
-from unlock_ui import Ui_Form as Ui_Unlock
-from unlockArea_ui import Ui_Form as Ui_UnlockArea
-from standardarea_ui import Ui_Form as Ui_StandardArea
 from PyQt5 import QtGui
+
+#######Dialogs
+import Infopation_Dialog
+import unloock_Dialog
+import resizeHead_Dialog
+import unlockArea_Dialog
+import standardArea_Dialog
+import defultvariable
+
 
 motor_real = False
 
@@ -33,11 +34,23 @@ with open("../UI/defultvariable.txt", "r") as f:
     contents = f.read()
     # print(contents)
 exec(contents)
+# اصلی
+# my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
+# my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
+# my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
+
+
+my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/X_crop/'
+my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Y_crop/'
+my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Z_crop/'
+
+
+
+
+
 
 
 ############################################
-
-
 class Window_ui(QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent=None):
@@ -48,12 +61,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(icon)
         self.setupUi(self)
 
-        #######initial object  class Dialog #########
-        self.my_dialog = PationInfo_Dialog()
-        self.my_dialog_head = MyDialogHead_Dialog()
-        self.my_Unlock = MyUnlock_Dialog()
-        self.my_UnlockArea = MyUnlockArea_Dialog()
-        self.my_StandardArea = MyStandardArea_Dialog()
+        #######instance  Dialog #########
+        self.my_Pation = Infopation_Dialog.PationInfo_Dialog()
+        self.my_Unlock = unloock_Dialog.MyUnlock_Dialog
+        self.my_dialog_head = resizeHead_Dialog.MyDialogHead_Dialog()
+        self.my_UnlockArea = unlockArea_Dialog.MyUnlockArea_Dialog()
+        self.my_StandardArea = standardArea_Dialog.MyStandardArea_Dialog()
+
         #######initial object  class Dialog #########
 
         self.timer = QTimer()
@@ -88,7 +102,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
     def signalsSlat(self):
-
         self.StartButton.clicked.connect(self.onStartBottonClicked)
         self.StartWoMovementButton.clicked.connect(self.onStartWoMovementButton)
         self.XSlider.valueChanged.connect(self.onSliderchangeClicked)
@@ -96,52 +109,34 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
 
+        self.actionHide_Button.triggered.connect(self.onMyHideShow)
+        self.timer.timeout.connect(self.onTimer_interrupt)
+
         # self.SetOffsetButton.clicked.connect(self.onChangeOffset)
         # self.ResetOffsetButton.clicked.connect(self.onResetOffset)
-        self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
-
-        self.actionHidemenu.triggered.connect(self.onMyHideShow)
-        self.timer.timeout.connect(self.onTimer_interrupt)
-        self.actionChange_Offset.triggered.connect(self.onMyHideOffseting)
+        # self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
+        # self.actionChange_Offset.triggered.connect(self.onMyHideOffseting)
 
         ###############################>>>>>>>>>>>>>>>>>>>MENU BAR>>>>>>>>>>>>>>>>>>>>>############################
         self.actionDark.triggered.connect(self.on_dark_theme)
         self.actionLight.triggered.connect(self.on_light_theme)
-        self.actiondialog.triggered.connect(self.on_show_dialog)
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
-        self.actionHide.triggered.connect(self.onHide_slider_onBrain)
+        self.actionHide_Button.triggered.connect(self.onHide_slider_onBrain)
+        self.actionShow_Coil.triggered.connect(self.onShow_Coil)
 
-        # self.execuitButton.clicked.connect(self.onexecuit_head_size)
-        ###########################################################################
-
-        #############<<<<<>>>>>>>>>>>>>>Pation Information>>>>>>>>>>>#########
-        self.CreateExamaction.triggered.connect(self.onCreate_dialog)
-        self.OpenExamaction.triggered.connect(self.onLoad_Exam)
-        self.my_dialog.SaveButton.clicked.connect(self.onSave_Pation_Info)
-        self.my_dialog.CancelButton.clicked.connect(self.onCancel_Dialog)
-        self.my_dialog.ExcuteButton.clicked.connect(self.onexecuit_head_size)
-        self.my_dialog.SearchButton.clicked.connect(self.onfind_Pateint_by_id)
-        #########pationmaneger
 
         ###########################>>>>>>>RefHead>>>>>>>#######################
-        self.Refrenceheadaction.triggered.connect(self.onLock_Breaker)
-        self.my_Unlock.UnLockButton.clicked.connect(self.onunlock_Successful)
-        self.my_dialog_head.SetButton.clicked.connect(self.onSet_button_clicked)
-        self.my_dialog_head.DefaultButton.clicked.connect(self.onDefault_button_clicked)
+        self.CreateExamaction.triggered.connect(self.my_Pation.onCreate_dialog)
+        self.OpenExamaction.triggered.connect(self.my_Pation.onLoad_Exam)
+        self.Refrenceheadaction.triggered.connect(self.my_Unlock.onLock_Breaker)
+        self.actionRegister_areas.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
+        self.actionStandard_area_2.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
         ###########################>>>>>>>RefHead>>>>>>>#######################
-
-        # self.Standardareaaction.triggered.connect(self.onLock_Breaker_Area)
-
-        self.actionRegister_areas.triggered.connect(self.onLock_Breaker_Area)
-        self.my_UnlockArea.UnLockButton.clicked.connect(self.onunlock_Successful_Area)
-
-        self.actionStandard_area.triggered.connect(self.onLock_Breaker_Area)
-        self.my_UnlockArea.UnLockButton.clicked.connect(self.onunlock_Successful_Area)
-
 
 
         ####################show defult pic in x
+
         pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
         pixmap1 = pixmap1.scaled(self.Xpiclabel.size())
         self.Xpiclabel.setPixmap(pixmap1)
@@ -167,225 +162,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         icon3 = QIcon("../UI/button/clock.svg")
         self.StartWoMovementButton.setIcon(icon3)
 
-        icon4 = QIcon("../UI/button/unlocked.svg")
-        self.my_Unlock.UnLockButton.setIcon(icon4)
-
-        icon5 = QIcon("../UI/button/replay.svg")
-        self.my_dialog_head.DefaultButton.setIcon(icon5)
-
-        icon6 = QIcon("../UI/button/development.svg")
-        self.my_dialog_head.SetButton.setIcon(icon6)
-
     def set_setting_ui(self):
         self.default_mode = False
         self.searchbox = False
-
         self.setWindowTitle("Segal Step")
-        self.InformationtabWidget.setTabEnabled(2, False)
-        self.InformationtabWidget.setTabText(2, "")
-
-        self.my_Unlock.UnLocklineEdit.setEchoMode(QLineEdit.Password)
-        self.my_UnlockArea.UnLocklineEdit.setEchoMode(QLineEdit.Password)
-        self.my_dialog.setWindowTitle("My Custom Title")
-        self.my_Unlock.setWindowTitle("Open Lock")
-        self.my_dialog_head.setWindowTitle("Refrence head indices ")
-        self.my_StandardArea.setWindowTitle("StandardArea")
-        self.groupBox_5.hide()
-
-        self.InformationtabWidget.setTabEnabled(1, False)
-
-        self.my_dialog.frame.setStyleSheet("border-color:#9E9E9E")
-        self.my_dialog.frame_3.setStyleSheet("border-color:#9E9E9E")
-        self.my_dialog.frame_4.setStyleSheet("border-color:#9E9E9E")
-
+        # self.InformationtabWidget.setTabEnabled(2, False)
+        # self.InformationtabWidget.setTabText(2, "")
 
     def set_logo(self):
         pixiconimage = QPixmap("../icons/logo/logo.png")
         pixiconimage = pixiconimage.scaled(260, 150, Qt.AspectRatioMode.KeepAspectRatio)
         # self.label.setPixmap(pixiconimage)
-
-
-
-    ################To Eneable the line edits for patient information
-    def set_Enable_PatientDialog(self):
-        self.my_dialog.Fullname.setEnabled(True)
-        self.my_dialog.RightLeftHand.setEnabled(True)
-        self.my_dialog.DateOfBrith.setEnabled(True)
-        self.my_dialog.ApPatientSpin.setEnabled(True)
-        self.my_dialog.BTPatientSpin.setEnabled(True)
-        self.my_dialog.EvPatientSpin.setEnabled(True)
-        self.my_dialog.textEditPatient.setEnabled(True)
-
-    ######To disable the line edits for patient information
-    def set_Disabled_PatientDialog(self):
-        self.my_dialog.Fullname.setDisabled(True)
-        self.my_dialog.RightLeftHand.setDisabled(True)
-        self.my_dialog.DateOfBrith.setDisabled(True)
-        self.my_dialog.ApPatientSpin.setDisabled(True)
-        self.my_dialog.BTPatientSpin.setDisabled(True)
-        self.my_dialog.EvPatientSpin.setDisabled(True)
-        self.my_dialog.textEditPatient.setDisabled(True)
-
-    #########"When you click on this button, the measurements of the patient's head size will be uploaded here."##########
-    def onexecuit_head_size(self):
-        if self.searchbox == True:
-
-            aa = self.my_dialog.BTPatientSpin.value()
-            bb = self.my_dialog.EvPatientSpin.value()
-            cc = self.my_dialog.ApPatientSpin.value()
-            dd = self.my_dialog.Fullname.text()
-
-            self.label_6.setText(dd)
-            self.BTSpin.setValue(aa)
-            self.EVSpin.setValue(bb)
-            self.APSpin.setValue(cc)
-        else:
-            pass
-
-    #############################باز کردن قفل یرای standard area
-    def onLock_Breaker_Area(self):
-        self.my_UnlockArea.show()
-
-    ####################وقتی دکمه ی NLOCK را زد این متد فعال شده و دیالوگ جدیدی باز میشود
-    def onunlock_Successful_Area(self):
-        if self.my_UnlockArea.UnLocklineEdit.text() == "s1996":
-            self.my_UnlockArea.UnLocklineEdit.setText("")
-            self.my_StandardArea.close()
-            self.my_dialog_head.show_dialog()
-
-        else:
-            self.my_UnlockArea.close()
-
-    def onCreate_dialog(self):
-        self.my_dialog.SearchButton.hide()
-        self.my_dialog.SaveButton.show()
-
-        self.set_Enable_PatientDialog()
-        self.my_dialog.show_dialog()
-
-    def onCancel_Dialog(self):
-        self.clearData_inPatientUi()
-        self.my_dialog.close()
-
-
-    def onSave_Pation_Info(self):
-        print("ssssssssssssssssssssssss")
-        print(self.my_dialog.Fullname.text())
-        Fullname = self.my_dialog.Fullname.text()
-        SubjectID = self.my_dialog.SubjectID.text()
-        Rlhande = self.my_dialog.RightLeftHand.text()
-        DBO = self.my_dialog.DateOfBrith.text()
-        ApPatient = self.my_dialog.ApPatientSpin.text()
-        EvPatient = self.my_dialog.EvPatientSpin.text()
-        BTPatient = self.my_dialog.BTPatientSpin.text()
-
-        file_name = f"{SubjectID}{Fullname}.pickle"
-
-        try:
-            with open(file_name, "rb") as file:
-                users = pickle.load(file)
-        except FileNotFoundError:
-            users = {}
-
-        users[SubjectID] = {
-            "fullname": Fullname,
-            "subject_id": SubjectID,
-            "right_left_hand": Rlhande,
-            "DBO": DBO,
-            "ap_patient": ApPatient,
-            "ev_patient": EvPatient,
-            "bt_patient": BTPatient
-        }
-
-        with open(file_name, "wb") as file:
-            pickle.dump(users, file)
-
-        self.clearData_inPatientUi()
-
-        self.my_dialog.accept()
-
-    def clearData_inPatientUi(self):
-        self.my_dialog.Fullname.clear()
-        self.my_dialog.SubjectID.clear()
-        self.my_dialog.RightLeftHand.clear()
-        self.my_dialog.DateOfBrith.clear()
-        self.my_dialog.ApPatientSpin.setValue(0)
-        self.my_dialog.EvPatientSpin.setValue(0)
-        self.my_dialog.BTPatientSpin.setValue(0)
-        self.my_dialog.textEditPatient.clear()
-
-    def onLoad_Exam(self):
-        self.my_dialog.SearchButton.show()
-        self.my_dialog.SaveButton.hide()
-        self.set_Disabled_PatientDialog()
-        self.my_dialog.Fullname.setEnabled(True)
-        self.my_dialog.show_dialog()
-
-    def onfind_Pateint_by_id(self):
-
-        PateintID = self.my_dialog.SubjectID.text()
-        print(PateintID)
-
-        Fullname = self.my_dialog.Fullname.text()
-
-        filename = f"{PateintID}{Fullname}.pickle"
-
-        try:
-            with open(filename, "rb") as file:
-                users = pickle.load(file)
-                if PateintID in users:
-                    self.set_Enable_PatientDialog()
-                    self.my_dialog.Fullname.setProperty("text", users[PateintID]["fullname"])
-                    self.my_dialog.RightLeftHand.setProperty("text", users[PateintID]["right_left_hand"])
-                    self.my_dialog.DateOfBrith.setProperty("text", users[PateintID]["DBO"])
-                    self.my_dialog.ApPatientSpin.setValue(int(users[PateintID]["ap_patient"]))
-                    self.my_dialog.EvPatientSpin.setValue(int(users[PateintID]["ev_patient"]))
-                    self.my_dialog.BTPatientSpin.setValue(int(users[PateintID]["bt_patient"]))
-                    self.searchbox = True
-
-
-                else:
-                    return None
-
-        except FileNotFoundError:
-            print("فایل data.pickle پیدا نشد!")
-            return
-
-    ########################<<<<<<<<<<<<<<If the user clicks on the "Reference Head Indices",
-    # this method displays the lock entry window.>>>>>########
-    def onLock_Breaker(self):
-        self.my_Unlock.show()
-
-    ########>>>>>>>>>>>>>>>>>>>>>>>If the "Unlock" button is pressed and the correct
-    # password is entered, the activation will be triggered>>>>>>>>>>>>>>>>####################
-    def onunlock_Successful(self):
-        if self.my_Unlock.UnLocklineEdit.text() == "s1996":
-            self.my_Unlock.UnLocklineEdit.setText("")
-            self.my_Unlock.close()
-            self.my_dialog_head.show_dialog()
-
-        else:
-            self.my_Unlock.close()
-
-    def onSet_button_clicked(self):
-        self.default_mode = False
-        BTIndices = self.my_dialog_head.RBTspinBox.value()
-        EVIndices = self.my_dialog_head.REVspinBox.value()
-        APIndices = self.my_dialog_head.RAPspinBox.value()
-        print("hsffjgsgfs", BTIndices, EVIndices, APIndices)
-
-        self.BTSpin.setValue(BTIndices)
-        self.EVSpin.setValue(EVIndices)
-        self.APSpin.setValue(APIndices)
-        self.my_dialog_head.close()
-        return BTIndices, EVIndices, APIndices
-
-    def onDefault_button_clicked(self):
-        self.default_mode = True
-        self.BTSpin.setValue(174)
-        self.EVSpin.setValue(142)
-        self.APSpin.setValue(212)
-        self.my_dialog_head.close()
 
     def onChangeOffset(self):
         a = int(self.Xplain_Vline.text())
@@ -494,47 +281,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
 
         mesh = pv.read('../UI/Brain for Half_Skull.stl')
-        mesh_coil = pv.read('../UI/Coil TMS v0.stl')
-
 
 
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), specular=0.7,
                                        specular_power=15, ambient=0.3, smooth_shading=True, opacity=1)
         self.Brain_interactor.add_bounding_box( line_width=150, color='red')
-
-
-        self.Brain_interactor.add_mesh(mesh_coil, opacity=1,color=(13, 71, 161))
-
-
-        new_position = [-20, 90, 0]  # مختصات جدید موقعیت کویل را وارد کنید
-        transform = np.eye(4)
-        transform[:3, 3] = new_position
-        mesh_coil.transform(transform)
-
-
-        rotation_angle_degrees = 30
-        rotation_axis = [0, 1, 0]  # محور y
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        mesh_coil.transform(rotation_matrix)
-
-        rotation_angle_degrees = 70
-        rotation_axis = [1, 0, 0]  # محور X
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        mesh_coil.transform(rotation_matrix)
-
-        rotation_angle_degrees = 360
-        rotation_axis = [0, 0, 1]  # محور Z
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        mesh_coil.transform(rotation_matrix)
-
-
-
-
-
-
 
        #برش# مغز
         # clipped_mesh = mesh.clip(invert=True)
@@ -551,6 +302,31 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         print("center of point:", self.brain_point.SetCenter)
 
+    def onShow_Coil(self):
+        self.mesh_coil = pv.read('../UI/Coil TMS v0.stl')
+        self.Brain_interactor.add_mesh(self.mesh_coil, opacity=1, color=(13, 71, 161))
+        new_position = [-20, 90, 0]  # مختصات جدید موقعیت کویل را وارد کنید
+        transform = np.eye(4)
+        transform[:3, 3] = new_position
+        self.mesh_coil.transform(transform)
+
+        rotation_angle_degrees = 30
+        rotation_axis = [0, 1, 0]  # محور y
+        rotation_angle_radians = np.radians(rotation_angle_degrees)
+        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
+        self.mesh_coil.transform(rotation_matrix)
+
+        rotation_angle_degrees = 70
+        rotation_axis = [1, 0, 0]  # محور X
+        rotation_angle_radians = np.radians(rotation_angle_degrees)
+        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
+        self.mesh_coil.transform(rotation_matrix)
+
+        rotation_angle_degrees = 360
+        rotation_axis = [0, 0, 1]  # محور Z
+        rotation_angle_radians = np.radians(rotation_angle_degrees)
+        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
+        self.mesh_coil.transform(rotation_matrix)
 
     def onSaveFigData(self):
 
@@ -568,18 +344,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         with open(fileName[0], 'w') as configfile:
             config.write(configfile)
-
-    def on_show_dialog(self, s):
-        dlg = QMessageBox(self)
-        dlg.setWindowTitle(" Information ")
-        dlg.setText("Save Information")
-        dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        dlg.setIcon(QMessageBox.Information)
-
-        returnValue = dlg.exec()
-        if returnValue == QMessageBox.Yes:
-            print('OK clicked')
-        dlg.exec()
 
     def on_dark_theme(self):
         apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
@@ -600,6 +364,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def onHide_slider_onBrain(self):
         print("Brain")
 
+
     def initAllpicture(self):
 
         ########################################### sort of listX
@@ -617,8 +382,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListX.extend(listXminus)
         self.picListX.append('0x.jpg')
         self.picListX.extend(listXplus)
-
-
 
 
         ########################################### sort of listY
@@ -677,8 +440,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print("starting timer ....")
 
         self.timer.start(100)
-
-
 
     def onResetBotton(self):
         self.XSpin.setValue(16)
@@ -828,61 +589,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         return _cx, _cy, _cz
 
-    # def xyz_calculator(self, mx, my, mz, scale_flag):
-    #     if scale_flag:
-    #         ######################################### calculate x value
-    #         valueBt = self.BTSpin.value()
-    #         _scaleX = valueBt / NUMBER_X_LIST
-    #         _cx = int(mx) + X_PIC_OFFSET
-    #         ######################################### calculate y value
-    #         valueAp = self.APSpin.value()
-    #         _scaleY = valueAp / NUMBER_Y_LIST
-    #         _cy = int(my) + Y_PIC_OFFSET
-    #         ######################################### calculate z value
-    #         valueEv = self.EVSpin.value()
-    #         _scaleZ = valueEv / NUMBER_Z_LIST
-    #         _cz = int(mz) + Z_PIC_OFFSET
-    #
-    #     else:
-    #         _cx = int(mx)
-    #         _cy = int(my)
-    #         _cz = int(mz)
-    #
-    #     return _cx, _cy, _cz
-    #
-    #
-
-    #
-    # def xyz_calculator(self, mx, my, mz, scale_flag):
-    #     if scale_flag:
-    #         valueBt = self.BTSpin.value()
-    #         valueAp = self.APSpin.value()
-    #         valueEv = self.EVSpin.value()
-    #
-    #         if self.default_mode == True:
-    #             BTIndices ,EVIndices ,APIndices = self.onSet_button_clicked()
-    #
-    #         else:
-    #             BTIndices = NUMBER_X_LIST
-    #             EVIndices = NUMBER_Y_LIST
-    #             APIndices = NUMBER_Z_LIST
-    #
-    #         _scaleX = valueBt / BTIndices
-    #         _scaleY = valueAp / EVIndices
-    #         _scaleZ = valueEv / APIndices
-    #
-    #
-    #
-    #         _cx = int(mx) + X_PIC_OFFSET
-    #         _cy = int(my) + Y_PIC_OFFSET
-    #         _cz = int(mz) + Z_PIC_OFFSET
-    #     else:
-    #         _cx = int(mx)
-    #         _cy = int(my)
-    #         _cz = int(mz)
-    #
-    #     return _cx, _cy, _cz
-
     def change_slider_Pos(self, valX, valY, valZ):
         self.XSlider.setValue(valX)
         self.YSlider.setValue(valY)
@@ -892,8 +598,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
 
+        # تنظیم مقیاس عکس و رسم آن درون pixmap_XX3
+        scaled_ximg = _ximg.scaled(self.Xpiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
+
+
         qpx = QPainter(self.pixmap_XX3)
-        qpx.drawPixmap(self.Xpiclabel.rect(), _ximg)
+        qpx.drawPixmap(self.Xpiclabel.rect(), scaled_ximg)
 
         #########add text to pic
         font = QFont()
@@ -1007,13 +717,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ZSpin.setValue(valZ - Z_PIC_OFFSET)
 
     def onMyHideShow(self):
-        if self.frame_3.isHidden() == False:
-            self.frame_3.hide()
+        if self.frame_2.isHidden() == False:
+            self.frame_2.hide()
             self.actionHideMenu.setText("Show Menu")
-
             print("closed")
         else:
-            self.frame_3.show()
+            self.frame_2.show()
             self.actionHideMenu.setText("Hide Menu")
 
     def onMyHideOffseting(self):
@@ -1024,106 +733,3 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         else:
             self.OffsetinggroupBox.show()
 
-
-##########################################Pation Information  dialog#############
-class PationInfo_Dialog(QDialog, Ui_Dialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Segal Step")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
-
-
-#################Locking the resizing of head  dialog#############
-class MyUnlock_Dialog(QWidget, Ui_Unlock):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Segal Step")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
-
-
-##########################resizing of head  dialog#############
-class MyDialogHead_Dialog(QDialog, Ui_Dialog1):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("My Custom Title")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
-
-
-class MyUnlockArea_Dialog(QDialog, Ui_UnlockArea):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("My Custom Title")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
-
-
-class MyUnlockArea_Dialog(QDialog, Ui_UnlockArea):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("My Custom Title")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
-
-
-class MyStandardArea_Dialog(QDialog, Ui_StandardArea):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("My Custom Title")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.setupUi(self)
-
-    def show_dialog(self):
-        # apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
-        apply_stylesheet(self, theme='../UI/reza_color.xml')
-        self.exec_()
