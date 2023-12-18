@@ -42,9 +42,9 @@ class MyDialogHead_Dialog(QDialog, Ui_Dialog):
 
     def onSet_button_clicked(self):
         self.default_mode = False
-        BTIndices = self.my_dialog_head.RBTspinBox.value()
-        EVIndices = self.my_dialog_head.REVspinBox.value()
-        APIndices = self.my_dialog_head.RAPspinBox.value()
+        BTIndices = self.RBTspinBox.value()
+        EVIndices = self.REVspinBox.value()
+        APIndices = self.RAPspinBox.value()
         print("hsffjgsgfs", BTIndices, EVIndices, APIndices)
 
         self.BTSpin.setValue(BTIndices)

@@ -6,13 +6,14 @@ import cv2
 import np as np
 import numpy as np
 import pyvista as pv
+
 from PIL import Image
 from PyQt5.uic.properties import QtCore, QtWidgets, QtGui
 from trimesh import transformations
 import Constants
 from pyvistaqt import QtInteractor
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage, QFont, QColor, QIcon
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QPoint
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage, QFont, QColor, QIcon, QPolygon
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QWidget, QDialog, QLabel, QLineEdit
 from qt_material import apply_stylesheet
 from src.NCPSUI_ui import Ui_MainWindow
@@ -24,34 +25,36 @@ import unloock_Dialog
 import resizeHead_Dialog
 import unlockArea_Dialog
 import standardArea_Dialog
-import defultvariable
+
+
 
 
 motor_real = False
 
 ##############################read txt file
-with open("../UI/defultvariable.txt", "r") as f:
-    contents = f.read()
-    # print(contents)
-exec(contents)
-# اصلی
-# my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/X_174/'
-# my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Y_212/'
-# my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_FINAL_reza2/Z_142/'
-
-
 my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/X_crop/'
 my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Y_crop/'
 my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Z_crop/'
 
+#################for set number of pic
+X_PIC_OFFSET = 87
+Y_PIC_OFFSET = 122
+Z_PIC_OFFSET = 43
+##################number of list x,y,z
+NUMBER_X_LIST = 174
+NUMBER_Y_LIST = 212
+NUMBER_Z_LIST = 142
+####################FOR BRAIN OFFSET
+X_BRAIN_OFFSET = 7
+Y_BRAIN_OFFSET = -21
+Z_BRAIN_offset = 44
+##############################################################
 
 
 
 
-
-
-############################################
 class Window_ui(QMainWindow, Ui_MainWindow):
+
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -61,22 +64,34 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(icon)
         self.setupUi(self)
 
+
+
         #######instance  Dialog #########
+
         self.my_Pation = Infopation_Dialog.PationInfo_Dialog()
         self.my_Unlock = unloock_Dialog.MyUnlock_Dialog
         self.my_dialog_head = resizeHead_Dialog.MyDialogHead_Dialog()
         self.my_UnlockArea = unlockArea_Dialog.MyUnlockArea_Dialog()
         self.my_StandardArea = standardArea_Dialog.MyStandardArea_Dialog()
+        self.timer = QTimer()
+
 
         #######initial object  class Dialog #########
+        self.axes_added = False
+        self.coil_added = True
+        self.Sphere_added = True
+        self.Body_added = False
 
-        self.timer = QTimer()
+
+
+
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
-        self.set_Icon()
         self.set_setting_ui()
         self.set_logo()
+
+
 
         self.centerBX = 0
         self.centerBY = 0
@@ -96,9 +111,94 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.counter = 0
 
+        self.X_text_Brain = 0
+        self.Y_text_Brain = 0
+        self.Z_text_Brain = 0
+        self.OA_text_Brain = 0
+        self.CA_text_Brain = 0
+
+
         self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
+        # self.onStartBottonClicked()
+
+    def resizeEvent(self, event):
+        # دریافت ارتفاع و عرض پنجره
+        width = self.width()
+        height = self.height()
+
+        # چاپ ارتفاع و عرض پنجره
+        print("Window Width:", width)
+        print("Window Height:", height)
+        print("-----------------------------")
+
+        # دریافت ارتفاع و عرض self.label
+        Xlabel_width = self.Xpiclabel.width()
+        Xlabel_height = self.Xpiclabel.height()
+
+        if Xlabel_width < Xlabel_height:
+            self.smaller_size = Xlabel_width
+        else:
+            self.smaller_size = Xlabel_height
+
+
+
+        dif_X,dif_Y,dif_Z = self.xyz_calculator(self.XSpin.value(),self.YSpin.value(),self.ZSpin.value(),1)
+        # تغییر اندازه self.label
+        a = int(dif_X)
+        b = int(dif_Y)
+        c = int(dif_Z)
+
+        self.Xpiclabel.resize(self.smaller_size, self.smaller_size)
+        _ximg = QPixmap(my_Xside_pics_add + self.picListX[a])
+        scaled_ximg = _ximg.scaled(self.smaller_size, self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        self.Xpiclabel.setPixmap(scaled_ximg)
+
+
+
+        self.onResetBotton()
+        self.X_label_modifier(a, b, c)
+        self.change_slider_Pos(a, b, c)
+#-----------------------------------------------------------
+        Ylabel_width = self.Ypiclabel.width()
+        Ylabel_height = self.Ypiclabel.height()
+
+        if Ylabel_width < Ylabel_height:
+            smaller_size = Ylabel_width
+        else:
+            smaller_size = Ylabel_height
+
+            # تغییر اندازه self.label
+
+        self.Ypiclabel.resize(smaller_size, smaller_size)
+        _yimg = QPixmap(my_Yside_pics_add + self.picListY[b])
+        scaled_yimg = _yimg.scaled(self.smaller_size, self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        self.Ypiclabel.setPixmap(scaled_yimg)
+
+        self.Y_label_modifier(a, b, c)
+
+
+
+        print(smaller_size, smaller_size)
+#----------------------------------------------------------
+        Zlabel_width = self.Zpiclabel.width()
+        Zlabel_height = self.Zpiclabel.height()
+
+        if Zlabel_width < Zlabel_height:
+            smaller_size = Zlabel_width
+        else:
+            smaller_size = Zlabel_height
+
+            # تغییر اندازه self.label
+
+        self.Zpiclabel.resize(smaller_size, smaller_size)
+        _zimg = QPixmap(my_Zside_pics_add + self.picListZ[c])
+        scaled_zimg = _zimg.scaled(self.smaller_size,self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        self.Zpiclabel.setPixmap(scaled_zimg)
+
+        print(smaller_size, smaller_size)
+        self.Z_label_modifier(a,b,c)
 
 
     def signalsSlat(self):
@@ -108,14 +208,16 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ResetButton.clicked.connect(self.onResetBotton)
-
         self.actionHide_Button.triggered.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
 
-        # self.SetOffsetButton.clicked.connect(self.onChangeOffset)
-        # self.ResetOffsetButton.clicked.connect(self.onResetOffset)
-        # self.actionShow_Offseting.triggered.connect(self.onMyHideOffseting)
-        # self.actionChange_Offset.triggered.connect(self.onMyHideOffseting)
+
+        self.viewcoilButton.clicked.connect(self.onView_Coil)
+        self.viewAxsisButton.clicked.connect(self.onViewAxsis)
+        self.ZoomInButton.clicked.connect(self.onZoominBrain)
+        self.ZoomOutButton.clicked.connect(self.onZoomoutBrain)
+        self.pushButton_6.clicked.connect(self.onViewSphere)
+        self.BodyButton.clicked.connect(self.onshow_Body)
 
         ###############################>>>>>>>>>>>>>>>>>>>MENU BAR>>>>>>>>>>>>>>>>>>>>>############################
         self.actionDark.triggered.connect(self.on_dark_theme)
@@ -123,8 +225,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide_Button.triggered.connect(self.onHide_slider_onBrain)
-        self.actionShow_Coil.triggered.connect(self.onShow_Coil)
-
+        self.actionShow_Coil.triggered.connect(self.onView_Coil)
 
         ###########################>>>>>>>RefHead>>>>>>>#######################
         self.CreateExamaction.triggered.connect(self.my_Pation.onCreate_dialog)
@@ -132,35 +233,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Refrenceheadaction.triggered.connect(self.my_Unlock.onLock_Breaker)
         self.actionRegister_areas.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
         self.actionStandard_area_2.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
+        ##################patent info#####################
+        self.my_Pation.SaveButton.clicked.connect(self.my_Pation.onSave_Pation_Info)
+        self.my_Pation.CancelButton.clicked.connect(self.my_Pation.onCancel_Dialog)
+        self.my_Pation.ExcuteButton.clicked.connect(self.my_Pation.onexecuit_head_size)
+        self.my_Pation.SearchButton.clicked.connect(self.my_Pation.onfind_Pateint_by_id)
         ###########################>>>>>>>RefHead>>>>>>>#######################
-
-
-        ####################show defult pic in x
-
-        pixmap1 = QPixmap(my_Xside_pics_add + self.picListX[0])
-        pixmap1 = pixmap1.scaled(self.Xpiclabel.size())
-        self.Xpiclabel.setPixmap(pixmap1)
-
-        ######################### show defult pic in y
-        pixmap2 = QPixmap(my_Yside_pics_add + self.picListY[0])
-        pixmap2 = pixmap2.scaled(self.Ypiclabel.size())
-        self.Ypiclabel.setPixmap(pixmap2)
-
-        ######################## show defult pic in z
-
-        pixmap3 = QPixmap(my_Zside_pics_add + self.picListZ[0])
-        pixmap3 = pixmap3.scaled(self.Zpiclabel.size())
-        self.Zpiclabel.setPixmap(pixmap3)
-
-    def set_Icon(self):
-        icon1 = QIcon("../UI/button/start-up.svg")
-        self.StartButton.setIcon(icon1)
-
-        icon2 = QIcon("../UI/button/reset (1).svg")
-        self.ResetButton.setIcon(icon2)
-
-        icon3 = QIcon("../UI/button/clock.svg")
-        self.StartWoMovementButton.setIcon(icon3)
 
     def set_setting_ui(self):
         self.default_mode = False
@@ -216,16 +294,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         except:
             print("fffffffffffffffffffffffff")
 
-    def DisableHeading(self):
-        self.APSpin.setEnabled(False)
-        self.EVSpin.setEnabled(False)
-        self.BTSpin.setEnabled(False)
-
-    def UnDisableHeading(self):
-        self.APSpin.setEnabled(True)
-        self.EVSpin.setEnabled(True)
-        self.BTSpin.setEnabled(True)
-
     def onResetOffset(self):
         self.Xplain_Vline.setText("0")
         self.Xplain_Hline.setText("0")
@@ -252,6 +320,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         _Bx, _By, _Bz = int(self.Xshowlabel.text()), int(self.Yshowlabel.text()), int(self.Zshowlabel.text())
 
+
         ###############################set centrt Bx
         _Xpoint = (_By + Y_PIC_OFFSET) * (47 + 38) / (NUMBER_Y_LIST - 1)
         _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
@@ -274,59 +343,113 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def print_point(*args, **kwargs):
         print(args[1])
 
+
+
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
 
         self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
 
-        mesh = pv.read('../UI/Brain for Half_Skull.stl')
+        ####______________add axes
+        self.onViewAxsis()
 
 
+        mesh = pv.read('../UI/STL/Brain for Half_Skull.stl')
+        mesh_center = np.array(mesh.center_of_mass())
+        mesh = mesh.translate(-mesh_center)
         self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), specular=0.7,
                                        specular_power=15, ambient=0.3, smooth_shading=True, opacity=1)
-        self.Brain_interactor.add_bounding_box( line_width=150, color='red')
 
-       #برش# مغز
-        # clipped_mesh = mesh.clip(invert=True)
-        # self.Brain_interactor.add_mesh(clipped_mesh, color='blue', opacity=1)
-
+        self.Brain_interactor.camera.zoom(2.0)
         self.Brain_interactor.background_color = (255, 255, 255)
-        self.Brain_interactor.add_text("Segal STEP   |   Segal Step AN-624",
+
+
+        self.Brain_interactor.add_text("segal step",
                                        position='upper_edge', font='arial', font_size=9, color=(0, 0, 0),shadow=True)
         self.Brain_interactor.setStyleSheet("font-family: Arial; font-size: 5px; color: black;")
+
 
         self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28),
                                                                    center=(0, 0, 0), radius=3, test_callback=False)
 
+        self.mesh_coil = pv.read('../UI/STL/Coil TMS v0.stl')
+        self.coil_actor = self.Brain_interactor.add_mesh(self.mesh_coil, opacity=1, color=(13, 71, 161), name="magstim coil")
+        scaling_factor = 0.2  # فاکتور مقیاس‌بندی برای کوچکتر شدن شیء
+        self.coil_actor.SetScale(scaling_factor, scaling_factor, scaling_factor)
+
+        body = pv.read('../UI/STL/Head-1.stl')
+        rot_body = body.translate([0, -60, 0])
+        # rot_body = rot_body.rotate_z(180, point=axes.origin, inplace=False)
+        self.Body_actor = self.Brain_interactor.add_mesh(rot_body, color=(158, 158, 158), specular=0.7,
+                                                         specular_power=15, ambient=0.8, smooth_shading=True,
+                                                         opacity=0.5, name="Body")
+
 
         print("center of point:", self.brain_point.SetCenter)
 
-    def onShow_Coil(self):
-        self.mesh_coil = pv.read('../UI/Coil TMS v0.stl')
-        self.Brain_interactor.add_mesh(self.mesh_coil, opacity=1, color=(13, 71, 161))
-        new_position = [-20, 90, 0]  # مختصات جدید موقعیت کویل را وارد کنید
-        transform = np.eye(4)
-        transform[:3, 3] = new_position
-        self.mesh_coil.transform(transform)
 
-        rotation_angle_degrees = 30
-        rotation_axis = [0, 1, 0]  # محور y
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        self.mesh_coil.transform(rotation_matrix)
+    def onshow_Body(self):
+        if not self.Body_added:
+            self.Body_added = True
+        else:
+            self.Body_added = False
+        self.Body_actor.SetVisibility(self.Body_added)
 
-        rotation_angle_degrees = 70
-        rotation_axis = [1, 0, 0]  # محور X
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        self.mesh_coil.transform(rotation_matrix)
+    def onView_Coil(self):
+        if not self.coil_added:
+            self.coil_added = True
+        else:
+            self.coil_added = False
+        self.coil_actor.SetVisibility(self.coil_added)
 
-        rotation_angle_degrees = 360
-        rotation_axis = [0, 0, 1]  # محور Z
-        rotation_angle_radians = np.radians(rotation_angle_degrees)
-        rotation_matrix = transformations.rotation_matrix(rotation_angle_radians, rotation_axis)
-        self.mesh_coil.transform(rotation_matrix)
+    def ADD_Axes(self):
+        self.axes_actor = self.Brain_interactor.add_axes_at_origin(xlabel='Y', ylabel='X', zlabel='Z',line_width=3)
+        self.axes_actor.SetTotalLength(100, 100, 100)
+        self.axes_actor.GetXAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+        self.axes_actor.GetYAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+        self.axes_actor.GetZAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
+
+    def onViewAxsis(self):
+        if not self.axes_added:
+            self.ADD_Axes()
+            self.axes_added = True
+        else:
+            self.Brain_interactor.remove_actor(self.axes_actor)
+            self.axes_added = False
+
+    def onViewSphere(self):
+        if not self.Sphere_added:
+            self.Sphere_added = True
+        else:
+            self.Sphere_added = False
+        self.brain_point.SetVisibility(self.Sphere_added)
+
+
+    # def show_3Brain2(self):
+    #     self.p = QtInteractor()
+    #     self.layout.addWidget(self.p)
+    #     axes = pv.Axes(show_actor=True, actor_scale=200.0, line_width=5)
+    #     axes.origin = (0, 0, 0)
+    #     axes.show_symmetric()
+    #     self.p.add_actor(axes.actor)
+    #     #
+    #     axes_actor2 = self.p.add_axes_at_origin(xlabel='x', ylabel='y', zlabel='Z', line_width=3)
+    #     axes_actor2.SetTotalLength(200, 200, 200)
+    #     self.p.add_axes(interactive=None, line_width=2, color=None, x_color=None, y_color=None, z_color=None,
+    #                     xlabel='X', ylabel='Y', zlabel='Z', labels_off=False, box=None, box_args=None,
+    #                     viewport=(0, 0, 0.2, 0.2), marker_args=None)
+    #     body = pv.read('../UI/Head-1.stl')
+    #     rot_body = body.translate([0, -60, 0])
+    #     rot_body = rot_body.rotate_z(180, point=axes.origin, inplace=False)
+    #     self.p.add_mesh(rot_body, color=(158, 158, 158), specular=0.7,
+    #                     specular_power=15, ambient=0.8, smooth_shading=True, opacity=0.5)
+    #     # p.add_sphere_widget(callback=mycall, center=[0, 0, 0], radius=10, )
+    #     stim_area = pv.Sphere(radius=140, start_phi=0, end_phi=180, start_theta=100, end_theta=260)
+    #     stim_area = stim_area.rotate_y(90, point=axes.origin, inplace=False)
+    #     stim_area = stim_area.rotate_x(180, point=axes.origin, inplace=False)
+    #     self.p.add_mesh(stim_area, opacity=0.2, color='g')
+    #     self.p.show()
 
     def onSaveFigData(self):
 
@@ -344,6 +467,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         with open(fileName[0], 'w') as configfile:
             config.write(configfile)
+
+    def onZoominBrain(self):
+        self.Brain_interactor.camera.zoom(1.5)
+
+    def onZoomoutBrain(self):
+        self.Brain_interactor.camera.zoom(0.5)
 
     def on_dark_theme(self):
         apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
@@ -363,7 +492,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onHide_slider_onBrain(self):
         print("Brain")
-
 
     def initAllpicture(self):
 
@@ -561,9 +689,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def xyz_calculator(self, mx, my, mz, scale_flag):
         if scale_flag:
-            valueBt = self.BTSpin.value()
-            valueEv = self.EVSpin.value()
-            valueAp = self.APSpin.value()
+            valueBt = 174
+            valueEv = 142
+            valueAp = 212
 
             if self.default_mode == True:
                 BTIndices, EVIndices, APIndices = self.onSet_button_clicked()
@@ -605,17 +733,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), scaled_ximg)
 
+
         #########add text to pic
         font = QFont()
         font.setPointSize(10)
         qpx.setFont(font)
         qpx.setPen(QColor(158, 158, 158))
         qpx.drawText(10, 18, " X Axis")
+        # qpx.drawText(255, 18, " X Axis")
 
         # horiz line  z
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
         dummy += Constants.LINEZ_OFFSET_XPLAN
-        pen = QPen(Qt.blue, 3)
+
+        pen_color = QColor("#18FFFF")
+        pen = QPen(pen_color, 3)
         qpx.setPen(pen)
         qpx.drawLine(-700, dummy, 700, dummy)
 
@@ -627,11 +759,21 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
         qpx.end()
 
+
+
+
+
+#################################################
+        painter = QPainter(self.pixmap_XX3)
+        painter.setPen(QColor(158, 158, 158))
+
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
 
     def Y_label_modifier(self, valX, valY, valZ):
         _yimg = QPixmap(my_Yside_pics_add + self.picListY[valY])
         self.pixmap_YY = QPixmap(self.Ypiclabel.size())
+
+
 
         qpy = QPainter(self.pixmap_YY)
         qpy.drawPixmap(self.Ypiclabel.rect(), _yimg)
@@ -644,7 +786,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpy.drawText(10, 18, " Y Axis")
 
         ############# horiz Line ,z
-        pen = QPen(Qt.blue, 3)
+        pen_color = QColor("#18FFFF")
+        pen = QPen(pen_color, 3)
         qpy.setPen(pen)
         dummy = abs(NUMBER_Z_LIST - 1 - valZ)
         dummy += Constants.LINEZ_OFFSET_YPLAN
@@ -709,6 +852,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Zshowlabel.setText(str(self.z_now - Z_PIC_OFFSET))
         self.OAshowlabel.setText(str(self.oa_now))
         self.CAshowlabel.setText(str(self.ca_now))
+        #
+        # self.X_text_Brain = str(self.x_now - X_PIC_OFFSET)
+        # self.Y_text_Brain = str(self.y_now - Y_PIC_OFFSET)
+        # self.Z_text_Brain = str(self.z_now - Z_PIC_OFFSET)
+        # self.OA_text_Brain = str(self.oa_now)
+        # self.CA_text_Brain = str(self.ca_now)
+        # print("ssssss",self.X_text_Brain)
 
     def change_spin_vals(self, valX, valY, valZ):
 
@@ -732,4 +882,25 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             print("closed")
         else:
             self.OffsetinggroupBox.show()
+
+    # # نقاط ابتدا و انتهای خط
+    # start_point = QPoint(30, 50)  # مختصات نقطه ابتدای خط
+    # end_point = QPoint(210, 50)  # مختصات نقطه انتهای خط
+    #
+    # # رسم خط
+    # painter.drawLine(start_point, end_point)
+    #
+    # arrow_size = 10  # اندازه خطوط کوچک
+    # angle = np.arctan2(end_point.y() - start_point.y(), end_point.x() - start_point.x())
+    #
+    # small_line_length = (end_point.x() - start_point.x()) / 10  # طول خطوط کوچک
+    #
+    # start_line1 = QPoint(start_point.x(), start_point.y() - small_line_length)
+    # end_line1 = QPoint(start_point.x(), start_point.y() + small_line_length)
+    # painter.drawLine(start_line1, end_line1)
+    #
+    # # رسم خطوط کوچک جایگزین فلش انتهای خط
+    # start_line2 = QPoint(end_point.x(), end_point.y() - small_line_length)
+    # end_line2 = QPoint(end_point.x(), end_point.y() + small_line_length)
+    # painter.drawLine(start_line2, end_line2)
 

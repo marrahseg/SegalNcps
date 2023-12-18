@@ -1,3 +1,4 @@
+import os
 import pickle
 
 from PyQt5.QtWidgets import QDialog
@@ -34,16 +35,16 @@ class PationInfo_Dialog(QDialog, Ui_Dialog):
 
     def onSave_Pation_Info(self):
         print("ssssssssssssssssssssssss")
-        print(self.my_dialog.Fullname.text())
-        Fullname = self.my_dialog.Fullname.text()
-        SubjectID = self.my_dialog.SubjectID.text()
-        Rlhande = self.my_dialog.RightLeftHand.text()
-        DBO = self.my_dialog.DateOfBrith.text()
-        ApPatient = self.my_dialog.ApPatientSpin.text()
-        EvPatient = self.my_dialog.EvPatientSpin.text()
-        BTPatient = self.my_dialog.BTPatientSpin.text()
+        print(self.Fullname.text())
+        Fullname = self.Fullname.text()
+        SubjectID = self.SubjectID.text()
+        Rlhande = self.RightLeftHand.text()
+        DBO = self.DateOfBrith.text()
+        ApPatient = self.ApPatientSpin.text()
+        EvPatient = self.EvPatientSpin.text()
+        BTPatient = self.BTPatientSpin.text()
 
-        file_name = f"{SubjectID}{Fullname}.pickle"
+        file_name = f"{SubjectID}{Fullname}.rb"
 
         try:
             with open(file_name, "rb") as file:
@@ -61,24 +62,29 @@ class PationInfo_Dialog(QDialog, Ui_Dialog):
             "bt_patient": BTPatient
         }
 
-        with open(file_name, "wb") as file:
+
+        folder_path = "../PatientInfo"
+
+        # مسیر کامل فایل
+        file_path = os.path.join(folder_path, file_name)
+        with open(file_path, "wb") as file:
             pickle.dump(users, file)
 
         self.clearData_inPatientUi()
 
-        self.my_dialog.accept()
+        self.accept()
 
     def onCancel_Dialog(self):
         self.clearData_inPatientUi()
-        self.my_dialog.close()
+        self.close()
 
     def onexecuit_head_size(self):
         if self.searchbox == True:
 
-            aa = self.my_dialog.BTPatientSpin.value()
-            bb = self.my_dialog.EvPatientSpin.value()
-            cc = self.my_dialog.ApPatientSpin.value()
-            dd = self.my_dialog.Fullname.text()
+            aa = self.BTPatientSpin.value()
+            bb = self.EvPatientSpin.value()
+            cc = self.ApPatientSpin.value()
+            dd = self.Fullname.text()
 
             self.label_6.setText(dd)
             self.BTSpin.setValue(aa)
@@ -89,24 +95,27 @@ class PationInfo_Dialog(QDialog, Ui_Dialog):
 
     def onfind_Pateint_by_id(self):
 
-        PateintID = self.my_dialog.SubjectID.text()
+        PateintID = self.SubjectID.text()
         print(PateintID)
 
-        Fullname = self.my_dialog.Fullname.text()
+        Fullname = self.Fullname.text()
 
-        filename = f"{PateintID}{Fullname}.pickle"
+        file_name = f"{PateintID}{Fullname}.rb"
+
+        folder_path = "../PatientInfo"
+        file_path = os.path.join(folder_path, file_name)
 
         try:
-            with open(filename, "rb") as file:
+            with open(file_path, "rb") as file:
                 users = pickle.load(file)
                 if PateintID in users:
                     self.set_Enable_PatientDialog()
-                    self.my_dialog.Fullname.setProperty("text", users[PateintID]["fullname"])
-                    self.my_dialog.RightLeftHand.setProperty("text", users[PateintID]["right_left_hand"])
-                    self.my_dialog.DateOfBrith.setProperty("text", users[PateintID]["DBO"])
-                    self.my_dialog.ApPatientSpin.setValue(int(users[PateintID]["ap_patient"]))
-                    self.my_dialog.EvPatientSpin.setValue(int(users[PateintID]["ev_patient"]))
-                    self.my_dialog.BTPatientSpin.setValue(int(users[PateintID]["bt_patient"]))
+                    self.Fullname.setProperty("text", users[PateintID]["fullname"])
+                    self.RightLeftHand.setProperty("text", users[PateintID]["right_left_hand"])
+                    self.DateOfBrith.setProperty("text", users[PateintID]["DBO"])
+                    self.ApPatientSpin.setValue(int(users[PateintID]["ap_patient"]))
+                    self.EvPatientSpin.setValue(int(users[PateintID]["ev_patient"]))
+                    self.BTPatientSpin.setValue(int(users[PateintID]["bt_patient"]))
                     self.searchbox = True
 
 
