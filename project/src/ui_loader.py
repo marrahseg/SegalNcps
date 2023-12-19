@@ -138,9 +138,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         Xlabel_height = self.Xpiclabel.height()
 
         if Xlabel_width < Xlabel_height:
-            self.smaller_size = Xlabel_width
+            self.smaller_size_Z = Xlabel_width
         else:
-            self.smaller_size = Xlabel_height
+            self.smaller_size_Z = Xlabel_height
 
 
 
@@ -150,55 +150,54 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         b = int(dif_Y)
         c = int(dif_Z)
 
-        self.Xpiclabel.resize(self.smaller_size, self.smaller_size)
+        self.Xpiclabel.resize(self.smaller_size_Z, self.smaller_size_Z)
         _ximg = QPixmap(my_Xside_pics_add + self.picListX[a])
-        scaled_ximg = _ximg.scaled(self.smaller_size, self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        scaled_ximg = _ximg.scaled(self.smaller_size_Z, self.smaller_size_Z, aspectRatioMode=Qt.KeepAspectRatio)
         self.Xpiclabel.setPixmap(scaled_ximg)
 
 
 
-        self.onResetBotton()
+
         self.X_label_modifier(a, b, c)
-        self.change_slider_Pos(a, b, c)
+
 #-----------------------------------------------------------
         Ylabel_width = self.Ypiclabel.width()
         Ylabel_height = self.Ypiclabel.height()
 
         if Ylabel_width < Ylabel_height:
-            smaller_size = Ylabel_width
+            self.smaller_size_X = Ylabel_width
         else:
-            smaller_size = Ylabel_height
+            self.smaller_size_X = Ylabel_height
 
             # تغییر اندازه self.label
 
-        self.Ypiclabel.resize(smaller_size, smaller_size)
+        self.Ypiclabel.resize(self.smaller_size_X, self.smaller_size_X)
         _yimg = QPixmap(my_Yside_pics_add + self.picListY[b])
-        scaled_yimg = _yimg.scaled(self.smaller_size, self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        scaled_yimg = _yimg.scaled(self.smaller_size_X, self.smaller_size_X, aspectRatioMode=Qt.KeepAspectRatio)
         self.Ypiclabel.setPixmap(scaled_yimg)
 
         self.Y_label_modifier(a, b, c)
 
-
-
-        print(smaller_size, smaller_size)
 #----------------------------------------------------------
         Zlabel_width = self.Zpiclabel.width()
         Zlabel_height = self.Zpiclabel.height()
 
         if Zlabel_width < Zlabel_height:
-            smaller_size = Zlabel_width
+            self.smaller_size_Y = Zlabel_width
         else:
-            smaller_size = Zlabel_height
+            self.smaller_size_Y = Zlabel_height
 
             # تغییر اندازه self.label
 
-        self.Zpiclabel.resize(smaller_size, smaller_size)
+        self.Zpiclabel.resize(self.smaller_size_Y, self.smaller_size_Y)
         _zimg = QPixmap(my_Zside_pics_add + self.picListZ[c])
-        scaled_zimg = _zimg.scaled(self.smaller_size,self.smaller_size, aspectRatioMode=Qt.KeepAspectRatio)
+        scaled_zimg = _zimg.scaled(self.smaller_size_Y,self.smaller_size_Y, aspectRatioMode=Qt.KeepAspectRatio)
         self.Zpiclabel.setPixmap(scaled_zimg)
 
-        print(smaller_size, smaller_size)
-        self.Z_label_modifier(a,b,c)
+        print(self.smaller_size_Y, self.smaller_size_Y)
+        self.Z_label_modifier(a, b, c)
+        self.onResetBotton()
+        self.change_slider_Pos(a, b, c)
 
 
     def signalsSlat(self):
@@ -759,13 +758,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
         qpx.end()
 
-
-
-
-
 #################################################
         painter = QPainter(self.pixmap_XX3)
         painter.setPen(QColor(158, 158, 158))
+
 
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
 
@@ -773,10 +769,13 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         _yimg = QPixmap(my_Yside_pics_add + self.picListY[valY])
         self.pixmap_YY = QPixmap(self.Ypiclabel.size())
 
+        scaled_yimg = _yimg.scaled(self.Ypiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
+
+
 
 
         qpy = QPainter(self.pixmap_YY)
-        qpy.drawPixmap(self.Ypiclabel.rect(), _yimg)
+        qpy.drawPixmap(self.Ypiclabel.rect(), scaled_yimg)
 
         #########add text to pic
         font = QFont()
@@ -806,9 +805,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def Z_label_modifier(self, valX, valY, valZ):
         _zimg = QPixmap(my_Zside_pics_add + self.picListZ[valZ])
         self.pixmap_ZZ2 = QPixmap(self.Zpiclabel.size())
+        scaled_zimg = _zimg.scaled(self.Zpiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
+
+
 
         self.qpz = QPainter(self.pixmap_ZZ2)
-        self.qpz.drawPixmap(self.Zpiclabel.rect(), _zimg)
+        self.qpz.drawPixmap(self.Zpiclabel.rect(), scaled_zimg)
 
         #########add text to pic
         font = QFont()
@@ -883,24 +885,5 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         else:
             self.OffsetinggroupBox.show()
 
-    # # نقاط ابتدا و انتهای خط
-    # start_point = QPoint(30, 50)  # مختصات نقطه ابتدای خط
-    # end_point = QPoint(210, 50)  # مختصات نقطه انتهای خط
-    #
-    # # رسم خط
-    # painter.drawLine(start_point, end_point)
-    #
-    # arrow_size = 10  # اندازه خطوط کوچک
-    # angle = np.arctan2(end_point.y() - start_point.y(), end_point.x() - start_point.x())
-    #
-    # small_line_length = (end_point.x() - start_point.x()) / 10  # طول خطوط کوچک
-    #
-    # start_line1 = QPoint(start_point.x(), start_point.y() - small_line_length)
-    # end_line1 = QPoint(start_point.x(), start_point.y() + small_line_length)
-    # painter.drawLine(start_line1, end_line1)
-    #
-    # # رسم خطوط کوچک جایگزین فلش انتهای خط
-    # start_line2 = QPoint(end_point.x(), end_point.y() - small_line_length)
-    # end_line2 = QPoint(end_point.x(), end_point.y() + small_line_length)
-    # painter.drawLine(start_line2, end_line2)
+
 
