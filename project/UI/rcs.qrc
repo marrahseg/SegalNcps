@@ -1,7 +1,0 @@
-<RCC>
-  <qresource prefix="icon">
-    <file>icons/images/icons8-brain-64 (1).png</file>
-    <file>icons/images/icons8-brain-64.png</file>
-  </qresource>
-  <qresource prefix="image"/>
-</RCC>

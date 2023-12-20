@@ -85,6 +85,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
 
 
+
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
@@ -199,6 +200,12 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.onResetBotton()
         self.change_slider_Pos(a, b, c)
 
+    def Set_patient_name(self):
+        if self == True:
+            aa, bb, cc, dd = self.my_Pation.onexecute_head_size()
+            self.PNamelabel = aa
+        else:
+            print("unsuccessful")
 
     def signalsSlat(self):
         self.StartButton.clicked.connect(self.onStartBottonClicked)
@@ -233,11 +240,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.actionRegister_areas.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
         self.actionStandard_area_2.triggered.connect(self.my_UnlockArea.onLock_Breaker_Area)
         ##################patent info#####################
-        self.my_Pation.SaveButton.clicked.connect(self.my_Pation.onSave_Pation_Info)
-        self.my_Pation.CancelButton.clicked.connect(self.my_Pation.onCancel_Dialog)
-        self.my_Pation.ExcuteButton.clicked.connect(self.my_Pation.onexecuit_head_size)
-        self.my_Pation.SearchButton.clicked.connect(self.my_Pation.onfind_Pateint_by_id)
-        ###########################>>>>>>>RefHead>>>>>>>#######################
 
     def set_setting_ui(self):
         self.default_mode = False
@@ -342,8 +344,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def print_point(*args, **kwargs):
         print(args[1])
 
-
-
     def show_3Brain(self):
 
         self.Brain_interactor = QtInteractor(self.frame_14)
@@ -387,7 +387,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         print("center of point:", self.brain_point.SetCenter)
 
-
     def onshow_Body(self):
         if not self.Body_added:
             self.Body_added = True
@@ -424,32 +423,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             self.Sphere_added = False
         self.brain_point.SetVisibility(self.Sphere_added)
 
-
-    # def show_3Brain2(self):
-    #     self.p = QtInteractor()
-    #     self.layout.addWidget(self.p)
-    #     axes = pv.Axes(show_actor=True, actor_scale=200.0, line_width=5)
-    #     axes.origin = (0, 0, 0)
-    #     axes.show_symmetric()
-    #     self.p.add_actor(axes.actor)
-    #     #
-    #     axes_actor2 = self.p.add_axes_at_origin(xlabel='x', ylabel='y', zlabel='Z', line_width=3)
-    #     axes_actor2.SetTotalLength(200, 200, 200)
-    #     self.p.add_axes(interactive=None, line_width=2, color=None, x_color=None, y_color=None, z_color=None,
-    #                     xlabel='X', ylabel='Y', zlabel='Z', labels_off=False, box=None, box_args=None,
-    #                     viewport=(0, 0, 0.2, 0.2), marker_args=None)
-    #     body = pv.read('../UI/Head-1.stl')
-    #     rot_body = body.translate([0, -60, 0])
-    #     rot_body = rot_body.rotate_z(180, point=axes.origin, inplace=False)
-    #     self.p.add_mesh(rot_body, color=(158, 158, 158), specular=0.7,
-    #                     specular_power=15, ambient=0.8, smooth_shading=True, opacity=0.5)
-    #     # p.add_sphere_widget(callback=mycall, center=[0, 0, 0], radius=10, )
-    #     stim_area = pv.Sphere(radius=140, start_phi=0, end_phi=180, start_theta=100, end_theta=260)
-    #     stim_area = stim_area.rotate_y(90, point=axes.origin, inplace=False)
-    #     stim_area = stim_area.rotate_x(180, point=axes.origin, inplace=False)
-    #     self.p.add_mesh(stim_area, opacity=0.2, color='g')
-    #     self.p.show()
-
     def onSaveFigData(self):
 
         config = configparser.ConfigParser()
@@ -474,10 +447,10 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Brain_interactor.camera.zoom(0.5)
 
     def on_dark_theme(self):
-        apply_stylesheet(self, theme='../UI/dark_purp_segal.xml')
+        apply_stylesheet(self, theme='../UI/theme/dark_purp_segal.xml')
 
     def on_light_theme(self):
-        apply_stylesheet(self, theme='../UI/color.xml')
+        apply_stylesheet(self, theme='../UI/theme/color.xml')
 
     def onShow_slider_onBrain(self):
         self.slider_onBrain_x = self.Brain_interactor.add_slider_widget \

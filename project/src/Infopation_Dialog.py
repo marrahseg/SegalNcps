@@ -9,6 +9,7 @@ from src.patent_ui  import Ui_Dialog
 
 
 
+
 class PationInfo_Dialog(QDialog, Ui_Dialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -18,6 +19,8 @@ class PationInfo_Dialog(QDialog, Ui_Dialog):
         # self.setWindowIcon(icon)
 
         self.setupUi(self)
+
+
 
         self.SaveButton.clicked.connect(self.onSave_Pation_Info)
         self.CancelButton.clicked.connect(self.onCancel_Dialog)
@@ -86,42 +89,42 @@ class PationInfo_Dialog(QDialog, Ui_Dialog):
             cc = self.ApPatientSpin.value()
             dd = self.Fullname.text()
 
-            self.label_6.setText(dd)
-            self.BTSpin.setValue(aa)
-            self.EVSpin.setValue(bb)
-            self.APSpin.setValue(cc)
+
+            return aa, bb, cc, dd
+
+            # self.Pname = dd
+            # self.Bt_patient = aa
+            # self.EV_pateint = bb
+            # self.AP_patient = cc
         else:
             pass
 
     def onfind_Pateint_by_id(self):
 
         PateintID = self.SubjectID.text()
-        print(PateintID)
-
         Fullname = self.Fullname.text()
-
         file_name = f"{PateintID}{Fullname}.rb"
 
-        folder_path = "../PatientInfo"
+        folder_path = "../PatientInfo"  # مسیر کامل پوشه PatientInfo را تنظیم کنید
         file_path = os.path.join(folder_path, file_name)
 
         try:
-            with open(file_path, "rb") as file:
-                users = pickle.load(file)
-                if PateintID in users:
-                    self.set_Enable_PatientDialog()
-                    self.Fullname.setProperty("text", users[PateintID]["fullname"])
-                    self.RightLeftHand.setProperty("text", users[PateintID]["right_left_hand"])
-                    self.DateOfBrith.setProperty("text", users[PateintID]["DBO"])
-                    self.ApPatientSpin.setValue(int(users[PateintID]["ap_patient"]))
-                    self.EvPatientSpin.setValue(int(users[PateintID]["ev_patient"]))
-                    self.BTPatientSpin.setValue(int(users[PateintID]["bt_patient"]))
-                    self.searchbox = True
-
-
-                else:
-                    return None
-
+            if os.path.exists(file_path):
+                with open(file_path, "rb") as file:
+                    users = pickle.load(file)
+                    if PateintID in users:
+                        self.set_Enable_PatientDialog()
+                        self.Fullname.setProperty("text", users[PateintID]["fullname"])
+                        self.RightLeftHand.setProperty("text", users[PateintID]["right_left_hand"])
+                        self.DateOfBrith.setProperty("text", users[PateintID]["DBO"])
+                        self.ApPatientSpin.setValue(int(users[PateintID]["ap_patient"]))
+                        self.EvPatientSpin.setValue(int(users[PateintID]["ev_patient"]))
+                        self.BTPatientSpin.setValue(int(users[PateintID]["bt_patient"]))
+                        self.searchbox = True
+                    else:
+                        return None
+            else:
+                print("فایل مورد نظر پیدا نشد!")
         except FileNotFoundError:
             print("فایل data.pickle پیدا نشد!")
             return

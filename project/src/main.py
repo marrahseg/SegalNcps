@@ -16,7 +16,7 @@ if __name__ == "__main__":
      win = Window_withDevAN()
 
 
-     pixmap = QPixmap("../UI/bj - Copy.jpg")
+     pixmap = QPixmap("../UI/splash/bj - Copy.jpg")
      splash = QSplashScreen(pixmap)
      splash.show()
      app.processEvents()
@@ -24,20 +24,20 @@ if __name__ == "__main__":
 
      win.label_40.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_40.setStyleSheet("font-weight: bold;font-size: 16px;")
-     win.label_4.setStyleSheet("font-weight: bold;font-size: 16px;")
+     win.PNamelabel.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_43.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_46.setStyleSheet("font-weight: bold;font-size: 16px;")
-     win.label_2.setStyleSheet("font-weight: bold;font-size: 16px;")
+     win.Bt_label.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_62.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_63.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_64.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_65.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_66.setStyleSheet("font-weight: bold;font-size: 16px;")
-     win.label_3.setStyleSheet("font-weight: bold;font-size: 16px;")
-     win.label_9.setStyleSheet("font-weight: bold;font-size: 16px;")
+     win.Ev_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+     win.Ap_label.setStyleSheet("font-weight: bold;font-size: 16px;")
      win.label_41.setStyleSheet("font-weight: bold;font-size: 16px;")
-     win.label_3.setStyleSheet("font-weight: bold;font-size: 16px;")
+     # win.label_3.setStyleSheet("font-weight: bold;font-size: 16px;")
 
 
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
 
          # apply_stylesheet(app, theme='../UI/dark_purp_segal.xml')
-     apply_stylesheet(app, theme='../UI/reza_color.xml')
+     apply_stylesheet(app, theme='../UI/theme/reza_color.xml')
 
      win.show()
 

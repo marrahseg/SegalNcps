@@ -34,34 +34,37 @@ class Window_withDevAN(Window_ui):
         self.headY = 0
         self.headZ = 0
         self.robot_state = "idle"  # reset, drag, getXY, getZ, ready, Start
+        self.Button_Motion.clicked.connect(self.onGoMotionRobot)
 
     def onGoMotionRobot(self):
         # idle, reset, drag, getXY, getZ, Start
-        if self.robot_state == "idle" or self.robot_state == "start":
+        if self.robot_state == "idle" \
+                or self.robot_state == "start":
             self.robot_state = "reset"
-            self.pushButton.setText("Enable Drag")
+            self.Button_Motion.setText("Enable Drag")
 
         elif self.robot_state == "reset":
             self.robot_state = "drag"
-            self.pushButton.setText("Get X , Y")
+            self.Button_Motion.setText("Get X , Y")
 
 
-        elif self.robot_state == "drag":
+        elif self.robot_state == "drag" \
+                                 "":
             self.robot_state = "getXY"
-            self.pushButton.setText("Get Z")
+            self.Button_Motion.setText("Get Z")
 
         elif self.robot_state == "getXY":
             self.robot_state = "getZ"
-            self.pushButton.setText("Ready Point")
+            self.Button_Motion.setText("Ready Point")
 
         elif self.robot_state == "getZ":
             self.robot_state = "ready"
-            self.pushButton.setText("Start")
+            self.Button_Motion.setText("Start")
 
 
         elif self.robot_state == "ready":
             self.robot_state = "start"
-            self.pushButton.setText("Go to reset point")
+            self.Button_Motion.setText("Go to reset point")
 
 
         self.robot_state_machine()
