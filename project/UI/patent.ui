@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>355</width>
-    <height>541</height>
+    <height>501</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -184,6 +184,80 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QFrame" name="frame_2">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="Freq_spin"/>
+          </item>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="Connect_Button">
+            <property name="text">
+             <string>Connect to magestim</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="Power_label">
+            <property name="text">
+             <string>power:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="Protlabel">
+            <property name="text">
+             <string>protocol:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="Freq_label">
+            <property name="text">
+             <string>frequency:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="Power_spin"/>
+          </item>
+          <item row="7" column="1">
+           <widget class="QComboBox" name="Proto_comboBox">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+            <property name="maxVisibleItems">
+             <number>5</number>
+            </property>
+            <property name="maxCount">
+             <number>5</number>
+            </property>
+            <property name="insertPolicy">
+             <enum>QComboBox::InsertAfterCurrent</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
+            </property>
+            <property name="minimumContentsLength">
+             <number>10</number>
+            </property>
+            <property name="duplicatesEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="modelColumn">
+             <number>3</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item alignment="Qt::AlignBottom">
         <widget class="QFrame" name="frame_4">
          <property name="frameShape">
@@ -249,8 +323,8 @@
           <widget class="QPushButton" name="CancelButton">
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>29</height>
+             <width>29</width>
+             <height>0</height>
             </size>
            </property>
            <property name="text">

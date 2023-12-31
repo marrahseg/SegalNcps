@@ -3,7 +3,6 @@ import os
 import pickle
 
 import cv2
-import np as np
 import numpy as np
 import pyvista as pv
 
@@ -26,21 +25,18 @@ import resizeHead_Dialog
 import unlockArea_Dialog
 import standardArea_Dialog
 
-
-
-
 motor_real = False
 
-##############################read txt file
-my_Xside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/X_crop/'
-my_Yside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Y_crop/'
-my_Zside_pics_add = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Z_crop/'
+# ############################# read txt file
+xside_pics_address = '../UI/MRI_PROJECT/MRI_CROPED_REZA/X_crop/'
+yside_pics_address = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Y_crop/'
+zside_pics_address = '../UI/MRI_PROJECT/MRI_CROPED_REZA/Z_crop/'
 
-#################for set number of pic
+# ################ for set number of pic
 X_PIC_OFFSET = 87
 Y_PIC_OFFSET = 122
 Z_PIC_OFFSET = 43
-##################number of list x,y,z
+# #################number of list x,y,z
 NUMBER_X_LIST = 174
 NUMBER_Y_LIST = 212
 NUMBER_Z_LIST = 142
@@ -48,22 +44,19 @@ NUMBER_Z_LIST = 142
 X_BRAIN_OFFSET = 7
 Y_BRAIN_OFFSET = -21
 Z_BRAIN_offset = 44
-##############################################################
-
 
 
 
 class Window_ui(QMainWindow, Ui_MainWindow):
 
-
     def __init__(self, parent=None):
         super().__init__(parent)
-        os.getcwd()
+        # os.getcwd()
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../icons/logo/glog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
         self.setupUi(self)
-
+        self.light_Theme = True
 
 
         #######instance  Dialog #########
@@ -75,24 +68,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.my_StandardArea = standardArea_Dialog.MyStandardArea_Dialog()
         self.timer = QTimer()
 
-
         #######initial object  class Dialog #########
         self.axes_added = False
         self.coil_added = True
         self.Sphere_added = True
         self.Body_added = False
 
-
-
-
-
         self.initAllpicture()
         self.signalsSlat()
         self.show_3Brain()
         self.set_setting_ui()
         self.set_logo()
-
-
 
         self.centerBX = 0
         self.centerBY = 0
@@ -118,87 +104,51 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.OA_text_Brain = 0
         self.CA_text_Brain = 0
 
-
-        self.onResetBotton()
+        # self.onResetBotton()
         self.update_pics_lines_and_now_position(self.x_go, self.y_go, self.z_go)
         self.change_slider_Pos(self.x_go, self.y_go, self.z_go)
         # self.onStartBottonClicked()
+        self.resizeEvent(True)
+
+        self.XSlider.setValue(87)
+        self.YSlider.setValue(122)
+        self.ZSlider.setValue(43)
 
     def resizeEvent(self, event):
-        # دریافت ارتفاع و عرض پنجره
-        width = self.width()
-        height = self.height()
-
-        # چاپ ارتفاع و عرض پنجره
-        print("Window Width:", width)
-        print("Window Height:", height)
-        print("-----------------------------")
-
-        # دریافت ارتفاع و عرض self.label
-        Xlabel_width = self.Xpiclabel.width()
-        Xlabel_height = self.Xpiclabel.height()
-
-        if Xlabel_width < Xlabel_height:
-            self.smaller_size_Z = Xlabel_width
+        label_width = self.Xpiclabel.width()
+        label_height = self.Xpiclabel.height()
+        if label_width > label_height:
+            _label_size = label_width
         else:
-            self.smaller_size_Z = Xlabel_height
+            _label_size = label_height
 
-
-
-        dif_X,dif_Y,dif_Z = self.xyz_calculator(self.XSpin.value(),self.YSpin.value(),self.ZSpin.value(),1)
+        dif_X, dif_Y, dif_Z = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
         # تغییر اندازه self.label
         a = int(dif_X)
         b = int(dif_Y)
         c = int(dif_Z)
 
-        self.Xpiclabel.resize(self.smaller_size_Z, self.smaller_size_Z)
-        _ximg = QPixmap(my_Xside_pics_add + self.picListX[a])
-        scaled_ximg = _ximg.scaled(self.smaller_size_Z, self.smaller_size_Z, aspectRatioMode=Qt.KeepAspectRatio)
+        self.Xpiclabel.resize(_label_size, _label_size)
+        _ximg = QPixmap(xside_pics_address + self.picListX[a])
+        scaled_ximg = _ximg.scaled(_label_size, _label_size, aspectRatioMode=Qt.KeepAspectRatio)
         self.Xpiclabel.setPixmap(scaled_ximg)
-
-
-
-
         self.X_label_modifier(a, b, c)
 
-#-----------------------------------------------------------
-        Ylabel_width = self.Ypiclabel.width()
-        Ylabel_height = self.Ypiclabel.height()
-
-        if Ylabel_width < Ylabel_height:
-            self.smaller_size_X = Ylabel_width
-        else:
-            self.smaller_size_X = Ylabel_height
-
-            # تغییر اندازه self.label
-
-        self.Ypiclabel.resize(self.smaller_size_X, self.smaller_size_X)
-        _yimg = QPixmap(my_Yside_pics_add + self.picListY[b])
-        scaled_yimg = _yimg.scaled(self.smaller_size_X, self.smaller_size_X, aspectRatioMode=Qt.KeepAspectRatio)
+        # -----------------------------------------------------------
+        self.Ypiclabel.resize(_label_size, _label_size)
+        _yimg = QPixmap(yside_pics_address + self.picListY[b])
+        scaled_yimg = _yimg.scaled(_label_size, _label_size, aspectRatioMode=Qt.KeepAspectRatio)
         self.Ypiclabel.setPixmap(scaled_yimg)
-
         self.Y_label_modifier(a, b, c)
 
-#----------------------------------------------------------
-        Zlabel_width = self.Zpiclabel.width()
-        Zlabel_height = self.Zpiclabel.height()
-
-        if Zlabel_width < Zlabel_height:
-            self.smaller_size_Y = Zlabel_width
-        else:
-            self.smaller_size_Y = Zlabel_height
-
-            # تغییر اندازه self.label
-
-        self.Zpiclabel.resize(self.smaller_size_Y, self.smaller_size_Y)
-        _zimg = QPixmap(my_Zside_pics_add + self.picListZ[c])
-        scaled_zimg = _zimg.scaled(self.smaller_size_Y,self.smaller_size_Y, aspectRatioMode=Qt.KeepAspectRatio)
+        # ----------------------------------------------------------
+        self.Zpiclabel.resize(_label_size, _label_size)
+        _zimg = QPixmap(zside_pics_address + self.picListZ[c])
+        scaled_zimg = _zimg.scaled(_label_size, _label_size, aspectRatioMode=Qt.KeepAspectRatio)
         self.Zpiclabel.setPixmap(scaled_zimg)
-
-        print(self.smaller_size_Y, self.smaller_size_Y)
         self.Z_label_modifier(a, b, c)
-        self.onResetBotton()
-        self.change_slider_Pos(a, b, c)
+        # self.onResetBotton()
+        # self.change_slider_Pos(a, b, c)
 
     def Set_patient_name(self):
         if self == True:
@@ -208,26 +158,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             print("unsuccessful")
 
     def signalsSlat(self):
-        self.StartButton.clicked.connect(self.onStartBottonClicked)
-        self.StartWoMovementButton.clicked.connect(self.onStartWoMovementButton)
         self.XSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.YSlider.valueChanged.connect(self.onSliderchangeClicked)
         self.ZSlider.valueChanged.connect(self.onSliderchangeClicked)
-        self.ResetButton.clicked.connect(self.onResetBotton)
         self.actionHide_Button.triggered.connect(self.onMyHideShow)
         self.timer.timeout.connect(self.onTimer_interrupt)
 
-
         self.viewcoilButton.clicked.connect(self.onView_Coil)
-        self.viewAxsisButton.clicked.connect(self.onViewAxsis)
-        self.ZoomInButton.clicked.connect(self.onZoominBrain)
-        self.ZoomOutButton.clicked.connect(self.onZoomoutBrain)
-        self.pushButton_6.clicked.connect(self.onViewSphere)
-        self.BodyButton.clicked.connect(self.onshow_Body)
 
-        ###############################>>>>>>>>>>>>>>>>>>>MENU BAR>>>>>>>>>>>>>>>>>>>>>############################
-        self.actionDark.triggered.connect(self.on_dark_theme)
-        self.actionLight.triggered.connect(self.on_light_theme)
+        ##############>>>>>>>>>>>MENU BAR>>>>>>>>>>>>>>##################
+        self.actionDark_Theme.triggered.connect(self.on_dark_theme)
+        self.actionLight_Theme.triggered.connect(self.on_light_theme)
         self.actionSave_as.triggered.connect(self.onSaveFigData)
         self.actionShow.triggered.connect(self.onShow_slider_onBrain)
         self.actionHide_Button.triggered.connect(self.onHide_slider_onBrain)
@@ -321,7 +262,6 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         _Bx, _By, _Bz = int(self.Xshowlabel.text()), int(self.Yshowlabel.text()), int(self.Zshowlabel.text())
 
-
         ###############################set centrt Bx
         _Xpoint = (_By + Y_PIC_OFFSET) * (47 + 38) / (NUMBER_Y_LIST - 1)
         _centerBX = _Xpoint - 38 + X_BRAIN_OFFSET
@@ -345,47 +285,44 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         print(args[1])
 
     def show_3Brain(self):
-
-        self.Brain_interactor = QtInteractor(self.frame_14)
-
-        self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
-
-        ####______________add axes
-        self.onViewAxsis()
-
-
-        mesh = pv.read('../UI/STL/Brain for Half_Skull.stl')
-        mesh_center = np.array(mesh.center_of_mass())
-        mesh = mesh.translate(-mesh_center)
-        self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), specular=0.7,
-                                       specular_power=15, ambient=0.3, smooth_shading=True, opacity=1)
-
-        self.Brain_interactor.camera.zoom(2.0)
-        self.Brain_interactor.background_color = (255, 255, 255)
-
-
-        self.Brain_interactor.add_text("segal step",
-                                       position='upper_edge', font='arial', font_size=9, color=(0, 0, 0),shadow=True)
-        self.Brain_interactor.setStyleSheet("font-family: Arial; font-size: 5px; color: black;")
-
-
-        self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28),
-                                                                   center=(0, 0, 0), radius=3, test_callback=False)
-
-        self.mesh_coil = pv.read('../UI/STL/Coil TMS v0.stl')
-        self.coil_actor = self.Brain_interactor.add_mesh(self.mesh_coil, opacity=1, color=(13, 71, 161), name="magstim coil")
-        scaling_factor = 0.2  # فاکتور مقیاس‌بندی برای کوچکتر شدن شیء
-        self.coil_actor.SetScale(scaling_factor, scaling_factor, scaling_factor)
-
-        body = pv.read('../UI/STL/Head-1.stl')
-        rot_body = body.translate([0, -60, 0])
-        # rot_body = rot_body.rotate_z(180, point=axes.origin, inplace=False)
-        self.Body_actor = self.Brain_interactor.add_mesh(rot_body, color=(158, 158, 158), specular=0.7,
-                                                         specular_power=15, ambient=0.8, smooth_shading=True,
-                                                         opacity=0.5, name="Body")
-
-
-        print("center of point:", self.brain_point.SetCenter)
+        pass
+        # self.Brain_interactor = QtInteractor(self.frame_14)
+        #
+        # self.verticalLayout_23.addWidget(self.Brain_interactor.interactor)
+        #
+        # ####______________add axes
+        # self.onViewAxsis()
+        #
+        # mesh = pv.read('../UI/STL/Brain for Half_Skull.stl')
+        # mesh_center = np.array(mesh.center_of_mass())
+        # mesh = mesh.translate(-mesh_center)
+        # self.Brain_interactor.add_mesh(mesh, color=(158, 158, 158), specular=0.7,
+        #                                specular_power=15, ambient=0.3, smooth_shading=True, opacity=1)
+        #
+        # self.Brain_interactor.camera.zoom(2.0)
+        # self.Brain_interactor.background_color = (255, 255, 255)
+        #
+        # self.Brain_interactor.add_text("segal step",
+        #                                position='upper_edge', font='arial', font_size=9, color=(0, 0, 0), shadow=True)
+        # self.Brain_interactor.setStyleSheet("font-family: Arial; font-size: 5px; color: black;")
+        #
+        # self.brain_point = self.Brain_interactor.add_sphere_widget(self.print_point, color=(183, 28, 28),
+        #                                                            center=(0, 0, 0), radius=3, test_callback=False)
+        #
+        # self.mesh_coil = pv.read('../UI/STL/Coil TMS v0.stl')
+        # self.coil_actor = self.Brain_interactor.add_mesh(self.mesh_coil, opacity=1, color=(13, 71, 161),
+        #                                                  name="magstim coil")
+        # scaling_factor = 0.2  # فاکتور مقیاس‌بندی برای کوچکتر شدن شیء
+        # self.coil_actor.SetScale(scaling_factor, scaling_factor, scaling_factor)
+        #
+        # body = pv.read('../UI/STL/Head-1.stl')
+        # rot_body = body.translate([0, -60, 0])
+        # # rot_body = rot_body.rotate_z(180, point=axes.origin, inplace=False)
+        # self.Body_actor = self.Brain_interactor.add_mesh(rot_body, color=(158, 158, 158), specular=0.7,
+        #                                                  specular_power=15, ambient=0.8, smooth_shading=True,
+        #                                                  opacity=0.5, name="Body")
+        #
+        # print("center of point:", self.brain_point.SetCenter)
 
     def onshow_Body(self):
         if not self.Body_added:
@@ -402,7 +339,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.coil_actor.SetVisibility(self.coil_added)
 
     def ADD_Axes(self):
-        self.axes_actor = self.Brain_interactor.add_axes_at_origin(xlabel='Y', ylabel='X', zlabel='Z',line_width=3)
+        self.axes_actor = self.Brain_interactor.add_axes_at_origin(xlabel='Y', ylabel='X', zlabel='Z', line_width=3)
         self.axes_actor.SetTotalLength(100, 100, 100)
         self.axes_actor.GetXAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
         self.axes_actor.GetYAxisCaptionActor2D().GetCaptionTextProperty().SetColor(0, 0, 0)
@@ -448,9 +385,164 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def on_dark_theme(self):
         apply_stylesheet(self, theme='../UI/theme/dark_purp_segal.xml')
+        self.PNamelabel.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Bt_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_62.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_63.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_64.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_65.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Ev_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Ap_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+
+        self.frame_40.setStyleSheet("border-color:#31363b")
+        self.frame_41.setStyleSheet("border-color:#31363b")
+        self.frame_42.setStyleSheet("border-color:#31363b")
+        self.frame_43.setStyleSheet("border-color:#31363b")
+        self.frame_47.setStyleSheet("border-color:#31363b")
+        self.frame_38.setStyleSheet("border-color:#31363b")
+        self.frame_39.setStyleSheet("border-color:#31363b")
+
+        self.groupBox_HeadPosition.setStyleSheet("border-color:#31363b")
+        self.groupBox.setStyleSheet("border-color:#31363b")
+        self.frame_37.setStyleSheet("border-color:#9E9E9E")
+        self.groupBox_3.setStyleSheet("border-color:#31363b")
+
+        self.line.setStyleSheet("background-color:#9E9E9E;")
+        self.line_3.setStyleSheet("background-color:#9E9E9E;")
+        self.line_2.setStyleSheet("background-color:#9E9E9E;")
+        self.line_4.setStyleSheet("background-color:#9E9E9E;")
+
+        self.frame_30.setStyleSheet("border-color:#9E9E9E")
+        self.frame_31.setStyleSheet("border-color:#31363b")
+        self.frame_32.setStyleSheet("border-color:#31363b")
+        self.frame_33.setStyleSheet("border-color:#31363b")
+        self.frame_27.setStyleSheet("border-color:#31363b")
+        self.frame_26.setStyleSheet("border-color:#31363b")
+        self.frame_47.setStyleSheet("border-color:#31363b")
+        self.frame_23.setStyleSheet("border-color:#31363b")
+        self.frame_35.setStyleSheet("border-color:#31363b")
+        self.frame_34.setStyleSheet("border-color:#31363b")
+        self.frame_10.setStyleSheet("border-color:#31363b")
+        self.frame_11.setStyleSheet("border-color:#31363b")
+        self.frame_3.setStyleSheet("border-color:#31363b")
+        self.frame_9.setStyleSheet("border-color:#31363b")
+        self.frame_8.setStyleSheet("border-color:#31363b")
+        self.frame_60.setStyleSheet("border-color:#31363b")
+        self.frame_4.setStyleSheet("border-color:#31363b")
+        self.frame_5.setStyleSheet("border-color:#31363b")
+        self.frame_6.setStyleSheet("border-color:#31363b")
+        self.frame_2.setStyleSheet("border-color:#31363b")
+        self.tabWidget.setStyleSheet("border-color:#31363b")
+        self.bt_setRotation.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.StartButton.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_clac_spot.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.Button_Motion.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_cp_poz.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_reset_pos.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.pushButton_reset_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_drag_robot.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_gather_headxy.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_gather_headz.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_live_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_ready_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_start_robot_movement.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.bt_setCz.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+        self.bt_left.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+        self.bt_right.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+
+
+    def the_lighttheme(self):
+        if self.light_Theme == True:
+            self.on_light_theme()
+        else:
+            self.on_dark_theme()
+            self.light_Theme = False
+
+
+
 
     def on_light_theme(self):
-        apply_stylesheet(self, theme='../UI/theme/color.xml')
+        apply_stylesheet(self, theme='../UI/theme/reza_color.xml')
+        self.PNamelabel.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Bt_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_62.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_63.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_64.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.label_65.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Ev_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+        self.Ap_label.setStyleSheet("font-weight: bold;font-size: 16px;")
+
+        self.frame_40.setStyleSheet("border-color:#FFFFFF")
+        self.frame_41.setStyleSheet("border-color:#FFFFFF")
+        self.frame_42.setStyleSheet("border-color:#FFFFFF")
+        self.frame_43.setStyleSheet("border-color:#FFFFFF")
+        self.frame_47.setStyleSheet("border-color:#FFFFFF")
+        self.frame_38.setStyleSheet("border-color:#FFFFFF")
+        self.frame_39.setStyleSheet("border-color:#FFFFFF")
+
+        self.groupBox_HeadPosition.setStyleSheet("border-color:#FFFFFF")
+        self.groupBox.setStyleSheet("border-color:#FFFFFF")
+        self.groupBox_3.setStyleSheet("color:#FFFFFF")
+
+        self.line.setStyleSheet("background-color:#9E9E9E;")
+        self.line_3.setStyleSheet("background-color:#9E9E9E;")
+        self.line_2.setStyleSheet("background-color:#9E9E9E;")
+        self.line_4.setStyleSheet("background-color:#9E9E9E;")
+
+        self.frame_30.setStyleSheet("border-color:#CFD8DC")
+        self.frame_31.setStyleSheet("border-color:#FFFFFF")
+        self.frame_32.setStyleSheet("border-color:#FFFFFF")
+        self.frame_33.setStyleSheet("border-color:#FFFFFF")
+        self.frame_27.setStyleSheet("border-color:#FFFFFF")
+        self.frame_26.setStyleSheet("border-color:#FFFFFF")
+        self.frame_47.setStyleSheet("border-color:#FFFFFF")
+        self.frame_23.setStyleSheet("border-color:#FFFFFF")
+        self.frame_35.setStyleSheet("border-color:#FFFFFF")
+        self.frame_34.setStyleSheet("border-color:#FFFFFF")
+        self.frame_10.setStyleSheet("border-color:#FFFFFF")
+        self.frame_11.setStyleSheet("border-color:#FFFFFF")
+        self.frame_3.setStyleSheet("border-color:#FFFFFF")
+        self.frame_9.setStyleSheet("border-color:#FFFFFF")
+        self.frame_8.setStyleSheet("border-color:#FFFFFF")
+        self.frame_60.setStyleSheet("border-color:#FFFFFF")
+        self.frame_4.setStyleSheet("border-color:#FFFFFF")
+        self.frame_5.setStyleSheet("border-color:#FFFFFF")
+        self.frame_6.setStyleSheet("border-color:#FFFFFF")
+        self.frame_2.setStyleSheet("border-color:#FFFFFF")
+        self.tabWidget.setStyleSheet("border-color:#FFFFFF")
+        self.frame_37.setStyleSheet("border-color:#CFD8DC")
+
+        self.bt_setRotation.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.StartButton.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_clac_spot.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.Button_Motion.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_cp_poz.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.bt_reset_pos.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 20px")
+        self.pushButton_reset_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_drag_robot.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_gather_headxy.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_gather_headz.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_live_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_ready_robot_position.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.pushButton_start_robot_movement.setStyleSheet(
+            "background-color: #E0E0E0;color: #000000;border-radius: 20px;text-align: left;")
+        self.bt_setCz.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+        self.bt_left.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+        self.bt_right.setStyleSheet("background-color: #E0E0E0;color: #000000;border-radius: 30px")
+
 
     def onShow_slider_onBrain(self):
         self.slider_onBrain_x = self.Brain_interactor.add_slider_widget \
@@ -468,7 +560,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
     def initAllpicture(self):
 
         ########################################### sort of listX
-        picListX = os.listdir(my_Xside_pics_add)
+        picListX = os.listdir(xside_pics_address)
         listXminus = []
         listXplus = []
         for item in picListX:
@@ -483,9 +575,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListX.append('0x.jpg')
         self.picListX.extend(listXplus)
 
-
         ########################################### sort of listY
-        picListY = os.listdir(my_Yside_pics_add)
+        picListY = os.listdir(yside_pics_address)
         listYplus = []
         listYminus = []
 
@@ -504,7 +595,7 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.picListY.extend(listYplus)
 
         ######################################### SORT OF LIST Z
-        picListZ = os.listdir(my_Zside_pics_add)
+        picListZ = os.listdir(zside_pics_address)
         listZminus = []
         listZplus = []
         for item in picListZ:
@@ -563,8 +654,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
     def onStartWoMovementButton(self):
         _mx, _my, _mz = self.xyz_calculator(self.XSpin.value(), self.YSpin.value(), self.ZSpin.value(), 1)
-        _moa = self.OASpin.value()
-        _mca = self.CASpin.value()
+        # _moa = self.OASpin.value()
+        # _mca = self.CASpin.value()
 
         # self.x_go = _mx
         # self.y_go = _my
@@ -576,8 +667,8 @@ class Window_ui(QMainWindow, Ui_MainWindow):
 
         self.update_pics_lines_and_now_position(_mx, _my, _mz)
         self.change_slider_Pos(_mx, _my, _mz)
-        self.CAshowlabel.setText(str(_mca))
-        self.OAshowlabel.setText(str(_moa))
+        # self.CAshowlabel.setText(str(_mca))
+        # self.OAshowlabel.setText(str(_moa))
 
     def onTimer_interrupt(self):
         _mx = 0
@@ -695,16 +786,14 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.ZSlider.setValue(valZ)
 
     def X_label_modifier(self, valX, valY, valZ):
-        _ximg = QPixmap(my_Xside_pics_add + self.picListX[valX])
+        _ximg = QPixmap(xside_pics_address + self.picListX[valX])
         self.pixmap_XX3 = QPixmap(self.Xpiclabel.size())
 
         # تنظیم مقیاس عکس و رسم آن درون pixmap_XX3
         scaled_ximg = _ximg.scaled(self.Xpiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
 
-
         qpx = QPainter(self.pixmap_XX3)
         qpx.drawPixmap(self.Xpiclabel.rect(), scaled_ximg)
-
 
         #########add text to pic
         font = QFont()
@@ -731,21 +820,17 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         qpx.drawLine(myy_loc, 500, myy_loc, -500)
         qpx.end()
 
-#################################################
+        #################################################
         painter = QPainter(self.pixmap_XX3)
         painter.setPen(QColor(158, 158, 158))
-
 
         self.Xpiclabel.setPixmap(self.pixmap_XX3)
 
     def Y_label_modifier(self, valX, valY, valZ):
-        _yimg = QPixmap(my_Yside_pics_add + self.picListY[valY])
+        _yimg = QPixmap(yside_pics_address + self.picListY[valY])
         self.pixmap_YY = QPixmap(self.Ypiclabel.size())
 
         scaled_yimg = _yimg.scaled(self.Ypiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
-
-
-
 
         qpy = QPainter(self.pixmap_YY)
         qpy.drawPixmap(self.Ypiclabel.rect(), scaled_yimg)
@@ -776,11 +861,9 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.Ypiclabel.setPixmap(self.pixmap_YY)
 
     def Z_label_modifier(self, valX, valY, valZ):
-        _zimg = QPixmap(my_Zside_pics_add + self.picListZ[valZ])
+        _zimg = QPixmap(zside_pics_address + self.picListZ[valZ])
         self.pixmap_ZZ2 = QPixmap(self.Zpiclabel.size())
         scaled_zimg = _zimg.scaled(self.Zpiclabel.size(), aspectRatioMode=Qt.KeepAspectRatio)
-
-
 
         self.qpz = QPainter(self.pixmap_ZZ2)
         self.qpz.drawPixmap(self.Zpiclabel.rect(), scaled_zimg)
@@ -822,11 +905,11 @@ class Window_ui(QMainWindow, Ui_MainWindow):
         self.y_now = valY
         self.z_now = valZ
 
-        self.Xshowlabel.setText(str(self.x_now - X_PIC_OFFSET))
-        self.Yshowlabel.setText(str(self.y_now - Y_PIC_OFFSET))
-        self.Zshowlabel.setText(str(self.z_now - Z_PIC_OFFSET))
-        self.OAshowlabel.setText(str(self.oa_now))
-        self.CAshowlabel.setText(str(self.ca_now))
+        # self.Xshowlabel.setText(str(self.x_now - X_PIC_OFFSET))
+        # self.Yshowlabel.setText(str(self.y_now - Y_PIC_OFFSET))
+        # self.Zshowlabel.setText(str(self.z_now - Z_PIC_OFFSET))
+        # self.OAshowlabel.setText(str(self.oa_now))
+        # self.CAshowlabel.setText(str(self.ca_now))
         #
         # self.X_text_Brain = str(self.x_now - X_PIC_OFFSET)
         # self.Y_text_Brain = str(self.y_now - Y_PIC_OFFSET)
@@ -857,6 +940,3 @@ class Window_ui(QMainWindow, Ui_MainWindow):
             print("closed")
         else:
             self.OffsetinggroupBox.show()
-
-
-
